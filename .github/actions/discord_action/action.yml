@@ -32,7 +32,7 @@ runs:
       run: |
         generate_post_data()
         {
-        cat <<EOF
+          <<EOF
         {
           "embeds": [
             {
@@ -53,6 +53,6 @@ runs:
         COLOR="${{inputs.color}}"
         DESC="${{inputs.description}}"
         
-        CONVERT=echo "${DESC//$'\n'/\\n}"
+        # CONVERT=echo "${DESC//$'\n'/\\n}"
         
-        curl -X POST -H "Content-Type: application/json" --data "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$CONVERT")" ${{inputs.webhookurl}}
+        curl -X POST -H "Content-Type: application/json" --data-binary @- "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$CONVERT")" ${{inputs.webhookurl}}
