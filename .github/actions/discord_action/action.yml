@@ -53,7 +53,8 @@ runs:
         COLOR="${{inputs.color}}"
         DESC="${{inputs.description}}"
         
-        value=$(generate_post_data $TITLE $NAME $COLOR $DESC)
+        CONVERT=echo "${DESC//$'\n'/\\n}"
+        value=$(generate_post_data $TITLE $NAME $COLOR $CONVERT)
         echo $value
         
-        curl -X POST -H "Content-Type: application/json" --data "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$DESC")" ${{inputs.webhookurl}}
+        curl -X POST -H "Content-Type: application/json" --data "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$CONVERT")" ${{inputs.webhookurl}}
