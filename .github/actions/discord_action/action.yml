@@ -54,7 +54,5 @@ runs:
         DESC="${{inputs.description}}"
         
         CONVERT=echo "${DESC//$'\n'/\\n}"
-        value=$(generate_post_data $TITLE $NAME $COLOR $CONVERT)
-        echo $value
         
         curl -X POST -H "Content-Type: application/json" --data "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$CONVERT")" ${{inputs.webhookurl}}
