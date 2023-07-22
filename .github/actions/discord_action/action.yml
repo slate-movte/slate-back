@@ -55,4 +55,4 @@ runs:
         
         # CONVERT=echo "${DESC//$'\n'/\\n}"
         
-        curl -X POST -H "Content-Type: application/json" --data-binary @- "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$CONVERT")" ${{inputs.webhookurl}}
+        curl -X POST -H "Content-Type: application/json" --data-binary @- "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$DESC")" ${{inputs.webhookurl}}
