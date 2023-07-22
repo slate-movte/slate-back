@@ -6,6 +6,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public abstract class IntegerationTestSupport {
+public abstract class IntegrationTestSupport {
 
 }
