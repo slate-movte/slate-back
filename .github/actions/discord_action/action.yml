@@ -1,0 +1,59 @@
+name: 'action'
+
+inputs:
+  status:
+    required: false
+    default: 'failure'
+
+  webhookurl:
+    required: true
+
+  title:
+    required: true
+
+  author:
+    required: true
+
+  url:
+    required: false
+
+  color:
+    required: true
+
+  description:
+    required: true
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Send Discord
+      shell: bash
+      run: |
+        generate_post_data()
+        {
+        cat <<EOF
+        {
+          "embeds": [
+            {
+              "title": "$1",
+              "author": {
+                "name": "$2"
+              },
+              "color": "$3",
+              "description": "$4"
+            }
+          ]
+        }
+        EOF
+        }
+
+        TITLE="${{inputs.title}}"
+        NAME="${{inputs.author}}"
+        COLOR="${{inputs.color}}"
+        DESC="${{inputs.description}}"
+        
+        value=$(generate_post_data $TITLE $NAME $COLOR $DESC)
+        echo $value
+        
+        curl -X POST -H "Content-Type: application/json" --data "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$DESC")" ${{inputs.webhookurl}}

@@ -1,0 +1,37 @@
+name: dev branch ci
+
+on:
+  pull_request:
+    types: [opened, review_requested]
+    branches:
+      - "develop"
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Discord notification (start ci workflow)
+        uses: ./.github/actions/discord_action
+        with:
+          title: "[#${{ github.event.pull_request.number }}]${{ github.event.pull_request.title }}"
+          author: ${{ github.event.pull_request.user.login }}
+          webhookurl: ${{ secrets.DISCORD_WEBHOOK }}
+          color: 65280
+          description: ${{ github.event.pull_request.body }}
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "zulu"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Project testing
+        run: |
+          ./gradlew clean build

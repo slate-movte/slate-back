@@ -1,10 +1,10 @@
 package com.movte.slate;
 
+import com.movte.slate.support.IntegrationTestSupport;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class SlateApplicationTests {
+
+class SlateApplicationTests extends IntegrationTestSupport {
 
     @Test
     void contextLoads() {
