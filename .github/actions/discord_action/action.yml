@@ -30,7 +30,6 @@ runs:
     - name: Send Discord
       shell: bash
       run: |
-        DESC = "${{inputs.description}}"
-        CONVERT=echo "${DESC//$'\n'/\\n}"
+        CONVERT=echo "${${{inputs.description}}//$'\n'/\\n}"
         curl -i -X POST -H "Content-Type: application/json" --data "{\"embeds\": [{\"title\": \"${{inputs.title}}\", \"author\":{\"name\":\"${{inputs.author}}\"},\"color\": \"${{inputs.color}}\",\"description\": \"$CONVERT\"}]}" "${{inputs.webhookurl}}"
 
