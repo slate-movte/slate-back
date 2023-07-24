@@ -30,29 +30,5 @@ runs:
     - name: Send Discord
       shell: bash
       run: |
-        generate_post_data()
-        {
-          <<EOF
-        {
-          "embeds": [
-            {
-              "title": "$1",
-              "author": {
-                "name": "$2"
-              },
-              "color": "$3",
-              "description": "$4"
-            }
-          ]
-        }
-        EOF
-        }
+        curl -i -X POST -H "Content-Type: application/json" --data "{\"embeds\": [{\"title\": ${{inputs.title}}, \"author\":{\"name\":${{inputs.author}}},\"color\": ${{inputs.color}},\"description\": ${{inputs.description}}}]}" "${{inputs.webhookurl}}"
 
-        TITLE="${{inputs.title}}"
-        NAME="${{inputs.author}}"
-        COLOR="${{inputs.color}}"
-        DESC="${{inputs.description}}"
-        
-        # CONVERT=echo "${DESC//$'\n'/\\n}"
-        
-        curl -X POST -H "Content-Type: application/json" --data-binary @- "$(generate_post_data "$TITLE" "$NAME" "$COLOR" "$DESC")" ${{inputs.webhookurl}}
