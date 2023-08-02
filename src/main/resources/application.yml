@@ -1,9 +1,6 @@
 spring:
   profiles:
     default: local
-
-
-
 ---
 spring:
   config:
