@@ -2,11 +2,13 @@ package com.movte.slate.domain.user.domain;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +29,9 @@ public class User {
     private Long id;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    List<BookmarkedPlace> bookmarkedPlaceList;
 
     @Column(length = 512) // 임의로 길이 설정함 (ERD에는 길이 정의되어 있지 않음)
     private String oauthId;

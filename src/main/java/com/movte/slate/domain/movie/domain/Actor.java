@@ -1,16 +1,15 @@
 package com.movte.slate.domain.movie.domain;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Entity
 @Getter
@@ -23,7 +22,6 @@ public class Actor {
 
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "cast")
-	private Cast cast;
+	@OneToMany(mappedBy = "actor")
+	private List<MovieCast> movieCastList;
 }

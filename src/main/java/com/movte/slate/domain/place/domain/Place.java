@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE")
+@DiscriminatorColumn(name = "dtype")
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Place {

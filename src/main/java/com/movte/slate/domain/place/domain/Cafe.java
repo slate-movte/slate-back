@@ -3,6 +3,7 @@ package com.movte.slate.domain.place.domain;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Entity
 @Table(name = "cafe")
 @DiscriminatorValue("cafe")
 public class Cafe extends Place {

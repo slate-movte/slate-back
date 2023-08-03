@@ -1,8 +1,9 @@
 package com.movte.slate.domain.movie.domain;
 
+import com.movte.slate.domain.place.domain.ScenePlace;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +41,13 @@ public class Movie {
 	@ManyToOne
 	@JoinColumn(name = "director_id")
 	private Director director;
+
+	@OneToMany(mappedBy = "movie")
+	private List<MovieCast> movieCastList;
+
+	@OneToMany(mappedBy = "movie")
+	private List<Scene> sceneList;
+
+	@OneToMany(mappedBy = "movie")
+	private List<ScenePlace> scenePlaceList;
 }
