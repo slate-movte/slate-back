@@ -69,7 +69,7 @@ jobs:
         id: execute
         run: |
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}} && docker rmi ${{env.DOCKER_IMAGE}}:latest
-            docker run -d -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} ${{env.DOCKER_IMAGE}}:latest
+            docker run -di -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} --network back-dev ${{env.DOCKER_IMAGE}}:latest 
           sh healthcheck.sh
       - name: send result when success
         if: ${{success() && steps.execute.conclusion=='success'}}
