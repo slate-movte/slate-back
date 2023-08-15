@@ -68,9 +68,9 @@ jobs:
         id: execute
         run: | # sh healthcheck.sh -> health check 용도로 차후 추가
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}} && docker rmi ${{env.DOCKER_IMAGE}}:latest
-            docker run -di -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} ${{env.DOCKER_IMAGE}}:latest  --network back-dev
+            docker run -d -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} ${{env.DOCKER_IMAGE}}:latest
       - name: send result when success
-        if: ${{success() && steps.execute.conclusion=='succ가ss'}}
+        if: ${{success() && steps.execute.conclusion=='success'}}
         uses: ./.github/actions/discord_action
         with:
           title: "${{github.repository}}  배포결과"
