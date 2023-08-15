@@ -30,9 +30,9 @@ jobs:
           ./gradlew clean build
       - name: Set Up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
       - name: Cache Docker Layer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache # cache의 대상을 정한다.
           key: ${{runner.os}}-buildx-${{env.version}}
@@ -40,13 +40,13 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Login to Github registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{secrets.CICD_REGISTRY_USERNAME}}
           password: ${{secrets.CICD_REGISTRY_TOKEN}}
       - name: build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           builder: ${{steps.buildx.outputs.name}}
@@ -69,7 +69,7 @@ jobs:
         id: execute
         run: |
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}} && docker rmi ${{env.DOCKER_IMAGE}}:latest
-            docker run -di -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} --network back-dev ${{env.DOCKER_IMAGE}}:latest 
+            docker run -di -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} ${{env.DOCKER_IMAGE}}:latest  --network back-dev
           sh healthcheck.sh
       - name: send result when success
         if: ${{success() && steps.execute.conclusion=='success'}}
