@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["main", "develop"]
+    branches: ["main", "develop", "feature/12-test-cd"]
 
   workflow_dispatch:
 
