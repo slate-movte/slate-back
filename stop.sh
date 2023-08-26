@@ -1,2 +1,4 @@
 cd docker_compose_local
-docker compose --env-file ../config/.env.yml down
+
+location="../config"
+docker compose --env-file ../config/.env.properties down

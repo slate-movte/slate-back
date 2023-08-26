@@ -40,9 +40,15 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.register('copy', Copy) {
+tasks.register('copyEnv', Copy) {
     from 'config/.'
     into('src/main/resources')
+}
+
+processResources.dependsOn('copyEnv')
+
+tasks.named("build") {
+   dependsOn("copyEnv")
 }
 
 tasks.named('test') {
