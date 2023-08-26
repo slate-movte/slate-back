@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## env
+.env
+docker_compose_local/db
+docker_compose_local/redis

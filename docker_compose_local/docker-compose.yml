@@ -1,0 +1,55 @@
+version: '3'
+
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-local
+    ports:
+      - "${MYSQL_PORT}:3306" # HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      TZ: Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          cpus: "${MYSQL_CPU_LIMIT}"
+          memory: "${MYSQL_MEMORY_LIMIT}"
+        reservations:
+          cpus: "${MYSQL_CPU_RESERVATION}"
+          memory: "${MYSQL_MEMORY_RESERVATION}"
+    networks:
+      - back-local
+  redis:
+    image: redis
+    container_name: redis-local
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis/data:/var/lib/redis
+      - ./redis/config:/usr/local/conf/redis.conf
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    restart: always
+    command: redis-server /usr/local/conf/redis.conf
+    deploy:
+      resources:
+        limits:
+          cpus: "${REDIS_CPU_LIMIT}"
+          memory: "${REDIS_MEMORY_LIMIT}"
+        reservations:
+          cpus: "${REDIS_CPU_RESERVATION}"
+          memory: "${REDIS_MEMORY_RESERVATION}"
+    networks:
+      - back-local
+
+networks:
+  back-local:
