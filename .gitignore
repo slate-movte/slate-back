@@ -16,7 +16,6 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-application-local.yml
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -35,3 +34,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## env
+.env*
+docker_compose_local/db
+docker_compose_local/redis
