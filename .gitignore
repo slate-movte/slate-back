@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ## env
-.env.yml
+**/.env.yml
+
 docker_compose_local/db
 docker_compose_local/redis
