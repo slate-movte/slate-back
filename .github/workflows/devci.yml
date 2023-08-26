@@ -34,4 +34,5 @@ jobs:
 
       - name: Project testing
         run: |
+          SPRING_PROFILES_ACTIVE=test \
           ./gradlew clean build

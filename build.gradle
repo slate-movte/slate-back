@@ -42,6 +42,7 @@ dependencies {
 
 tasks.register('copyEnv', Copy) {
     from 'config/.'
+    exclude '.gitkeep'
     into('src/main/resources')
 }
 
