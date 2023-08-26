@@ -3,7 +3,7 @@ spring:
     default: local
   config:
     import:
-      - .env.properties
+      - optional:.env.properties
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
