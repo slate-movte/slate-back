@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["main", "develop", "feature/12-test-cd"]
+    branches: ["main", "develop", "feature/22"]
 
   workflow_dispatch:
 
@@ -19,6 +19,16 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
+      - uses: oNaiPs/secrets-to-env-action@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          include: DEV*
+      - run: echo DEV_VARIABLES=$DEV_SECRET" >> "$GITHUB_ENV"
+
+      - name: save into .env.properties
+          - run : | 
+                jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$DEB_VARIALBES" > ./config/env.properties
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
