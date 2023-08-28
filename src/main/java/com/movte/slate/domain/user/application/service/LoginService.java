@@ -1,5 +1,6 @@
 package com.movte.slate.domain.user.application.service;
 
+import com.movte.slate.domain.user.domain.User;
 import javax.transaction.Transactional;
 
 import com.movte.slate.domain.user.domain.OAuthType;
@@ -104,7 +105,38 @@ public class LoginService {
     public UserDto signUp(OIDCDecodePayloadDTO payload, OAuthType oauthType) {
 
         // sub로 판단하려면.. 구글이랑 겹치지는 않나??
-        // => oauth_id
+        // => oauth_id, o_auth_type 같이 조회!
+
+        // 회원인지 여부 판단
+        User signedUser = userRepository.findByOauthIdAndOauthTypeandIsDeleted(payload.getSub(), oauthType, false);
+        Long id = 0L;
+
+        // 회원 아니면 회원가입 처리
+        if(signedUser == null) {
+            log.info("SignUp NO");
+            User user = User.builder()
+                    .oauthId(payload.getSub())
+                    .oauthType(oauthType)
+                    .email(payload.getEmail())
+                    .nickname(payload.getNickname())
+                    .build();
+            log.info(user.toString());
+            Long userID = userRepository.save(user).getId();
+
+            // 프로필 이미지를 우리 서버에 저장해줘야 함.
+            UploadResponse dto = fileService.saveImageUrl(payload.getProfile_img_url(), userID);
+            user.updateImgUrl(dto.getImageURL(), dto.getThumnailURL());
+
+            return UserDTO.builder().user_id(user.getId()).build();
+        }
+
+        // 로그인 여부 true로 전환
+        log.info("SignUp YES");
+        signedUser.updateIsLogined(true);
+        userRepository.save(signedUser);
+        log.info(signedUser.toString());
+
+
     }
 
 
