@@ -59,6 +59,14 @@ spring:
     activate:
       on-profile: dev
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DEV_MYSQL_HOST}:${DEV_MYSQL_PORT}/${DEV_MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ${DEV_MYSQL_ROOT_PASSWORD}
+  redis:
+    host: ${DEV_REDIS_HOST}
+    port: ${DEV_REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: update
