@@ -3,6 +3,7 @@ package com.movte.slate.domain.user.api;
 import com.movte.slate.domain.user.application.service.KakaoService;
 import com.movte.slate.domain.user.application.service.LoginService;
 import com.movte.slate.domain.user.application.usecase.LoginUsecase;
+import com.movte.slate.domain.user.dto.TokenReponseDTO;
 import com.movte.slate.domain.user.dto.TokenResponseDTO;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +30,7 @@ public class LoginApi {
     private String TOKEN_REDIRECT_URL;
 
     @ResponseBody
-    @GetMapping("/login/kakao")
+    @GetMapping("/oidc/kakao")
     public void kakaoLogin(@RequestParam String code, RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
         TokenReponseDTO token = loginService.KakaoLogin(code);
         setTokenRedirectAttributes(redirectAttributes, token);
@@ -45,9 +46,9 @@ public class LoginApi {
         return TOKEN_REDIRECT_URL + "/login/kakao/?access_token" + tokenResponseDto.getAccess_token() + "&refesh_token=" + tokenResponseDto.getRefresh_token();
     }
 
-    @Cacheable
+    @Cacheable(cacheNames = "KakaoOIDC", cacheManager = "oidcCachemanageer")
     @GetMapping("/oidc/kakao/openkeys")
     public String getOpenKeys() {
-        return kakaoService.getOpenKeysFromKakaoOIDC():
+        return kakaoService.getOpenKeysFromKakaoOIDC();
     }
 }

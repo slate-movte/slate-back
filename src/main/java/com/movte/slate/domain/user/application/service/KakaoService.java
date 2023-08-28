@@ -1,19 +1,25 @@
 package com.movte.slate.domain.user.application.service;
 
-import aj.org.objectweb.asm.TypeReference;
-import antlr.StringUtils;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.gson.JsonElement;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonParser;
+import com.movte.slate.domain.user.dto.OIDCPublicKeyDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 
 @Service
 @Log4j2
@@ -50,10 +56,13 @@ public class KakaoService {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content_Type", "application/x-ww-form-urlencoded;charset=utf-8");
 
+            // POST 요청을 위해서 doOutput 값을 true로 설정
+            conn.setDoOutput(true);
+
             // POST 요청에 넣을 파라미터를 붙여서 스트림으로 전송
             try (BufferedWriter bw = new BufferedWriter((new OutputStreamWriter(conn.getOutputStream())))) {
                 String sb = "grant_type=authorization_code" +
-                        "&client_id" + REST_API_KEY +
+                        "&client_id=" + REST_API_KEY +
                         "&redirect_uri=" + REDIRECT_URL +
                         "&code=" + code;
                 bw.write(sb);
@@ -142,7 +151,7 @@ public class KakaoService {
             log.info("keys: " + keys);
 
             // 공개키 목록을 리스트로 담아서 변환
-            if(StringUtils.isNoneBlanck(keys)) {
+            if(StringUtils.isNoneBlank(keys)) {
                 try {
                     OIDCPublicKeys = mapper.readValue(keys, new TypeReference<List<OIDCPublicKeyDTO>>() {});
                 } catch (JsonProcessingException e) {
@@ -169,7 +178,23 @@ public class KakaoService {
         String responseData = "";
 
         try {
+            // 주어진 URL에 HTTP 연결을 열기
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
+            // http 요청에 필요한 필요한 타입 정의 실시
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestMethod("GET");
+
+            // http 요청 실시
+            conn.connect();
+
+            responseData = getRequestResult(conn);
+            log.info("responseData: " + responseData);
+
+            // http 요청 응답 코드 확인 실시
+            int responseCode = conn.getResponseCode();
+            log.info("responseCode: " + responseCode);
         } catch (IOException e) {
             e.printStackTrace();
         }
