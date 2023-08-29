@@ -38,6 +38,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // redis
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.1.3'
+    // jwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+
 }
 
 tasks.register('copyEnv', Copy) {
@@ -49,7 +55,7 @@ tasks.register('copyEnv', Copy) {
 processResources.dependsOn('copyEnv')
 
 tasks.named("build") {
-   dependsOn("copyEnv")
+    dependsOn("copyEnv")
 }
 
 tasks.named('test') {
