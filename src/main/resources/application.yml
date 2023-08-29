@@ -1,6 +1,15 @@
 spring:
   profiles:
     default: local
+  config:
+    import:
+      - optional:.env.properties
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
 
 ---
 spring:
@@ -30,20 +39,40 @@ spring:
 spring:
   config:
     activate:
+      on-profile: local
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+  sql:
+    init:
+      mode: never
+---
+spring:
+  config:
+    activate:
       on-profile: dev
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DEV_MYSQL_HOST}:${DEV_MYSQL_PORT}/${DEV_MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ${DEV_MYSQL_ROOT_PASSWORD}
+  redis:
+    host: ${DEV_REDIS_HOST}
+    port: ${DEV_REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-
-  datasource:
-    url: jdbc:h2:mem:~/testdb;NON_KEYWORDS=USER
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
 
   sql:
     init:

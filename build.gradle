@@ -40,6 +40,18 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
+tasks.register('copyEnv', Copy) {
+    from 'config/.'
+    exclude '.gitkeep'
+    into('src/main/resources')
+}
+
+processResources.dependsOn('copyEnv')
+
+tasks.named("build") {
+   dependsOn("copyEnv")
+}
+
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
