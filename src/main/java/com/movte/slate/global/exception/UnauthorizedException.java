@@ -8,7 +8,7 @@ public class UnauthorizedException extends HttpBusinessException {
     private final UnauthorizedExceptionCode code;
 
     @Override
-    public Long getCode() {
+    public String getCode() {
         return code.getCode();
     }
 

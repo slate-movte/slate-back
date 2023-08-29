@@ -8,7 +8,7 @@ public class NotFoundException extends HttpBusinessException {
     private final NotFoundExceptionCode code;
 
     @Override
-    public Long getCode() {
+    public String getCode() {
         return code.getCode();
     }
 

@@ -8,7 +8,7 @@ public class BadRequestException extends HttpBusinessException {
     private final BadRequestExceptionCode code;
 
     @Override
-    public Long getCode() {
+    public String getCode() {
         return code.getCode();
     }
 
