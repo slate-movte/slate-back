@@ -9,5 +9,5 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class FailResponseFormat {
     private final String message;
-    private final Long code;
+    private final String code;
 }

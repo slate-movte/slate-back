@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum BadRequestExceptionCode {
     ;
-    private final Long code;
+    private final String code;
     private final String descriptionMessage;
 }
