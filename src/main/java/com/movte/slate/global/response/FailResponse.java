@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class FailResponseFormat {
+public class FailResponse {
     private final String message;
     private final String code;
 }

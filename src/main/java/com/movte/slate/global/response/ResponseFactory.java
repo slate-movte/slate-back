@@ -13,8 +13,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ResponseFactory {
 
-    public static <T> ResponseEntity<SuccessResponseFormat<T>> success(T data) {
-        SuccessResponseFormat<T> successResponse = new SuccessResponseFormat<>("요청에 성공하였습니다.", data);
+    public static <T> ResponseEntity<SuccessResponse<T>> success(T data) {
+        SuccessResponse<T> successResponse = new SuccessResponse<>("요청에 성공하였습니다.", data);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
@@ -22,13 +22,13 @@ public class ResponseFactory {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(e.getStatusCode());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        FailResponseFormat failResponse = new FailResponseFormat(e.getMessage(), e.getCode());
+        FailResponse failResponse = new FailResponse(e.getMessage(), e.getCode());
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(failResponse));
     }
 
-    public static ResponseEntity<FailResponseFormat> fail(HttpBusinessException e) {
-        FailResponseFormat failResponse = new FailResponseFormat(e.getMessage(), e.getCode());
+    public static ResponseEntity<FailResponse> fail(HttpBusinessException e) {
+        FailResponse failResponse = new FailResponse(e.getMessage(), e.getCode());
         return new ResponseEntity<>(failResponse, HttpStatus.valueOf(e.getStatusCode()));
     }
 }
