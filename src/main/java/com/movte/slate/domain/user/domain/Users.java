@@ -1,27 +1,20 @@
 package com.movte.slate.domain.user.domain;
 
 
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 /*
-* @Builder 패턴을 쓰기 위한 용도 (외부에서 AllArgsConstructor를 쓰지 못하게 하기 위해서 access level은 private으로 설정)
-* */
+ * @Builder 패턴을 쓰기 위한 용도 (외부에서 AllArgsConstructor를 쓰지 못하게 하기 위해서 access level은 private으로 설정)
+ * */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
