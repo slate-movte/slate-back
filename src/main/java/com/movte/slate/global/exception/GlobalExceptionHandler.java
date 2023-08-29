@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    private final ResponseFactory responseFactory;
-
     @ExceptionHandler(HttpBusinessException.class)
     public ResponseEntity<ResponseFormat<String>> httpBusinessException(HttpBusinessException e) {
-        return responseFactory.fail(e);
+        return ResponseFactory.fail(e);
     }
 }
