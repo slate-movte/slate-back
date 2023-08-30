@@ -11,4 +11,5 @@ public class AuthApi {
     public String getAuth() {
         return "auth";
     }
+
 }
