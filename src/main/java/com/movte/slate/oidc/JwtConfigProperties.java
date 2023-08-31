@@ -14,6 +14,8 @@ public class JwtConfigProperties {
     private final String secretKey;
     private final Long accessTokenValidTimeInMinuteUnit;
     private final Long refreshTokenValidTimeInDayUnit;
+    private final Long refreshTokenValidTimeInDayUnitInRedis; // 14일
+    private String tokenRedirectUrl;
 
     public byte[] getSecretKey() {
         return secretKey.getBytes();
@@ -25,5 +27,13 @@ public class JwtConfigProperties {
 
     public Long getRefreshTokenValidTimeInMillisecondUnit() {
         return Duration.ofDays(refreshTokenValidTimeInDayUnit).toMillis();
+    }
+
+    public Long getRefreshTokenValidTimeInMillisecondUnitInRedis() {
+        return Duration.ofDays(refreshTokenValidTimeInDayUnit).toMillis();
+    }
+
+    public String getTokenRedirectUrl() {
+        return tokenRedirectUrl;
     }
 }

@@ -1,14 +1,11 @@
 package com.movte.slate.domain.user.api;
 
 import com.movte.slate.domain.user.application.service.KakaoService;
-import com.movte.slate.domain.user.application.service.LoginService;
-import com.movte.slate.domain.user.application.usecase.LoginUsecase;
-import com.movte.slate.domain.user.dto.TokenReponseDTO;
-import com.movte.slate.domain.user.dto.TokenResponseDTO;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+import com.movte.slate.domain.user.application.service.UserService;
+import com.movte.slate.domain.user.application.service.dto.UserDto;
+import com.movte.slate.domain.user.domain.OAuthProvider;
+import com.movte.slate.oidc.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,39 +13,78 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
 
+    public static final String IS_SIGN_UP = "is_sign_up";
     private static final String ACCESS_TOKEN = "access_token";
     private static final String REFRESH_TOKEN = "refresh_token";
-
-    private final LoginService loginService;
+    private final UserService userService;
     private final KakaoService kakaoService;
+    private final JwtTokenIssuer jwtTokenIssuer;
+    private final RandomKeyGenerator randomKeyGenerator;
+    private final KakaoConfigProperties kakaoConfigProperties;
 
-    @Value("${login.token-redirect-url}")
-    private String TOKEN_REDIRECT_URL;
 
+    /*
+    1. 클라이언트는 카카오 로그인 버튼을 클릭한다.
+    2. 서비스는 카카오 인증 서버로 인가 코드 발급을 요청한다.
+    3. 카카오 인증 서버는 클라이언트에게 카카오 계정 로그인을 요청한다.
+    4. 클라이언트는 카카오 계정 로그인하고, 자원에 대한 권한을 승인한다.
+    5. 카카오 인증 서버는 인가 코드를 만들어 서비스에게 준다.
+        - 미리 등록한 Redirect URL로 인가 코드를 보내준다.
+    6. 서비스는 인가코드를 통해 Access Token과 Refresh Token, 그리고 ID Token을 받는다.
+     */
     @ResponseBody
     @GetMapping("/oidc/kakao")
     public void kakaoLogin(@RequestParam String code, RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
-        TokenReponseDTO token = loginService.KakaoLogin(code);
-        setTokenRedirectAttributes(redirectAttributes, token);
+        /*
+        1. 인가 코드를 가지고 ID Token을 얻는다.
+        2. Access Token과 Refresh Token을 담은 Redirection URL을 카카오에게 전달한다.
+        3. Redirection URL로 클라이언트는 리다이렉트되고, 그 결과 Access Token과 Refresh Token을 얻는다.
+          - 회원이 아닌 유저라면 어떻게 되는가? Access Token와 Refresh Token을 발급한다.
+          - 그런 다음, 회원 여부를 URL 안에 Flag 값으로 넣어서 회원 정보를 더 받을 것인지 결정한다.
+         */
+        IdTokenDto idToken = kakaoService.getIdToken(code);
+        Optional<UserDto> user = userService.findUser(OAuthProvider.KAKAO, idToken);
+        boolean isSignOn = false;
+        long userId = 0L;
+        if (user.isEmpty()) {
+            isSignOn = true;
+            userId = userService.signup(OAuthProvider.KAKAO, idToken);
+        } else {
+            userId = user.get().getId();
+        }
+        String accessToken = jwtTokenIssuer.createAccessToken(userId);
+        String randomValue = randomKeyGenerator.generate();
+        String refreshToken = jwtTokenIssuer.createRefreshToken(randomValue);
+        TokenResponseDTO token = new TokenResponseDTO(accessToken, refreshToken);
+        setTokenRedirectAttributes(redirectAttributes, token, isSignOn);
         response.sendRedirect(makeTokenRedriectURL(token));
     }
 
-    private static void setTokenRedirectAttributes(RedirectAttributes redirectAttributes, TokenResponseDTO token){
-        redirectAttributes.addAllAttributes(ACCESS_TOKEN, token.getAccess_token());
-        redirectAttributes.addAllAttributes(REFRESH_TOKEN, token.getRefresh_token());
-    }
-
-    private String makeTokenRedriectURL(TokenReponseDTO token) {
-        return TOKEN_REDIRECT_URL + "/login/kakao/?access_token" + tokenResponseDto.getAccess_token() + "&refesh_token=" + tokenResponseDto.getRefresh_token();
-    }
-
-    @Cacheable(cacheNames = "KakaoOIDC", cacheManager = "oidcCachemanageer")
+    /* 카카오로부터 OIDC Public Key 를 가져온다.
+     Redis에 캐싱한다.*/
+    @Cacheable(cacheNames = "KakaoOIDC", cacheManager = "oidcCacheManager")
     @GetMapping("/oidc/kakao/openkeys")
     public String getOpenKeys() {
-        return kakaoService.getOpenKeysFromKakaoOIDC();
+        return kakaoService.retrieveKakaoOpenKeysFromKakao();
+    }
+
+    private void setTokenRedirectAttributes(RedirectAttributes redirectAttributes, TokenResponseDTO token,
+                                            boolean isSignUp) {
+        redirectAttributes.addAttribute(ACCESS_TOKEN, token.getAccess_token());
+        redirectAttributes.addAttribute(REFRESH_TOKEN, token.getRefresh_token());
+        redirectAttributes.addAttribute(IS_SIGN_UP, isSignUp);
+    }
+
+    private String makeTokenRedriectURL(TokenResponseDTO token) {
+        String tokenUrl = kakaoConfigProperties.getTokenUrl();
+        return tokenUrl + "/login/kakao/?access_token" + token.getAccess_token() + "&refesh_token=" + token.getRefresh_token();
     }
 }

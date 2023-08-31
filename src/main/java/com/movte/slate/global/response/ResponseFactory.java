@@ -31,4 +31,9 @@ public class ResponseFactory {
         FailResponse failResponse = new FailResponse(e.getMessage(), e.getCode());
         return new ResponseEntity<>(failResponse, HttpStatus.valueOf(e.getStatusCode()));
     }
+
+    public static ResponseEntity<FailResponse> failWithServerError() {
+        FailResponse failResponse = new FailResponse("", "000");
+        return new ResponseEntity<>(failResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

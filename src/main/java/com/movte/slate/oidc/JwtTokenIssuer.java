@@ -15,7 +15,7 @@ import static com.movte.slate.oidc.JwtToken.REFRESH;
 @RequiredArgsConstructor
 public class JwtTokenIssuer {
 
-    private JwtConfigProperties jwtConfigProperties;
+    private final JwtConfigProperties jwtConfigProperties;
 
     public String createAccessToken(Long id) {
         Claims claims = Jwts.claims();
@@ -23,9 +23,9 @@ public class JwtTokenIssuer {
         return createJwt(claims, ACCESS, jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
-    public String createRefreshToken(String hashedRandomValue) {
+    public String createRefreshToken(String randomValue) {
         Claims claims = Jwts.claims();
-        claims.put("id", hashedRandomValue);
+        claims.put("id", randomValue);
         return createJwt(claims, REFRESH, jwtConfigProperties.getRefreshTokenValidTimeInMillisecondUnit());
     }
 
