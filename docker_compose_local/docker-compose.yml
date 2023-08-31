@@ -2,9 +2,8 @@ version: '3'
 
 
 services:
-
   mysql:
-    image: mysql:8.0
+    image: mysql
     container_name: mysql-local
     ports:
       - "${MYSQL_PORT}:3306" # HOST:CONTAINER
@@ -16,7 +15,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./db/mysql/data:/var/lib/mysql
+      - mysql:/var/lib/mysql
     deploy:
       resources:
         limits:
@@ -53,3 +52,7 @@ services:
 
 networks:
   back-local:
+
+volumes:
+  mysql:
+    external: true

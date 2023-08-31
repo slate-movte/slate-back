@@ -38,7 +38,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.1.0'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -51,6 +51,19 @@ dependencies {
     // jwt
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
+
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
+    implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+
 }
 
 tasks.register('copyEnv', Copy) {
@@ -62,7 +75,7 @@ tasks.register('copyEnv', Copy) {
 processResources.dependsOn('copyEnv')
 
 tasks.named("build") {
-   dependsOn("copyEnv")
+    dependsOn("copyEnv")
 }
 
 tasks.named('test') {
