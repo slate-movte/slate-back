@@ -27,6 +27,7 @@ public class LoginApi {
     private final UserService userService;
     private final KakaoService kakaoService;
     private final JwtTokenIssuer jwtTokenIssuer;
+    private final JwtConfigProperties jwtConfigProperties;
     private final RandomKeyGenerator randomKeyGenerator;
     private final KakaoConfigProperties kakaoConfigProperties;
 
@@ -76,7 +77,7 @@ public class LoginApi {
     }
 
     private String makeTokenRedriectURL(TokenResponseDTO token) {
-        String tokenUrl = kakaoConfigProperties.getTokenUrl();
+        String tokenUrl = jwtConfigProperties.getTokenRedirectUrl();
         return tokenUrl + "/login/kakao/?access_token=" + token.getAccess_token() + "&refesh_token=" + token.getRefresh_token();
     }
 }
