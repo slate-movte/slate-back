@@ -1,5 +1,6 @@
 package com.movte.slate.oidc;
 
+import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Token에서 UserId 꺼내기
         Long userId = jwtToken.getUserId();
-
+        UserState userState = jwtToken.getUserState();
+        // 아직 회원 추가 정보가 입력되지 않은 경우,
+        if (UserState.PENDING.equals(userState)) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
+        }
 
         mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(path, jwtToken);
         mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(path, jwtToken);

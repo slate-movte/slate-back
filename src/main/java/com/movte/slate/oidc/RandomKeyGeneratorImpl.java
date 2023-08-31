@@ -13,7 +13,7 @@ public class RandomKeyGeneratorImpl implements RandomKeyGenerator {
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(length);
+            int randomIndex = random.nextInt(characters.length());
             char randomChar = characters.charAt(randomIndex);
             sb.append(randomChar);
         }

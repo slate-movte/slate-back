@@ -13,6 +13,7 @@ public enum UnauthorizedExceptionCode {
     LOGOUT_TOKEN("005", "로그아웃 처리된 토큰입니다."),
     NOT_REFRESH_TOKEN("006", "리프레쉬 토큰이 아닙니다."),
     NOT_ACCESS_TOKEN("007", "액세스 토큰이 아닙니다."),
+    NOT_ENOUGH_INFO("008", "회원 추가 정보가 입력되지 않았습니다."),
     ;
     private final String code;
     private final String descriptionMessage;

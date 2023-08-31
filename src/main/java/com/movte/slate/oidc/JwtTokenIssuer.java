@@ -1,5 +1,6 @@
 package com.movte.slate.oidc;
 
+import com.movte.slate.domain.user.application.service.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,9 +18,11 @@ public class JwtTokenIssuer {
 
     private final JwtConfigProperties jwtConfigProperties;
 
-    public String createAccessToken(Long id) {
+    public String createAccessToken(UserDto userDto) {
         Claims claims = Jwts.claims();
-        claims.put("id", id);
+        claims.put("id", userDto.getId());
+        String userState = userDto.getUserState().name();
+        claims.put("userState", userState);
         return createJwt(claims, ACCESS, jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 

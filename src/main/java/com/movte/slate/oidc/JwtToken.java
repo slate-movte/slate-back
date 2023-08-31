@@ -1,5 +1,6 @@
 package com.movte.slate.oidc;
 
+import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import io.jsonwebtoken.Claims;
@@ -42,5 +43,9 @@ public class JwtToken {
 
     public Long getUserId() throws ExpiredJwtException {
         return Long.parseLong(getValue("userId").orElseThrow(() -> new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN)));
+    }
+
+    public UserState getUserState() {
+        return UserState.valueOf(getValue("userState").orElseThrow(() -> new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN)));
     }
 }

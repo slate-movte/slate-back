@@ -3,7 +3,7 @@ package com.movte.slate.domain.user.api;
 import com.movte.slate.domain.user.application.service.KakaoService;
 import com.movte.slate.domain.user.application.service.UserService;
 import com.movte.slate.domain.user.application.service.dto.UserDto;
-import com.movte.slate.domain.user.domain.OAuthProvider;
+import com.movte.slate.domain.user.domain.OauthProvider;
 import com.movte.slate.oidc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -48,23 +48,17 @@ public class LoginApi {
         2. Access Token과 Refresh Token을 담은 Redirection URL을 카카오에게 전달한다.
         3. Redirection URL로 클라이언트는 리다이렉트되고, 그 결과 Access Token과 Refresh Token을 얻는다.
           - 회원이 아닌 유저라면 어떻게 되는가? Access Token와 Refresh Token을 발급한다.
-          - 그런 다음, 회원 여부를 URL 안에 Flag 값으로 넣어서 회원 정보를 더 받을 것인지 결정한다.
+          - Access Token Body 안에 회원 상태 정보가 담긴다.
          */
         IdTokenDto idToken = kakaoService.getIdToken(code);
-        Optional<UserDto> user = userService.findUser(OAuthProvider.KAKAO, idToken);
-        boolean isSignOn = false;
-        long userId = 0L;
-        if (user.isEmpty()) {
-            isSignOn = true;
-            userId = userService.signup(OAuthProvider.KAKAO, idToken);
-        } else {
-            userId = user.get().getId();
-        }
-        String accessToken = jwtTokenIssuer.createAccessToken(userId);
+        String oauthId = idToken.getOauthId();
+        Optional<UserDto> user = userService.findUser(oauthId, OauthProvider.KAKAO);
+        UserDto userDto = user.orElseGet(() -> userService.signup(OauthProvider.KAKAO, idToken));
+        String accessToken = jwtTokenIssuer.createAccessToken(userDto);
         String randomValue = randomKeyGenerator.generate();
         String refreshToken = jwtTokenIssuer.createRefreshToken(randomValue);
         TokenResponseDTO token = new TokenResponseDTO(accessToken, refreshToken);
-        setTokenRedirectAttributes(redirectAttributes, token, isSignOn);
+        setTokenRedirectAttributes(redirectAttributes, token);
         response.sendRedirect(makeTokenRedriectURL(token));
     }
 
@@ -76,11 +70,9 @@ public class LoginApi {
         return kakaoService.retrieveKakaoOpenKeysFromKakao();
     }
 
-    private void setTokenRedirectAttributes(RedirectAttributes redirectAttributes, TokenResponseDTO token,
-                                            boolean isSignUp) {
+    private void setTokenRedirectAttributes(RedirectAttributes redirectAttributes, TokenResponseDTO token) {
         redirectAttributes.addAttribute(ACCESS_TOKEN, token.getAccess_token());
         redirectAttributes.addAttribute(REFRESH_TOKEN, token.getRefresh_token());
-        redirectAttributes.addAttribute(IS_SIGN_UP, isSignUp);
     }
 
     private String makeTokenRedriectURL(TokenResponseDTO token) {
