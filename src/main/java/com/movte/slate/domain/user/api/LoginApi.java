@@ -7,14 +7,13 @@ import com.movte.slate.domain.user.domain.OauthProvider;
 import com.movte.slate.oidc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -80,5 +79,23 @@ public class LoginApi {
     private String makeTokenRedriectURL(TokenResponseDTO token) {
         String tokenUrl = jwtConfigProperties.getTokenRedirectUrl();
         return tokenUrl + "?access_token=" + token.getAccess_token() + "&refresh_token=" + token.getRefresh_token();
+    }
+
+
+    /*
+    refresh toekn 재발급용 API
+     */
+    @ResponseBody
+    @GetMapping("/user/reissue")
+    public String refreshAccessToken(@RequestBody Map<String, Object> refreshToken, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        /*
+        1. refresh token이 만료되었는지 확인한다.
+        2. refresh token이 만료되었으면 refresh token이 만료되었다는 정보를 반환한다.
+        3. refresh token이 만료되지 않았으면 access token을 재발급한다.
+        4. access token을 발급하고 반환한다.
+         */
+        System.out.println(request.getHeader("accessToken"));
+        System.out.println(refreshToken.get("refreshToken"));
+        return userService.reissueRefreshToken(request.getHeader("accessToken"),(String) refreshToken.get("refreshToken"));
     }
 }

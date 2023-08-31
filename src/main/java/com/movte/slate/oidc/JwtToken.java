@@ -42,7 +42,7 @@ public class JwtToken {
     }
 
     public Long getUserId() throws ExpiredJwtException {
-        return Long.parseLong(getValue("userId").orElseThrow(() -> new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN)));
+        return Long.parseLong(getValue("id").orElseThrow(() -> new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN)));
     }
 
     public UserState getUserState() {

@@ -29,19 +29,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RedisTemplate<String, String> redisTemplate;
     private final TokenStringExtractor tokenStringExtractor;
     private final JwtTokenFactory jwtTokenFactory;
-    private final JwtConfigProperties jwtConfigProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath(); // 프로젝트 아래 경로만 가져옴
-        if (path != null && path.startsWith("/oidc/kakao") ) { // 카카오 OIDC 리다이렉트 URI는 필터 적용 제외
+        if ( (path != null && path.startsWith("/oidc/kakao")) || (path != null && path.startsWith("/user/reissue")) ) { // 카카오 OIDC 리다이렉트 URI는 필터 적용 제외
             filterChain.doFilter(request, response);
             return;
         }
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        byte[] secretKey = jwtConfigProperties.getSecretKey();
         String tokenString = tokenStringExtractor.extractTokenString(authorizationHeader);
-        JwtToken jwtToken = jwtTokenFactory.create(tokenString, secretKey);
+        JwtToken jwtToken = jwtTokenFactory.create(tokenString);
 
         if (jwtToken.isExpired(new Date())) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
