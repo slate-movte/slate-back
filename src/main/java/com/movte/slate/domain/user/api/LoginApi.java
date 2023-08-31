@@ -78,6 +78,6 @@ public class LoginApi {
 
     private String makeTokenRedriectURL(TokenResponseDTO token) {
         String tokenUrl = jwtConfigProperties.getTokenRedirectUrl();
-        return tokenUrl + "/login/kakao/?access_token=" + token.getAccess_token() + "&refesh_token=" + token.getRefresh_token();
+        return tokenUrl + "?access_token=" + token.getAccess_token() + "&refresh_token=" + token.getRefresh_token();
     }
 }
