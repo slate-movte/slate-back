@@ -58,6 +58,7 @@ public class LoginApi {
         String accessToken = jwtTokenIssuer.createAccessToken(userDto);
         String randomValue = randomKeyGenerator.generate();
         String refreshToken = jwtTokenIssuer.createRefreshToken(randomValue);
+        userService.saveRefreshToken(userDto.getId(), refreshToken);
         TokenResponseDTO token = new TokenResponseDTO(accessToken, refreshToken);
         setTokenRedirectAttributes(redirectAttributes, token);
         response.sendRedirect(makeTokenRedriectURL(token));

@@ -41,4 +41,11 @@ public class User {
     private LocalDateTime updatedAt;
     @Enumerated(value = EnumType.STRING)
     private UserState userState;
+
+    // refreshtoken (DB 부하 위험)
+    private String refreshToken;
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

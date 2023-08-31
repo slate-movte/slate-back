@@ -23,4 +23,11 @@ public class UserDto {
                 .userState(user.getUserState())
                 .build();
     }
+
+    public User toEntity() {
+        return User.builder()
+                .id(id)
+                .userState(userState)
+                .build();
+    }
 }

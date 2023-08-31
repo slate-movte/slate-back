@@ -5,6 +5,8 @@ import com.movte.slate.domain.user.domain.OauthProvider;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.domain.user.repository.UserRepository;
+import com.movte.slate.global.exception.ServerErrorException;
+import com.movte.slate.global.exception.ServerErrorExceptionCode;
 import com.movte.slate.oidc.IdTokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -43,5 +45,11 @@ public class UserService {
 
     public boolean isSignOn(OauthProvider oauthProvider, String oauthId) {
         return userRepository.existsByOauthIdAndOauthProvider(oauthId, oauthProvider);
+    }
+
+    public void saveRefreshToken(long userId, String refreshToken) {
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.CANNOT_FIND_USER));
+        user.setRefreshToken(refreshToken);
     }
 }

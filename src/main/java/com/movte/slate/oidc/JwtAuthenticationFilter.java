@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath(); // 프로젝트 아래 경로만 가져옴
-        if (path != null && path.startsWith("/oidc/kakao")) { // 카카오 OIDC 리다이렉트 URI는 필터 적용 제외
+        if (path != null && path.startsWith("/oidc/kakao") ) { // 카카오 OIDC 리다이렉트 URI는 필터 적용 제외
             filterChain.doFilter(request, response);
             return;
         }
