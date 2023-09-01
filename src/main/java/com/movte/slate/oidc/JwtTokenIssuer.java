@@ -26,9 +26,9 @@ public class JwtTokenIssuer {
         return createJwt(claims, ACCESS, jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
-    public String createRefreshToken(String randomValue) {
+    public String createRefreshToken(UserDto userDto) {
         Claims claims = Jwts.claims();
-        claims.put("id", randomValue);
+        claims.put("id", userDto.getId());
         return createJwt(claims, REFRESH, jwtConfigProperties.getRefreshTokenValidTimeInMillisecondUnit());
     }
 

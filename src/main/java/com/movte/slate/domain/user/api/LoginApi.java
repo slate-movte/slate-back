@@ -27,7 +27,6 @@ public class LoginApi {
     private final KakaoService kakaoService;
     private final JwtTokenIssuer jwtTokenIssuer;
     private final JwtConfigProperties jwtConfigProperties;
-    private final RandomKeyGenerator randomKeyGenerator;
     private final KakaoConfigProperties kakaoConfigProperties;
 
 
@@ -55,8 +54,7 @@ public class LoginApi {
         Optional<UserDto> user = userService.findUser(oauthId, OauthProvider.KAKAO);
         UserDto userDto = user.orElseGet(() -> userService.signup(OauthProvider.KAKAO, idToken));
         String accessToken = jwtTokenIssuer.createAccessToken(userDto);
-        String randomValue = randomKeyGenerator.generate();
-        String refreshToken = jwtTokenIssuer.createRefreshToken(randomValue);
+        String refreshToken = jwtTokenIssuer.createRefreshToken(userDto);
         userService.saveRefreshToken(userDto.getId(), refreshToken);
         TokenResponseDTO token = new TokenResponseDTO(accessToken, refreshToken);
         setTokenRedirectAttributes(redirectAttributes, token);
@@ -96,6 +94,6 @@ public class LoginApi {
          */
         System.out.println(request.getHeader("accessToken"));
         System.out.println(refreshToken.get("refreshToken"));
-        return userService.reissueRefreshToken(request.getHeader("accessToken"),(String) refreshToken.get("refreshToken"));
+        return userService.refreshAccessToken(request.getHeader("accessToken"),(String) refreshToken.get("refreshToken"));
     }
 }

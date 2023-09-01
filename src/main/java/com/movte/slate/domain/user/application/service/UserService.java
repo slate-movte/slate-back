@@ -10,6 +10,7 @@ import com.movte.slate.oidc.IdTokenDto;
 import com.movte.slate.oidc.JwtToken;
 import com.movte.slate.oidc.JwtTokenFactory;
 import com.movte.slate.oidc.JwtTokenIssuer;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -58,19 +59,43 @@ public class UserService {
         user.setRefreshToken(refreshToken);
     }
 
-    public String reissueRefreshToken(String accessToken, String refreshToken) {
-        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
-        JwtToken refreshJwt = jwtTokenFactory.create(refreshToken);
-        Long userId = accessJwt.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NO_REFRESH_TOKEN));
-        String refreshTokenInDb = user.getRefreshToken();
-        if(refreshTokenInDb==null) throw new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN);
-        if(!refreshTokenInDb.equals(refreshToken))
-            throw new BadRequestException(BadRequestExceptionCode.REFRESH_TOKEN_NOT_EQUAL);
-        if(refreshJwt.isExpired(new Date()))
-            throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
-
-        // access token 재발급
-        return jwtTokenIssuer.createAccessToken(UserDto.of(user));
+//    public String refreshAccessToken(String accessToken, String refreshToken) {
+//        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
+//        JwtToken refreshJwt = jwtTokenFactory.create(refreshToken);
+//        Long userId = accessJwt.getUserId();
+//        User user = userRepository.findById(userId).orElseThrow(()->new BadRequestException(BadRequestExceptionCode.NO_REFRESH_TOKEN));
+//        String refreshTokenInDb = user.getRefreshToken();
+//        if(refreshTokenInDb==null) throw new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN);
+//        if(!refreshTokenInDb.equals(refreshToken))
+//            throw new BadRequestException(BadRequestExceptionCode.REFRESH_TOKEN_NOT_EQUAL);
+//        if(refreshJwt.isExpired(new Date()))
+//            throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
+//
+//        // access token 재발급
+//        return jwtTokenIssuer.createAccessToken(UserDto.of(user));
+//    }
+    public String refreshAccessToken(String accessToken, String refreshToken) {
+        try {
+            jwtTokenFactory.create(accessToken);
+        } catch (ExpiredJwtException expiredAccessTokenException){
+            // access token이 만료 된경우
+            try {
+                JwtToken refreshJwt = jwtTokenFactory.create(refreshToken);
+                Long userId = refreshJwt.getUserId();
+                User user = userRepository.findById(userId).orElseThrow(
+                        () -> new BadRequestException(BadRequestExceptionCode.NO_REFRESH_TOKEN));
+                String refreshTokenInDb = user.getRefreshToken();
+                if (refreshTokenInDb == null)
+                    throw new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN);
+                if (!refreshTokenInDb.equals(refreshToken))
+                    throw new BadRequestException(BadRequestExceptionCode.REFRESH_TOKEN_NOT_EQUAL);
+                // access token 재발급
+                return jwtTokenIssuer.createAccessToken(UserDto.of(user));
+            } catch (ExpiredJwtException expiredRefreshTokenException){
+                // refresh token이 만료 된경우
+                throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
+            }
+        }
+        return accessToken;
     }
 }
