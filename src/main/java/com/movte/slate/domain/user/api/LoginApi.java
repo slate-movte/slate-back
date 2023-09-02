@@ -32,6 +32,7 @@ public class LoginApi {
     private final JwtTokenIssuer jwtTokenIssuer;
     private final JwtConfigProperties jwtConfigProperties;
     private final KakaoConfigProperties kakaoConfigProperties;
+    private final TokenStringExtractor tokenStringExtractor;
 
 
     /*
@@ -118,4 +119,14 @@ public class LoginApi {
 
         return ResponseFactory.success(answer);
     }
+
+    @ResponseBody
+    @GetMapping("/user/signup")
+    public ResponseEntity<SuccessResponse<Map<String, Object>>> signup(@RequestBody Map<String, Object> requestbody, HttpServletRequest request, HttpServletResponse response){
+        Map<String, Object> answer = new HashMap<>();
+        UserDto userDto = userService.signupUser(tokenStringExtractor.extractTokenString(request.getHeader("Authorization")) ,(String) requestbody.get("nickname"),(String) requestbody.get("profileImageUrl"));
+        answer.put("id",userDto.getId());
+        return ResponseFactory.success(answer);
+    }
+
 }

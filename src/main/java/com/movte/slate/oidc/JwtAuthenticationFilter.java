@@ -54,6 +54,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Token에서 UserId 꺼내기
         Long userId = jwtToken.getUserId();
         UserState userState = jwtToken.getUserState();
+
+        if ( path != null && path.startsWith("/user/signup")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 아직 회원 추가 정보가 입력되지 않은 경우,
         if (UserState.PENDING.equals(userState)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);

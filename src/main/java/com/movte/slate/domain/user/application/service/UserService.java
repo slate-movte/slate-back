@@ -115,4 +115,18 @@ public class UserService {
         user = userRepository.save(user); // user 저장
         return UserDto.of(user);
     }
+
+    public UserDto signupUser(String accessToken, String nickname, String profile_image_url) {
+        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
+        Long userId = accessJwt.getUserId();
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.CANNOT_FIND_USER));
+        user.setNickname(nickname);
+        user.setProfileImageUrl(profile_image_url);
+        user.setUserSate(UserState.APPROVED);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user = userRepository.save(user);
+        return UserDto.of(user);
+    }
 }
