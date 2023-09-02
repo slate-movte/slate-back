@@ -4,9 +4,13 @@ import com.movte.slate.domain.user.application.service.KakaoService;
 import com.movte.slate.domain.user.application.service.UserService;
 import com.movte.slate.domain.user.application.service.dto.UserDto;
 import com.movte.slate.domain.user.domain.OauthProvider;
+import com.movte.slate.global.response.ResponseFactory;
+import com.movte.slate.global.response.SuccessResponse;
 import com.movte.slate.oidc.*;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -85,15 +89,33 @@ public class LoginApi {
      */
     @ResponseBody
     @GetMapping("/user/reissue")
-    public String refreshAccessToken(@RequestBody Map<String, Object> refreshToken, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public String refreshAccessToken(@RequestBody Map<String, Object> refreshToken, HttpServletRequest request, HttpServletResponse response){
         /*
         1. refresh token이 만료되었는지 확인한다.
         2. refresh token이 만료되었으면 refresh token이 만료되었다는 정보를 반환한다.
         3. refresh token이 만료되지 않았으면 access token을 재발급한다.
         4. access token을 발급하고 반환한다.
          */
-        System.out.println(request.getHeader("accessToken"));
-        System.out.println(refreshToken.get("refreshToken"));
         return userService.refreshAccessToken(request.getHeader("accessToken"),(String) refreshToken.get("refreshToken"));
+    }
+
+    /*
+    유저의 상태가 pending일때 부족한 정보들을 받는 로직
+    프론트 측 화면으로 생각해보면 회원가입을 수행하는 과정에서 정보를 다 입력하지 않고 나간 경우
+     */
+    @ResponseBody
+    @GetMapping("/user/pending")
+    public ResponseEntity<SuccessResponse<Map<String, Object>>> setPendingUserInformation(@RequestBody Map<String, Object> responsebody,HttpServletRequest request, HttpServletResponse response){
+        /*
+        1. access token이 만료되었는지 확인한다.
+        2. access token이 만료되었으면 exception 방출
+        3. access token이 만료되지 않았으면
+            3-1. id,nickname,profile image 정보를 담고 user state를 approved로 변경
+         */
+        UserDto userDto = userService.setPendingUserInformation(request.getHeader("accessToken"), (String) responsebody.get("nickname"),(String) responsebody.get("profile_image_url"));
+        Map<String, Object> answer = new HashMap<>();
+        answer.put("id",userDto.getId());
+
+        return ResponseFactory.success(answer);
     }
 }

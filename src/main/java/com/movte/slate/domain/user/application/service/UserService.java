@@ -11,6 +11,8 @@ import com.movte.slate.oidc.JwtToken;
 import com.movte.slate.oidc.JwtTokenFactory;
 import com.movte.slate.oidc.JwtTokenIssuer;
 import io.jsonwebtoken.ExpiredJwtException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -97,5 +99,20 @@ public class UserService {
             }
         }
         return accessToken;
+    }
+
+    public UserDto setPendingUserInformation(String accessToken, String nickname, String profile_image_url) {
+        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
+        Long userId = accessJwt.getUserId();
+        // 영속성 엔티티로 변환해서 DB에 넘겨준다. DB에 저장한다.
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.CANNOT_FIND_USER));
+        user.setNickname(nickname);
+        user.setProfileImageUrl(profile_image_url);
+        user.setUserSate(UserState.APPROVED);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user = userRepository.save(user); // user 저장
+        return UserDto.of(user);
     }
 }

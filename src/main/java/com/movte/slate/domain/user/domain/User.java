@@ -1,6 +1,7 @@
 package com.movte.slate.domain.user.domain;
 
 
+import java.time.LocalTime;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,5 +48,25 @@ public class User {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setProfileImageUrl(String profile_image_url) {
+        this.profileImageUrl = profile_image_url;
+    }
+
+    public void setUserSate(UserState approved) {
+        this.userState = approved;
+    }
+
+    public void setCreatedAt(LocalDateTime now) {
+        this.createdAt = now;
+    }
+
+    public void setUpdatedAt(LocalDateTime now) {
+        this.updatedAt = now;
     }
 }
