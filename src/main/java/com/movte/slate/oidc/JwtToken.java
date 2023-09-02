@@ -28,7 +28,7 @@ public class JwtToken {
 
     public boolean isExpired(Date now) {
         Claims body = claimsJws.getBody();
-        return body.getExpiration().after(now);
+        return body.getExpiration().before(now);
     }
 
     public boolean isAccessToken() {
