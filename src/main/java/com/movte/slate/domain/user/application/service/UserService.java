@@ -31,6 +31,15 @@ public class UserService {
     private final JwtTokenFactory jwtTokenFactory;
     private final JwtTokenIssuer jwtTokenIssuer;
 
+    // accessToken 정보를 통해 유저 정보 조회
+    public UserDto userInfo(String accessToken) {
+        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
+        Long userId = accessJwt.getUserId();
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.CANNOT_FIND_USER));
+        return UserDto.of(user);
+    }
+
     // oauth provider(apple, kakao) 와 oauth id을 가지고서 DB에 이미 등록된 유저를 찾는다.
     // User가 존재하지 않으면 Optional.empty()를 리턴한다.
     public Optional<UserDto> findUser(String oauthId, OauthProvider oauthProvider) {
