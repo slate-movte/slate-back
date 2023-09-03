@@ -138,4 +138,15 @@ public class UserService {
         user = userRepository.save(user);
         return UserDto.of(user);
     }
+
+    public UserDto userInfoEdit(String accessToken, String nickname, String profileImageUrl) {
+        JwtToken accessJwt = jwtTokenFactory.create(accessToken);
+        Long userId = accessJwt.getUserId();
+        Optional<User> byId = userRepository.findById(userId);
+        User user = byId.orElseThrow(() -> new ServerErrorException(ServerErrorExceptionCode.CANNOT_FIND_USER));
+        user.setNickname(nickname);
+        user.setProfileImageUrl(profileImageUrl);
+        user = userRepository.save(user);
+        return UserDto.of(user);
+    }
 }
