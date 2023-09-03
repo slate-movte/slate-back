@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Long userId = jwtToken.getUserId();
         UserState userState = jwtToken.getUserState();
 
-        if ( path != null && path.startsWith("/user/signup")) {
+        if ( (path != null && path.startsWith("/user/signup")) || (path != null && path.startsWith("/user/info")) ){
             filterChain.doFilter(request, response);
             return;
         }

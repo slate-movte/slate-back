@@ -9,18 +9,23 @@ import lombok.Getter;
 @Getter
 public class UserDto {
     private long id;
+    private String nickname;
+    private String profileImageUrl;
     private UserState userState;
 
     @Builder
-    public UserDto(long id, UserState userState) {
+    public UserDto(long id, UserState userState, String nickname, String profileImageUrl) {
         this.id = id;
         this.userState = userState;
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
     }
-
     public static UserDto of(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .userState(user.getUserState())
+                .nickname(user.getNickname())
+                .profileImageUrl(user.getProfileImageUrl())
                 .build();
     }
 
@@ -28,6 +33,8 @@ public class UserDto {
         return User.builder()
                 .id(id)
                 .userState(userState)
+                .nickname(nickname)
+                .profileImageUrl(profileImageUrl)
                 .build();
     }
 }
