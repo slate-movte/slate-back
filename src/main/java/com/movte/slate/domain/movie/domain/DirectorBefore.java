@@ -1,30 +1,30 @@
 package com.movte.slate.domain.movie.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Getter
 @Entity
-@Table(name="director")
+@Table(name="director_before")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Director {
+public class DirectorBefore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long directorId;
-
-    private String directorIdBef;
+    private String directorId;
 
     private String name;
 
     @Builder
-    public Director(String directorIdBef, String name) {
-        this.directorIdBef = directorIdBef;
+    public DirectorBefore(String name) {
         this.name = name;
     }
-
     //    @OneToMany(mappedBy = "director")
 //    private List<Movie> movieList;
 //

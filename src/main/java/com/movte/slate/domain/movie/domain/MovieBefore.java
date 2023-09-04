@@ -1,22 +1,23 @@
 package com.movte.slate.domain.movie.domain;
 
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "movie")
-public class Movie {
+@Table(name = "movie_before")
+public class MovieBefore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieId;
-
-    private String movieIdBef;
+    private String movieId;
 
     private String title; //여기 null값임
 
@@ -36,18 +37,11 @@ public class Movie {
 
     private String audienceCount;
 
-    @ManyToOne
-    @JoinColumn(name = "director_id")
-    private Director director;
-
-//    @OneToMany(mappedBy = "movie")
-//    private List<MovieActor> movieActors;
+    private String directorId;
 
     @Builder
-    public Movie(String movieIdBef, String title, String company, String plot,
-                 Integer openYear, String openDate, String rating, String posterUrl,
-                 String audienceCount, Director director) {
-        this.movieIdBef = movieIdBef;
+    public MovieBefore(String movieId, String title, String company, String plot, Integer openYear, String openDate, String rating, String posterUrl, String audienceCount, String directorId) {
+        this.movieId = movieId;
         this.title = title;
         this.company = company;
         this.plot = plot;
@@ -56,6 +50,6 @@ public class Movie {
         this.rating = rating;
         this.posterUrl = posterUrl;
         this.audienceCount = audienceCount;
-        this.director = director;
+        this.directorId = directorId;
     }
 }

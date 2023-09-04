@@ -10,19 +10,18 @@ import javax.persistence.*;
 @Entity
 @Table(name="movie_actor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MovieActorAfter {
-
+public class MovieActor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long movieActorId;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
-    private Movie movieId;
+    private Movie movie;
 
     @ManyToOne
     @JoinColumn(name = "actor_id")
-    private Actor actorId;
+    private Actor actor;
 
     private String cast;
 }
