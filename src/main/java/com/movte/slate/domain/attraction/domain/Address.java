@@ -6,8 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Address {
