@@ -15,22 +15,11 @@ public class Director {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long directorId;
 
-    private String directorIdBef;
 
     private String name;
 
     @Builder
-    public Director(String directorIdBef, String name) {
-        this.directorIdBef = directorIdBef;
+    public Director(String name) {
         this.name = name;
     }
-
-    //    @OneToMany(mappedBy = "director")
-//    private List<Movie> movieList;
-//
-//    @Builder
-//    public Director(String name, List<Movie> movieList) {
-//        this.name = name;
-//        this.movieList = movieList;
-//    }
 }

@@ -1,6 +1,7 @@
 package com.movte.slate.domain.movie.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,11 @@ public class MovieActor {
     private Actor actor;
 
     private String cast;
+
+    @Builder
+    public MovieActor(Movie movie, Actor actor, String cast) {
+        this.movie = movie;
+        this.actor = actor;
+        this.cast = cast;
+    }
 }

@@ -16,8 +16,6 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
 
-    private String movieIdBef;
-
     private String title; //여기 null값임
 
     private String company;
@@ -40,14 +38,10 @@ public class Movie {
     @JoinColumn(name = "director_id")
     private Director director;
 
-//    @OneToMany(mappedBy = "movie")
-//    private List<MovieActor> movieActors;
-
     @Builder
-    public Movie(String movieIdBef, String title, String company, String plot,
+    public Movie(String title, String company, String plot,
                  Integer openYear, String openDate, String rating, String posterUrl,
                  String audienceCount, Director director) {
-        this.movieIdBef = movieIdBef;
         this.title = title;
         this.company = company;
         this.plot = plot;
