@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["main", "develop", "feature/12-test-cd"]
+    branches: ["main", "develop", "test/22"]
 
   workflow_dispatch:
 
@@ -19,11 +19,18 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
+      - name: save into .env.properties
+        env:
+          DEV_VARIABLES: ${{ toJson(secrets) }}
+        run : |
+          echo "$DEV_VARIABLES" | jq -r 'to_entries | 
+          map(select(.key | startswith("DEV_")))[] | "\(.key)=\(.value)"' > ./config/.env.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Project testing
         run: |
+          cat ./config/.env.properties
           SPRING_PROFILES_ACTIVE=dev \
           ./gradlew clean build
       - name: Set Up Docker Buildx
