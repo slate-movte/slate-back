@@ -22,10 +22,10 @@ public class Actor {
     @Column
     private String name;
 
-    @Builder
-    public Actor(String name) {
-        this.name = name;
-    }
+//    @Builder
+//    public Actor(String name) {
+//        this.name = name;
+//    }
 
     @Builder
     public Actor(String actorIdBef, String name) {

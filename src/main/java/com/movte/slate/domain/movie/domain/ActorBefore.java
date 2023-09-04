@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "actorBefore")
+@Table(name = "actor_before")
 public class ActorBefore {
 
     @Id
