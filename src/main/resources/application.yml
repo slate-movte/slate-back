@@ -15,11 +15,6 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
 
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-
 jwt:
   secretKey: ${DEV_JWT_SECRETKEY}
   accessTokenValidTimeInMinuteUnit: ${DEV_JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
