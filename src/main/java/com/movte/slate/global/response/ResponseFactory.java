@@ -18,7 +18,8 @@ public class ResponseFactory {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    public static void fail(HttpServletResponse response, HttpBusinessException e) throws IOException {
+    public static void fail(HttpServletResponse response, HttpBusinessException e)
+        throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(e.getStatusCode());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -30,5 +31,9 @@ public class ResponseFactory {
     public static ResponseEntity<FailResponse> fail(HttpBusinessException e) {
         FailResponse failResponse = new FailResponse(e.getMessage(), e.getCode());
         return new ResponseEntity<>(failResponse, HttpStatus.valueOf(e.getStatusCode()));
+    }
+
+    public static ResponseEntity<FailResponse> fail(FailResponse failResponse, HttpStatus status) {
+        return new ResponseEntity<>(failResponse, status);
     }
 }
