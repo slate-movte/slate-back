@@ -24,21 +24,18 @@ public class FilmLocation {
 
     private Double longitude;
 
-    private String province;
-
-    private String city;
-    private String country;
-    private String district;
+    @Column(nullable = false, name = "sido_code")
+    private String sidoCode;
+    @Column(nullable = false, name = "gugun_code")
+    private String gugunCode;
 
     @Builder
-    public FilmLocation(String address, Double latitude, Double longitude, String province,
-                        String city, String country, String district) {
+    public FilmLocation(String address, Double latitude, Double longitude,
+                        String sidoCode, String gugunCode) {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.province = province;
-        this.city = city;
-        this.country = country;
-        this.district = district;
+        this.sidoCode = sidoCode;
+        this.gugunCode = gugunCode;
     }
 }
