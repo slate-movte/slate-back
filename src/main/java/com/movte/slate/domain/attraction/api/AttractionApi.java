@@ -1,6 +1,7 @@
 package com.movte.slate.domain.attraction.api;
 
-import com.movte.slate.domain.attraction.dto.MapSearchRequestDto;
+import com.movte.slate.domain.attraction.dto.request.MapSearchDetailRequestDto;
+import com.movte.slate.domain.attraction.dto.request.MapSearchRequestDto;
 import com.movte.slate.domain.attraction.dto.response.MapSearchResponseDto;
 import com.movte.slate.domain.attraction.application.usecase.AttractionSearchUseCase;
 import com.movte.slate.global.response.ResponseFactory;
@@ -20,10 +21,14 @@ public class AttractionApi {
 
     @GetMapping("/map/search")
     public ResponseEntity<?> mapSearch(@Validated MapSearchRequestDto requestDto) {
-
         List<MapSearchResponseDto> result = attractionSearchUseCase.searchMap(
             requestDto);
         return ResponseFactory.success(result);
+    }
+
+    @GetMapping("/map/search/detail")
+    public ResponseEntity<?> mapSearchDetails(@Validated MapSearchDetailRequestDto requestDto) {
+        return ResponseFactory.success(attractionSearchUseCase.searchMapAttractionList(requestDto));
     }
 
     @GetMapping("/search/restaurant/{id}")

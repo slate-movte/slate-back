@@ -1,6 +1,7 @@
-package com.movte.slate.domain.attraction.dto;
+package com.movte.slate.domain.attraction.dto.request;
 
 
+import com.movte.slate.domain.attraction.dto.LocationTypeDto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;

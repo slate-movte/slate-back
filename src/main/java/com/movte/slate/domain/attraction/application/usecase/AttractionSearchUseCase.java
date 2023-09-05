@@ -2,10 +2,12 @@ package com.movte.slate.domain.attraction.application.usecase;
 
 import com.movte.slate.domain.attraction.domain.Attraction;
 import com.movte.slate.domain.attraction.domain.AttractionType;
-import com.movte.slate.domain.attraction.dto.MapSearchRequestDto;
+import com.movte.slate.domain.attraction.dto.request.MapSearchDetailRequestDto;
+import com.movte.slate.domain.attraction.dto.request.MapSearchRequestDto;
 import com.movte.slate.domain.attraction.dto.LocationTypeDto;
 import com.movte.slate.domain.attraction.dto.response.AccommodationDetailResponseDto;
 import com.movte.slate.domain.attraction.dto.response.AttractionDetailResponseDto;
+import com.movte.slate.domain.attraction.dto.response.AttractionListResponseDto;
 import com.movte.slate.domain.attraction.dto.response.MapSearchResponseDto;
 import com.movte.slate.domain.attraction.dto.response.RestaurantDetailResponseDto;
 import com.movte.slate.domain.attraction.repository.AttractionRepository;
@@ -64,10 +66,14 @@ public class AttractionSearchUseCase {
         return RestaurantDetailResponseDto.from(findAttraction(attractionId));
     }
 
+    public List<AttractionListResponseDto> searchMapAttractionList(
+        MapSearchDetailRequestDto requestDto) {
+        return attractionRepository.findAllByIdIn(requestDto.getIds())
+            .stream().map(AttractionListResponseDto::from).toList();
+    }
 
     private Attraction findAttraction(Long id) {
         return attractionRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(NotFoundExceptionCode.NOT_FOUND_ATTRACTION));
     }
-
 }

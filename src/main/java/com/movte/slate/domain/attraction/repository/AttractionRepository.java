@@ -22,4 +22,6 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
         @Param(value = "paramLongitude") BigDecimal longitude,
         @Param(value = "paramLength") Double length
     );
+
+    List<Attraction> findAllByIdIn(List<Long> ids);
 }
