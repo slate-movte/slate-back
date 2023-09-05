@@ -1,6 +1,7 @@
 package com.movte.slate.domain.movie.domain;
 
 
+import com.movte.slate.domain.attraction.domain.Address;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,25 +18,11 @@ public class FilmLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long filmLocationId;
-
-    private String address;
-
-    private Double latitude;
-
-    private Double longitude;
-
-    @Column(nullable = false, name = "sido_code")
-    private String sidoCode;
-    @Column(nullable = false, name = "gugun_code")
-    private String gugunCode;
+    @Embedded
+    private Address address;
 
     @Builder
-    public FilmLocation(String address, Double latitude, Double longitude,
-                        String sidoCode, String gugunCode) {
+    public FilmLocation(Address address) {
         this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.sidoCode = sidoCode;
-        this.gugunCode = gugunCode;
     }
 }
