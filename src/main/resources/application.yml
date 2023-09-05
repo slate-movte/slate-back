@@ -63,7 +63,9 @@ spring:
   config:
     activate:
       on-profile: local
-
+  sql:
+    init:
+      mode: always
   jpa:
     hibernate:
       ddl-auto: create
@@ -71,11 +73,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-
-  sql:
-    init:
-      mode: never
+    defer-datasource-initialization: true
 ---
 spring:
   config:

@@ -1,9 +1,9 @@
 package com.movte.slate.jwt;
 
+import com.movte.slate.global.exception.UnauthorizedException;
+import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import com.movte.slate.jwt.domain.JwtToken;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,15 @@ public class JwtTokenFactory {
 
     public JwtToken create(String tokenString) {
         byte[] secretKey = jwtConfigProperties.getSecretKey();
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(tokenString);
+        Jws<Claims> claimsJws;
+        try {
+            claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(tokenString);
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException |
+                 IllegalArgumentException e) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.INVALID_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
+        }
         return new JwtToken(claimsJws);
     }
 }

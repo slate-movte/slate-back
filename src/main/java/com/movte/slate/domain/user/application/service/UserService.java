@@ -13,6 +13,8 @@ import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.domain.user.repository.UserRepository;
 import com.movte.slate.global.exception.BadRequestException;
 import com.movte.slate.global.exception.BadRequestExceptionCode;
+import com.movte.slate.global.exception.UnauthorizedException;
+import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import com.movte.slate.jwt.JwtTokenFactory;
 import com.movte.slate.jwt.JwtTokenIssuer;
 import com.movte.slate.jwt.domain.JwtToken;
@@ -37,6 +39,7 @@ public class UserService {
     private final PublicKeyGetter publicKeyGetter;
     private final JwtTokenIssuer jwtTokenIssuer;
     private final JwtTokenFactory jwtTokenFactory;
+    private final RedisService redisService;
 
     /**
      * 로그인
@@ -118,11 +121,10 @@ public class UserService {
     /**
      * 유저 정보 (자기 자신의 정보) 가져오기
      *
-     * @param accessTokenValue 엑세스 토큰
+     * @param accessToken 엑세스 토큰
      * @return 유저 정보
      */
-    public UserInfoGetResponse userInfo(String accessTokenValue) {
-        JwtToken accessToken = jwtTokenFactory.create(accessTokenValue);
+    public UserInfoGetResponse userInfo(JwtToken accessToken) {
         Long userId = accessToken.getUserId();
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
@@ -132,11 +134,58 @@ public class UserService {
         return new UserInfoGetResponse(user.getId(), user.getNickname(), user.getProfileImageUrl());
     }
 
+    /**
+     * 로그아웃
+     *
+     * @param accessToken 액세스 토큰
+     */
+    public void logout(JwtToken accessToken) {
+        Long userId = accessToken.getUserId();
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new BadRequestException(BadRequestExceptionCode.NOT_USER);
+        }
+        User user = userOpt.get();
+        // 로그아웃을 위한 별도 로직 없음
+    }
+
+    /**
+     * 회원 탈퇴
+     *
+     * @param accessToken 액세스 토큰
+     */
+    public void withdrawal(JwtToken accessToken) {
+        Long userId = accessToken.getUserId();
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new BadRequestException(BadRequestExceptionCode.NOT_USER);
+        }
+        userRepository.deleteById(userId);
+    }
+
     private IdToken decodeIdToken(String idToken) {
         String iss = kakaoConfigProperties.getIss();
         String restApiKey = kakaoConfigProperties.getRestApiKey();
         IdTokenDecoder idTokenDecoder = new IdTokenDecoder(iss, restApiKey);
         OidcPublicKeysDto publicKeys = publicKeyGetter.getPublicKeys();
         return idTokenDecoder.decode(publicKeys, idToken);
+    }
+
+    public boolean checkIfNicknameIsDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    /**
+     * 유저 정보를 수정
+     *
+     * @param accessToken 액세스 토큰
+     */
+    public void editUserInfo(JwtToken accessToken) {
+        Long userId = accessToken.getUserId();
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
+        }
+        
     }
 }

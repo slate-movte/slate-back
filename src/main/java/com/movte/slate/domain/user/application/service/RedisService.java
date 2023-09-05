@@ -18,6 +18,10 @@ public class RedisService {
         redisTemplate.expire(key, ttlInSeconds, TimeUnit.SECONDS);
     }
 
+    public void saveDataToRedis(String key, String value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
+
     public Optional<String> getDataFromRedis(String key) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(key));
     }

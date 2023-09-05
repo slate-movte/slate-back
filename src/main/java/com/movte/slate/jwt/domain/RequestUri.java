@@ -4,18 +4,22 @@ import com.movte.slate.global.exception.ServerErrorException;
 import com.movte.slate.global.exception.ServerErrorExceptionCode;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class RequestUri {
     private final String uri;
 
     public boolean canAccessWithoutAccessToken() {
+        List<String> permittedList = List.of("/oidc/kakao",
+                "/user/reissue",
+                "/user/tokens",
+                "/user/login",
+                "/user/signup",
+                "/user/nickname/duplicate");
         if (uri == null) {
             throw new ServerErrorException(ServerErrorExceptionCode.INVALID_URI);
         }
-        return uri.startsWith("/oidc/kakao") ||
-                uri.startsWith("/user/reissue") ||
-                uri.startsWith("/user/tokens") ||
-                uri.startsWith("/user/login") ||
-                uri.startsWith("/user/signup");
+        return permittedList.stream().anyMatch(uri::startsWith);
     }
 }

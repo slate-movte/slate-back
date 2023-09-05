@@ -42,31 +42,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        byte[] secretKey = jwtConfigProperties.getSecretKey();
         String tokenString = TokenStringExtractor.extractTokenString(authorizationHeader);
-        JwtToken jwtToken = jwtTokenFactory.create(tokenString);
-
-        if (jwtToken.isExpired(new Date())) {
+        JwtToken accessToken = jwtTokenFactory.create(tokenString);
+        request.setAttribute("accessToken", accessToken);
+        if (accessToken.isExpired(new Date())) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
         }
 
         // redis에 access token이 있다는 것은 유효기간은 남았지만 로그아웃된 토큰이라는 것
-        if (jwtToken.isAccessToken() && isTokenInRedis(tokenString) != null) {
+        if (accessToken.isAccessToken() && isTokenInRedis(tokenString) != null) {
             log.info("로그아웃된 토큰입니다.");
             throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
         }
 
         // Token에서 UserId 꺼내기
-        Long userId = jwtToken.getUserId();
-        UserState userState = jwtToken.getUserState();
+        Long userId = accessToken.getUserId();
+        UserState userState = accessToken.getUserState();
 
         // 아직 회원 추가 정보가 입력되지 않은 경우,
         if (UserState.PENDING.equals(userState) && !"/user/pending".equals(requestUriValue)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
         }
 
-        mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, jwtToken);
-        mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(requestUriValue, jwtToken);
+        mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, accessToken);
+        mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(requestUriValue, accessToken);
 
         // SecurityContext 안에 Authentication 객체가 존재하는지의 유무를 체크해서 인증여부를 결정
         // 권한 부여
@@ -79,6 +78,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 다음 필터 단계로 넘어감
         filterChain.doFilter(request, response);
+
+        // 헤더 파라미터의 authorization key 값을 가진 access token value를 가져와서
+        // 앞에 bearer 를 떼어내고
+        // accessToken이라는 키를 가진 새로운 헤더를 추가한다.
+
     }
 
     // Access Token 재발급 요청 api 인데, access token을 전달했을 경우인지 체크
