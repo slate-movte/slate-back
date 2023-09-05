@@ -14,7 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Discord notification (start ci workflow)
         uses: ./.github/actions/discord_action
         with:
@@ -23,7 +22,6 @@ jobs:
           webhookurl: ${{ secrets.DISCORD_WEBHOOK }}
           color: 65280
           description: ${{ github.event.pull_request.body }}
-
       - uses: actions/setup-java@v3
         with:
           java-version: "17"
@@ -34,13 +32,6 @@ jobs:
         run : |
           echo "$DEV_VARIABLES" | jq -r 'to_entries | 
           map(select(.key | startswith("DEV_")))[] | "\(.key)=\(.value)"' > ./config/.env.properties
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Project testing
-        run: |
-          cat ./config/.env.properties
-          SPRING_PROFILES_ACTIVE=dev \
-          ./gradlew clean build
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
