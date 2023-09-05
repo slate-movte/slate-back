@@ -1,7 +1,6 @@
 package com.movte.slate.domain.movie.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,18 +9,16 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "actor")
-public class Actor {
+@Table
+public class StillCut {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long actorId;
+    private Long stillCutId;
 
-    @Column
-    private String name;
+    private String imageUrl;
 
-    @Builder
-    public Actor(String name) {
-        this.name = name;
-    }
+    @ManyToOne
+    @JoinColumn(name = "scene_id")
+    private Scene scene;
 }

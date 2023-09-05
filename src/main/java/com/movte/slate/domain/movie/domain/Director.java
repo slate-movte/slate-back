@@ -15,7 +15,6 @@ public class Director {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long directorId;
 
-
     private String name;
 
     @Builder
