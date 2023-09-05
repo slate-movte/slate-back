@@ -3,7 +3,8 @@ spring:
     default: local
   config:
     import:
-      - classpath:.env.properties
+      - optional:.env.properties
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
@@ -67,7 +68,6 @@ spring:
     username: sa
     password:
 
-
   sql:
     init:
       mode: never
@@ -77,17 +77,19 @@ spring:
   config:
     activate:
       on-profile: local
-  sql:
-    init:
-      mode: always
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
+
+
+  sql:
+    init:
+      mode: never
 ---
 spring:
   config:

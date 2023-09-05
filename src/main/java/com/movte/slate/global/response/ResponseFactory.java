@@ -32,7 +32,6 @@ public class ResponseFactory {
         response.getWriter().write(objectMapper.writeValueAsString(failResponse));
     }
 
-
     public static ResponseEntity<FailResponse> fail(HttpBusinessException e) {
         FailResponse failResponse = new FailResponse(e.getMessage(), e.getCode());
         return new ResponseEntity<>(failResponse, HttpStatus.valueOf(e.getStatusCode()));
@@ -46,5 +45,9 @@ public class ResponseFactory {
     public static ResponseEntity<FailResponse> failWithServerError() {
         FailResponse failResponse = new FailResponse("", "000");
         return new ResponseEntity<>(failResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static ResponseEntity<FailResponse> fail(FailResponse failResponse, HttpStatus status) {
+        return new ResponseEntity<>(failResponse, status);
     }
 }
