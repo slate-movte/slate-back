@@ -1,5 +1,6 @@
 package com.movte.slate.domain.movie.domain;
 
+import com.movte.slate.domain.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,8 @@ public class StillCut {
     @ManyToOne
     @JoinColumn(name = "scene_id")
     private Scene scene;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
