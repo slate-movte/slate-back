@@ -34,4 +34,4 @@ jobs:
 
       - name: Project testing
         run: |
-          ./gradlew clean build
+          ./gradlew clean build -i
