@@ -12,8 +12,8 @@ spring:
     password: ${MYSQL_ROOT_PASSWORD}
 
   redis:
-    host: ${LOCAL_REDIS_HOST}
-    port: ${LOCAL_REDIS_PORT}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
   jpa:
     properties:
