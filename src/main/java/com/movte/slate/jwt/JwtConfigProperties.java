@@ -1,4 +1,4 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt;
 
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.movte.slate.domain.user.application.service;
+package com.movte.slate.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +20,7 @@ public class JsonParser {
         if (StringUtils.isNotBlank(array)) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                List<T> list = objectMapper.readerForListOf(klass).readValue(array);
-                return list;
+                return objectMapper.readerForListOf(klass).readValue(array);
             } catch (JsonProcessingException e) {
                 throw new ServerErrorException(ServerErrorExceptionCode.JSON_PARSE_ERROR);
             }

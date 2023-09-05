@@ -15,12 +15,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpBusinessException.class)
     public ResponseEntity<FailResponse> httpBusinessException(HttpBusinessException e) {
+        e.printStackTrace();
         return ResponseFactory.fail(e);
     }
 
     @ExceptionHandler(ServerErrorException.class)
     public ResponseEntity<FailResponse> serverErrorException(ServerErrorException e) {
         log.info("서버 에러 예외 발생! << code: {}", e.getCode());
+        e.printStackTrace();
         return ResponseFactory.failWithServerError();
     }
 }

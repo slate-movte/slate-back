@@ -1,4 +1,4 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt;
 
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.response.ResponseFactory;

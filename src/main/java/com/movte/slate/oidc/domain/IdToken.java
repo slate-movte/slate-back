@@ -1,4 +1,4 @@
-package com.movte.slate.oidc;
+package com.movte.slate.oidc.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,18 +7,12 @@ import lombok.ToString;
 @ToString
 @Getter
 @RequiredArgsConstructor
-public class IdTokenDto {
-    /**
-     * issuer ex https://kauth.kakao.com
-     */
+public class IdToken {
+    // issuer
     private final String iss;
-    /**
-     * client id
-     */
+    // client id
     private final String aud;
-    /**
-     * oauth provider account unique id
-     */
+    // oauth id
     private final String sub;
 
     private final String email;

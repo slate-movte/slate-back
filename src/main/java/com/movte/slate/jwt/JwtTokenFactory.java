@@ -1,5 +1,6 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt;
 
+import com.movte.slate.jwt.domain.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

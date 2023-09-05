@@ -1,8 +1,11 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt;
 
 import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
+import com.movte.slate.jwt.domain.JwtToken;
+import com.movte.slate.jwt.domain.RequestUri;
+import com.movte.slate.util.TokenStringExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,18 +30,20 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
     private final RedisTemplate<String, String> redisTemplate;
-    private final TokenStringExtractor tokenStringExtractor;
     private final JwtTokenFactory jwtTokenFactory;
+    private final JwtConfigProperties jwtConfigProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String path = request.getServletPath(); // 프로젝트 아래 경로만 가져옴
-        if ( (path != null && path.startsWith("/oidc/kakao")) || (path != null && path.startsWith("/user/reissue")) || (path != null && path.startsWith("/user/pending"))) { // 카카오 OIDC 리다이렉트 URI는 필터 적용 제외
+        String requestUriValue = request.getServletPath(); // 프로젝트 아래 경로만 가져옴
+        RequestUri requestUri = new RequestUri(requestUriValue);
+        if (requestUri.canAccessWithoutAccessToken()) {
             filterChain.doFilter(request, response);
             return;
         }
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        String tokenString = tokenStringExtractor.extractTokenString(authorizationHeader);
+        byte[] secretKey = jwtConfigProperties.getSecretKey();
+        String tokenString = TokenStringExtractor.extractTokenString(authorizationHeader);
         JwtToken jwtToken = jwtTokenFactory.create(tokenString);
 
         if (jwtToken.isExpired(new Date())) {
@@ -55,18 +60,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Long userId = jwtToken.getUserId();
         UserState userState = jwtToken.getUserState();
 
-        if ( (path != null && path.startsWith("/user/signup")) || (path != null && path.startsWith("/user/info")) ){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         // 아직 회원 추가 정보가 입력되지 않은 경우,
-        if (UserState.PENDING.equals(userState)) {
+        if (UserState.PENDING.equals(userState) && !"/user/pending".equals(requestUriValue)) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
         }
 
-        mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(path, jwtToken);
-        mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(path, jwtToken);
+        mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, jwtToken);
+        mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(requestUriValue, jwtToken);
 
         // SecurityContext 안에 Authentication 객체가 존재하는지의 유무를 체크해서 인증여부를 결정
         // 권한 부여

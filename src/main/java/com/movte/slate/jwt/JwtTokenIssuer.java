@@ -1,6 +1,6 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt;
 
-import com.movte.slate.domain.user.application.service.dto.UserDto;
+import com.movte.slate.domain.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static com.movte.slate.oidc.JwtToken.ACCESS;
-import static com.movte.slate.oidc.JwtToken.REFRESH;
+import static com.movte.slate.jwt.domain.JwtToken.ACCESS;
+import static com.movte.slate.jwt.domain.JwtToken.REFRESH;
 
 @Component
 @RequiredArgsConstructor
@@ -18,17 +18,17 @@ public class JwtTokenIssuer {
 
     private final JwtConfigProperties jwtConfigProperties;
 
-    public String createAccessToken(UserDto userDto) {
+    public String createAccessToken(User user) {
         Claims claims = Jwts.claims();
-        claims.put("id", userDto.getId());
-        String userState = userDto.getUserState().name();
+        claims.put("id", user.getId());
+        String userState = user.getUserState().name();
         claims.put("userState", userState);
         return createJwt(claims, ACCESS, jwtConfigProperties.getAccessTokenValidTimeInMillisecondUnit());
     }
 
-    public String createRefreshToken(UserDto userDto) {
+    public String createRefreshToken(long userId) {
         Claims claims = Jwts.claims();
-        claims.put("id", userDto.getId());
+        claims.put("id", userId);
         return createJwt(claims, REFRESH, jwtConfigProperties.getRefreshTokenValidTimeInMillisecondUnit());
     }
 

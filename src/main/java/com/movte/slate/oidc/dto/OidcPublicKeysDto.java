@@ -1,4 +1,4 @@
-package com.movte.slate.oidc;
+package com.movte.slate.oidc.dto;
 
 import com.movte.slate.global.exception.ServerErrorException;
 import com.movte.slate.global.exception.ServerErrorExceptionCode;
@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class OidcPublicKeys {
-    private final List<OidcPublicKeyDTO> oidcPublicKeys;
+public class OidcPublicKeysDto {
+    private final List<OidcPublicKeyDto> oidcPublicKeys;
 
-    public OidcPublicKeyDTO getTargetOidcPublicKey(String kid) {
+    public OidcPublicKeyDto getTargetOidcPublicKey(String kid) {
         return oidcPublicKeys.stream()
                 .filter(o -> o.getKid().equals(kid))
                 .findFirst()

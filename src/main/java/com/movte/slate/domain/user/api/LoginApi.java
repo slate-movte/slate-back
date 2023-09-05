@@ -1,132 +1,59 @@
 package com.movte.slate.domain.user.api;
 
-import com.movte.slate.domain.user.application.service.KakaoService;
+import com.movte.slate.domain.user.api.dto.request.AccessTokenRefreshRequest;
+import com.movte.slate.domain.user.api.dto.request.LoginRequest;
+import com.movte.slate.domain.user.api.dto.request.SignupRequest;
 import com.movte.slate.domain.user.application.service.UserService;
-import com.movte.slate.domain.user.application.service.dto.UserDto;
-import com.movte.slate.domain.user.domain.OauthProvider;
+import com.movte.slate.domain.user.application.service.dto.response.AccessTokenRefreshResponse;
+import com.movte.slate.domain.user.application.service.dto.response.LoginResponse;
+import com.movte.slate.domain.user.application.service.dto.response.SignupResponse;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
-import com.movte.slate.oidc.*;
-import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
 public class LoginApi {
-
-    public static final String IS_SIGN_UP = "is_sign_up";
-    private static final String ACCESS_TOKEN = "access_token";
-    private static final String REFRESH_TOKEN = "refresh_token";
     private final UserService userService;
-    private final KakaoService kakaoService;
-    private final JwtTokenIssuer jwtTokenIssuer;
-    private final JwtConfigProperties jwtConfigProperties;
-    private final KakaoConfigProperties kakaoConfigProperties;
-    private final TokenStringExtractor tokenStringExtractor;
 
 
-    /*
-    1. 클라이언트는 카카오 로그인 버튼을 클릭한다.
-    2. 서비스는 카카오 인증 서버로 인가 코드 발급을 요청한다.
-    3. 카카오 인증 서버는 클라이언트에게 카카오 계정 로그인을 요청한다.
-    4. 클라이언트는 카카오 계정 로그인하고, 자원에 대한 권한을 승인한다.
-    5. 카카오 인증 서버는 인가 코드를 만들어 서비스에게 준다.
-        - 미리 등록한 Redirect URL로 인가 코드를 보내준다.
-    6. 서비스는 인가코드를 통해 Access Token과 Refresh Token, 그리고 ID Token을 받는다.
-     */
-    @ResponseBody
-    @GetMapping("/oidc/kakao")
-    public void kakaoLogin(@RequestParam String code, RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
-        /*
-        1. 인가 코드를 가지고 ID Token을 얻는다.
-        2. Access Token과 Refresh Token을 담은 Redirection URL을 카카오에게 전달한다.
-        3. Redirection URL로 클라이언트는 리다이렉트되고, 그 결과 Access Token과 Refresh Token을 얻는다.
-          - 회원이 아닌 유저라면 어떻게 되는가? Access Token와 Refresh Token을 발급한다.
-          - Access Token Body 안에 회원 상태 정보가 담긴다.
-         */
-        IdTokenDto idToken = kakaoService.getIdToken(code);
-        String oauthId = idToken.getOauthId();
-        Optional<UserDto> user = userService.findUser(oauthId, OauthProvider.KAKAO);
-        UserDto userDto = user.orElseGet(() -> userService.signup(OauthProvider.KAKAO, idToken));
-        String accessToken = jwtTokenIssuer.createAccessToken(userDto);
-        String refreshToken = jwtTokenIssuer.createRefreshToken(userDto);
-        userService.saveRefreshToken(userDto.getId(), refreshToken);
-        TokenResponseDTO token = new TokenResponseDTO(accessToken, refreshToken);
-        setTokenRedirectAttributes(redirectAttributes, token);
-        response.sendRedirect(makeTokenRedriectURL(token));
-    }
-
-    /* 카카오로부터 OIDC Public Key 를 가져온다.
-     Redis에 캐싱한다.*/
-    @Cacheable(cacheNames = "KakaoOIDC", cacheManager = "oidcCacheManager")
-    @GetMapping("/oidc/kakao/openkeys")
-    public String getOpenKeys() {
-        return kakaoService.retrieveKakaoOpenKeysFromKakao();
-    }
-
-    private void setTokenRedirectAttributes(RedirectAttributes redirectAttributes, TokenResponseDTO token) {
-        redirectAttributes.addAttribute(ACCESS_TOKEN, token.getAccess_token());
-        redirectAttributes.addAttribute(REFRESH_TOKEN, token.getRefresh_token());
-    }
-
-    private String makeTokenRedriectURL(TokenResponseDTO token) {
-        String tokenUrl = jwtConfigProperties.getTokenRedirectUrl();
-        return tokenUrl + "?access_token=" + token.getAccess_token() + "&refresh_token=" + token.getRefresh_token();
+    @PostMapping("/user/login")
+    public ResponseEntity<SuccessResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest request) {
+        LoginResponse response = userService.login(request.toServiceRequest());
+        return ResponseFactory.success(response);
     }
 
 
     /*
     refresh toekn 재발급용 API
      */
-    @ResponseBody
     @GetMapping("/user/reissue")
-    public String refreshAccessToken(@RequestBody Map<String, Object> refreshToken, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<SuccessResponse<AccessTokenRefreshResponse>> refreshAccessToken(@RequestBody @Valid AccessTokenRefreshRequest request) {
         /*
         1. refresh token이 만료되었는지 확인한다.
         2. refresh token이 만료되었으면 refresh token이 만료되었다는 정보를 반환한다.
         3. refresh token이 만료되지 않았으면 access token을 재발급한다.
         4. access token을 발급하고 반환한다.
          */
-        return userService.refreshAccessToken(request.getHeader("accessToken"),(String) refreshToken.get("refreshToken"));
+        return ResponseFactory.success(userService.refreshAccessToken(request.toServiceRequest()));
     }
 
-    /*
-    유저의 상태가 pending일때 부족한 정보들을 받는 로직
-    프론트 측 화면으로 생각해보면 회원가입을 수행하는 과정에서 정보를 다 입력하지 않고 나간 경우
+    /**
+     * 회원 가입
+     *
+     * @param request 회원 가입에 필요한 정보 (id token, nickname, profile image url)
+     * @return 토큰
      */
-    @ResponseBody
-    @GetMapping("/user/pending")
-    public ResponseEntity<SuccessResponse<Map<String, Object>>> setPendingUserInformation(@RequestBody Map<String, Object> responsebody,HttpServletRequest request, HttpServletResponse response){
-        /*
-        1. access token이 만료되었는지 확인한다.
-        2. access token이 만료되었으면 exception 방출
-        3. access token이 만료되지 않았으면
-            3-1. id,nickname,profile image 정보를 담고 user state를 approved로 변경
-         */
-        UserDto userDto = userService.setPendingUserInformation(request.getHeader("accessToken"), (String) responsebody.get("nickname"),(String) responsebody.get("profile_image_url"));
-        Map<String, Object> answer = new HashMap<>();
-        answer.put("id",userDto.getId());
-
-        return ResponseFactory.success(answer);
-    }
-
-    @ResponseBody
     @GetMapping("/user/signup")
-    public ResponseEntity<SuccessResponse<Map<String, Object>>> signup(@RequestBody Map<String, Object> requestbody, HttpServletRequest request, HttpServletResponse response){
-        Map<String, Object> answer = new HashMap<>();
-        UserDto userDto = userService.signupUser(tokenStringExtractor.extractTokenString(request.getHeader("Authorization")) ,(String) requestbody.get("nickname"),(String) requestbody.get("profileImageUrl"));
-        answer.put("id",userDto.getId());
-        return ResponseFactory.success(answer);
+    public ResponseEntity<SuccessResponse<SignupResponse>> signup(@RequestBody @Valid SignupRequest request) {
+        SignupResponse response = userService.signupUser(request.toServiceRequest());
+        return ResponseFactory.success(response);
     }
-
 }

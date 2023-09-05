@@ -1,4 +1,4 @@
-package com.movte.slate.oidc;
+package com.movte.slate.jwt.domain;
 
 import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;

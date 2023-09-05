@@ -1,4 +1,4 @@
-package com.movte.slate.domain.user.application.service;
+package com.movte.slate.util;
 
 public class TokenExtractor {
     public static String getUnsignedToken(String token) throws Exception {

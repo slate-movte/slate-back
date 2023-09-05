@@ -1,11 +1,11 @@
-package com.movte.slate.oidc;
+package com.movte.slate.oidc.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class OidcPublicKeyDTO {
+public class OidcPublicKeyDto {
     private String kid;
 
     private String kty;
