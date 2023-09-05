@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name="movie_actor")
+@Table(name = "movie_actor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MovieActor {
     @Id
@@ -24,6 +24,7 @@ public class MovieActor {
     @JoinColumn(name = "actor_id")
     private Actor actor;
 
+    @Column(name = "`cast`")
     private String cast;
 
     @Builder
