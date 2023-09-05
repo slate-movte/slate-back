@@ -21,31 +21,31 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 jwt:
-  secretKey: ${JWT_SECRETKEY}
-  accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
-  refreshTokenValidTimeInDayUnit: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
-  refreshTokenValidTimeInDayUnitInRedis: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
-  tokenRedirectUrl: ${JWT_TOKEN_REDIRECT_URL}
+  secretKey: ${DEV_JWT_SECRETKEY}
+  accessTokenValidTimeInMinuteUnit: ${DEV_JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
+  refreshTokenValidTimeInDayUnit: ${DEV_JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
+  refreshTokenValidTimeInDayUnitInRedis: ${DEV_JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
+  tokenRedirectUrl: ${DEV_JWT_TOKEN_REDIRECT_URL}
 
 kakao:
-  iss: ${KAKAO_ISS}
-  restApiKey: ${KAKAO_REST_API_KEY}
-  redirectUrl: ${KAKAO_REDIRECT_URL}
-  tokenUrl: ${KAKAO_TOKEN_URL}
-  openKeyMyselfUrl: ${KAKAO_OPENKEY_MYSELF_URL}
-  openKeyKakaoUrl: ${KAKAO_OPENKEY_KAKAO_URL}
+  iss: ${DEV_KAKAO_ISS}
+  restApiKey: ${DEV_KAKAO_REST_API_KEY}
+  redirectUrl: ${DEV_KAKAO_REDIRECT_URL}
+  tokenUrl: ${DEV_KAKAO_TOKEN_URL}
+  openKeyMyselfUrl: ${DEV_KAKAO_OPENKEY_MYSELF_URL}
+  openKeyKakaoUrl: ${DEV_KAKAO_OPENKEY_KAKAO_URL}
 
 cloud:
   aws:
     credentials:
-      access-key: ${S3_ACCESS_KEY}
-      secret-key: ${S3_SECRET_KEY}
+      access-key: ${DEV_S3_ACCESS_KEY}
+      secret-key: ${DEV_S3_SECRET_KEY}
     region:
       static:
-        ${S3_REGION}
+        ${DEV_S3_REGION}
     s3:
       bucket:
-        ${S3_BUCKET}
+        ${DEV_S3_BUCKET}
     stack:
       auto: false
 ---
