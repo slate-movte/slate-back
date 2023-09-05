@@ -46,4 +46,12 @@ public class User {
     public boolean isPending() {
         return UserState.PENDING.equals(userState);
     }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -65,6 +65,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
     implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
 
+    // AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.register('copyEnv', Copy) {

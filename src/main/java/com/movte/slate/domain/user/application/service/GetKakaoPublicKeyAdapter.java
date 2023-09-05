@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class PublicKeyGetter {
+public class GetKakaoPublicKeyAdapter {
 
     private final String OPENKEY_MYSELF_URL;
     private final String OPENKEY_KAKAO_URL;
     private final InternetDataLoader internetDataLoader;
 
-    public PublicKeyGetter(KakaoConfigProperties kakaoConfigProperties, InternetDataLoader internetDataLoader) {
+    public GetKakaoPublicKeyAdapter(KakaoConfigProperties kakaoConfigProperties, InternetDataLoader internetDataLoader) {
         this.OPENKEY_MYSELF_URL = kakaoConfigProperties.getOpenKeyMyselfUrl();
         this.OPENKEY_KAKAO_URL = kakaoConfigProperties.getOpenKeyKakaoUrl();
         this.internetDataLoader = internetDataLoader;

@@ -59,13 +59,11 @@ public class RedisConfig {
     }
 
     private RedisCacheConfiguration getRedisCacheConfiguration(RedisSerializationContext.SerializationPair<String> keySerializationPair, RedisSerializationContext.SerializationPair<Object> valueSerializationPair) {
-        RedisCacheConfiguration redisCacheConfiguration =
-                RedisCacheConfiguration.defaultCacheConfig()
-                        .serializeKeysWith(keySerializationPair)
-                        .serializeValuesWith(valueSerializationPair)
-                        // TTL: 일주일
-                        .entryTtl(Duration.ofDays(7L));
-        return redisCacheConfiguration;
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(keySerializationPair)
+                .serializeValuesWith(valueSerializationPair)
+                // TTL: 일주일
+                .entryTtl(Duration.ofDays(7L));
     }
 }
 
