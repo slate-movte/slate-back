@@ -11,14 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,8 +33,8 @@ public class UserInfoApi {
         return ResponseFactory.success(response);
     }
 
-    @PatchMapping(value = "/user/info", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<SuccessResponse<String>> editUserInfo(@RequestPart("files") List<MultipartFile> files, @RequestPart("nickname") String nickname, HttpServletRequest servletRequest) {
+    @PatchMapping(value = "/user/info")
+    public ResponseEntity<SuccessResponse<String>> editUserInfo(@RequestParam("files") List<MultipartFile> files, @RequestParam("nickname") String nickname, HttpServletRequest servletRequest) {
         JwtToken accessToken = (JwtToken) servletRequest.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
         editUserInfoService.editUserInfo(userId, new EditUserInfoServiceRequest(nickname, files.get(0)));
