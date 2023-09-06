@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 @RequiredArgsConstructor
-public class S3Adapter implements SaveProfileImagePort {
+public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -30,6 +30,26 @@ public class S3Adapter implements SaveProfileImagePort {
             String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
             String fileType = strings[strings.length - 1];
             fileName = "images/userprofile/" + fileName + "." + fileType;
+            String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
+            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), objectMetadata);
+            return Optional.of(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<String> saveSnapShot(MultipartFile file, long userId) {
+        try {
+            String fileName = String.valueOf(userId);
+
+            String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
+            String fileType = strings[strings.length - 1];
+            fileName = "images/snapshot/" + fileName + "." + fileType;
             String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
