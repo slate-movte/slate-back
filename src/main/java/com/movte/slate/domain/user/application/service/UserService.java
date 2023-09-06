@@ -89,6 +89,7 @@ public class UserService {
                 .userState(UserState.APPROVED)
                 .oauthProvider(provider)
                 .profileImageUrl(request.getProfileImageUrl())
+                .nickname(idToken.getNickname())
                 .build();
         user = userRepository.save(user);
         String accessToken = jwtTokenIssuer.createAccessToken(user);
