@@ -16,7 +16,8 @@ public enum BadRequestExceptionCode {
     ALREADY_USER("007", "이미 회원 가입된 유저입니다."),
     DUPLICATE_NICKNAME("008", "닉네임이 중복됩니다."),
     NO_ONE_PICTURE("009", "클라이언트로부터 입력 받은 사진이 한 장이 아닙니다."),
-    NOT_IMAGE_FORMAT("010", "이미지 파일 포맷이 아닙니다.");
+    NOT_IMAGE_FORMAT("010", "이미지 파일 포맷이 아닙니다."),
+    NO_RESOURCE("011","자원이 존재하지 않습니다");
     private final String code;
     private final String descriptionMessage;
 }
