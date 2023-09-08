@@ -1,7 +1,7 @@
 package com.movte.slate.domain.stillcut.application.service;
 
 import com.movte.slate.domain.stillcut.application.service.dto.StillCutResponseDto;
-import com.movte.slate.domain.stillcut.application.service.response.SearchUserIdServiceResponse;
+import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.domain.stillcut.domain.StillCut;
 import com.movte.slate.domain.stillcut.repository.FindStillCutByUserPort;
 import com.movte.slate.domain.user.domain.User;
@@ -20,7 +20,7 @@ public class SearchUserIdService {
     private final FindUserByIdPort findUserByIdPort;
     private final FindStillCutByUserPort findStillCutByUserPort;
 
-    public SearchUserIdServiceResponse searchUserId(long userId, long findUserId) {
+    public SearchBunchOfSnapshotOfOwnerServiceResponse searchUserId(long userId, long findUserId) {
         Optional<User> userOpt = findUserByIdPort.findById(userId);
         if (userOpt.isEmpty()) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
@@ -37,6 +37,6 @@ public class SearchUserIdService {
             stillCutResponseDtos.add(new StillCutResponseDto(stillCut.getStillCutId(),
                     stillCut.getImageUrl()));
         }
-        return SearchUserIdServiceResponse.builder().scenes(stillCutResponseDtos).build();
+        return SearchBunchOfSnapshotOfOwnerServiceResponse.builder().scenes(stillCutResponseDtos).build();
     }
 }

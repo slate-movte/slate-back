@@ -3,7 +3,7 @@ package com.movte.slate.domain.stillcut.api;
 import com.movte.slate.domain.stillcut.application.service.SearchMovieTitleService;
 import com.movte.slate.domain.stillcut.application.service.SearchUserIdService;
 import com.movte.slate.domain.stillcut.application.service.response.SearchMovieTitleServiceResponse;
-import com.movte.slate.domain.stillcut.application.service.response.SearchUserIdServiceResponse;
+import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
 import com.movte.slate.jwt.domain.JwtToken;
@@ -25,18 +25,21 @@ public class SnapshotApi {
     public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>>
             searchBunchOfSnapshotWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
-        Long userId = accessToken.getUserId();
-        SearchMovieTitleServiceResponse searchMovieTitleServiceResponse = searchMovieTitleService.searchMovieTitle(title);
+        Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
+        SearchMovieTitleServiceResponse searchMovieTitleServiceResponse =
+                searchMovieTitleService.searchMovieTitle(title);
         return ResponseFactory.success(searchMovieTitleServiceResponse);
     }
 
-    @GetMapping(value = "/snapshot/finduser")
-    public ResponseEntity<SuccessResponse<SearchUserIdServiceResponse>>
-            searchBunchOfSnapshotWithUserId(@RequestParam("id") long findid, HttpServletRequest request) {
+    @GetMapping(value = "/snapshot")
+    public ResponseEntity<SuccessResponse<SearchBunchOfSnapshotOfOwnerServiceResponse>>
+            searchBunchOfSnapshotOfOwner(@RequestParam("id") long ownerIdOfSnapshot, HttpServletRequest request) {
+        //특정 유저의 snapshot을 찾는 것
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
-        SearchUserIdServiceResponse searchUserIdServiceResponse = searchUserIdService.searchUserId(userId, findid);
-        return ResponseFactory.success(searchUserIdServiceResponse);
+        SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwnerServiceResponse =
+                searchUserIdService.searchUserId(userId, ownerIdOfSnapshot);
+        return ResponseFactory.success(searchBunchOfSnapshotOfOwnerServiceResponse);
     }
 
 }

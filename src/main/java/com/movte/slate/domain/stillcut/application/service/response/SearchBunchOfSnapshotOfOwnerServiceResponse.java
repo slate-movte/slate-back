@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-public class SearchUserIdServiceResponse {
+public class SearchBunchOfSnapshotOfOwnerServiceResponse {
     List<StillCutResponseDto> scenes;
 
 }
