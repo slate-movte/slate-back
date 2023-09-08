@@ -16,21 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class StillCutApi {
+public class SnapshotApi {
 
     private final SearchMovieTitleService searchMovieTitleService;
     private final SearchUserIdService searchUserIdService;
 
-    @GetMapping(value = "/stillcut")
-    public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>> searchMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
+    @GetMapping(value = "/snapshot")
+    public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>>
+            searchBunchOfSnapshotWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
         SearchMovieTitleServiceResponse searchMovieTitleServiceResponse = searchMovieTitleService.searchMovieTitle(title);
         return ResponseFactory.success(searchMovieTitleServiceResponse);
     }
 
-    @GetMapping(value = "/stillcut/finduser")
-    public ResponseEntity<SuccessResponse<SearchUserIdServiceResponse>> searchUserId(@RequestParam("id") long findid, HttpServletRequest request) {
+    @GetMapping(value = "/snapshot/finduser")
+    public ResponseEntity<SuccessResponse<SearchUserIdServiceResponse>>
+            searchBunchOfSnapshotWithUserId(@RequestParam("id") long findid, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
         SearchUserIdServiceResponse searchUserIdServiceResponse = searchUserIdService.searchUserId(userId, findid);
