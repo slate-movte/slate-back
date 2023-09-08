@@ -1,9 +1,9 @@
-package com.movte.slate.domain.stillcut.application.service;
+package com.movte.slate.domain.snapshot.application.service;
 
-import com.movte.slate.domain.stillcut.application.service.dto.StillCutResponseDto;
-import com.movte.slate.domain.stillcut.application.service.response.SearchUserIdServiceResponse;
-import com.movte.slate.domain.stillcut.domain.StillCut;
-import com.movte.slate.domain.stillcut.repository.FindStillCutByUserPort;
+import com.movte.slate.domain.snapshot.application.service.dto.SnapshotResponseDto;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
+import com.movte.slate.domain.snapshot.repository.FindStillCutByUserPort;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.FindUserByIdPort;
 import com.movte.slate.global.exception.UnauthorizedException;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SearchUserIdService {
+public class SearchBunchOfSnapshotOfOwnerService {
     private final FindUserByIdPort findUserByIdPort;
     private final FindStillCutByUserPort findStillCutByUserPort;
 
-    public SearchUserIdServiceResponse searchUserId(long userId, long findUserId) {
+    public SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwner(long userId, long findUserId) {
         Optional<User> userOpt = findUserByIdPort.findById(userId);
         if (userOpt.isEmpty()) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
@@ -31,12 +31,12 @@ public class SearchUserIdService {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
         }
         User findUser = idUserOpt.get();
-        List<StillCut> userStillCuts = findStillCutByUserPort.findByUser(findUser);
-        List<StillCutResponseDto> stillCutResponseDtos = new ArrayList<>();
-        for(StillCut stillCut : userStillCuts){
-            stillCutResponseDtos.add(new StillCutResponseDto(stillCut.getStillCutId(),
-                    stillCut.getImageUrl()));
+        List<Snapshot> userSnapshots = findStillCutByUserPort.findByUser(findUser);
+        List<SnapshotResponseDto> snapshotResponseDtos = new ArrayList<>();
+        for(Snapshot snapshot : userSnapshots){
+            snapshotResponseDtos.add(new SnapshotResponseDto(snapshot.getSnapshotId(),
+                    snapshot.getImageUrl()));
         }
-        return SearchUserIdServiceResponse.builder().scenes(stillCutResponseDtos).build();
+        return SearchBunchOfSnapshotOfOwnerServiceResponse.builder().scenes(snapshotResponseDtos).build();
     }
 }
