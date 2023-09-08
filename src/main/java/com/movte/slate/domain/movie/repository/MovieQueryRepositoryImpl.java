@@ -21,31 +21,29 @@ public class MovieQueryRepositoryImpl implements MovieQueryRepository {
 
     @Override
     public List<Movie> selectListMovieAndActorByKeywordAndLastId(String keyword, Long lastId) {
-
         return queryFactory.select(movie)
             .from(movie)
             .leftJoin(movie.movieActors, movieActor)
             .leftJoin(movieActor.actor, actor)
-            .distinct()
-            .where(lastIdAfter(lastId),
-                isContainsTitleKeywords(keyword),
-                isContainActorNames(keyword))
+            .where(lastIdAfter(lastId), isSearchKeyword(keyword))
+            .groupBy(movie.movieId)
             .orderBy(movie.movieId.asc())
             .limit(10)
             .fetch();
     }
 
-    private BooleanExpression isContainsTitleKeywords(String keyword) {
+    private BooleanExpression isSearchKeyword(String keyword) {
         if (!StringUtils.hasText(keyword)) { // null 이거나 공백이면
             return null;
         }
+        return isContainsTitleKeywords(keyword).or(isContainActorNames(keyword));
+    }
+
+    private BooleanExpression isContainsTitleKeywords(String keyword) {
         return movie.title.contains(keyword);
     }
 
     private BooleanExpression isContainActorNames(String keyword) {
-        if (!StringUtils.hasText(keyword)) {
-            return null;
-        }
         return actor.name.contains(keyword);
     }
 

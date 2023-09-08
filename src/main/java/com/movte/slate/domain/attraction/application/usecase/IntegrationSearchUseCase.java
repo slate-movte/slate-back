@@ -45,7 +45,6 @@ public class IntegrationSearchUseCase {
                 keyword, lastMovieId);
             movieList.addAll(queryResult);
         }
-
         return IntegrationSearchResponseDto.builder()
             .attractionList(attractionList.stream().map(AttractionListResponseDto::from).toList())
             .movieList(movieList.stream().map(MovieListResponseDto::from).toList())
