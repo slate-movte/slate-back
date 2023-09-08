@@ -22,33 +22,21 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Log4j2
 @RequiredArgsConstructor
 @RestController
 public class SnapShotApi {
 
     private final SnapShotService snapShotService;
-    private final SearchBunchOfSceneWithMovieTitleService searchBunchOfSceneWithMovieTitleService;
     private final SearchBunchOfSnapshotOfOwnerService searchBunchOfSnapshotOfOwnerService;
 
     @PostMapping(value = "/snapshot")
     public ResponseEntity<SuccessResponse<InsertSnapShotServiceResponse>> insertSnapshot(@RequestParam("snapshot") List<MultipartFile> snapshot, @RequestParam("sceneId") long sceneId, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
-        log.info(userId);
         InsertSnapShotServiceResponse insertSnapShotServiceResponse = snapShotService.insertSnapshot(userId, new InsertSnapShotServiceRequest(sceneId, snapshot.get(0)));
         return ResponseFactory.success(insertSnapShotServiceResponse);
     }
 
-    @GetMapping(value = "/snapshot", params="title")
-    public ResponseEntity<SuccessResponse<SearchBunchOfSceneWithMovieTitleServiceResponse>>
-    searchBunchOfSceneWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
-        JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
-        Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
-        SearchBunchOfSceneWithMovieTitleServiceResponse searchBunchOfSceneWithMovieTitleServiceResponse =
-                searchBunchOfSceneWithMovieTitleService.searchBunchOfSceneWithMovieTitle(title);
-        return ResponseFactory.success(searchBunchOfSceneWithMovieTitleServiceResponse);
-    }
 
     @GetMapping(value = "/snapshot", params="id")
     public ResponseEntity<SuccessResponse<SearchBunchOfSnapshotOfOwnerServiceResponse>>
