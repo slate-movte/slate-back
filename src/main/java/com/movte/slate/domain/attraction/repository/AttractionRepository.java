@@ -24,4 +24,6 @@ public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     );
 
     List<Attraction> findAllByIdIn(List<Long> ids);
+
+    List<Attraction> findTop10ByTitleContainsAndIdAfterOrderByIdAsc(String keyword, Long id);
 }

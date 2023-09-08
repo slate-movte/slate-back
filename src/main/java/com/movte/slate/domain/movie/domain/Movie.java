@@ -1,6 +1,8 @@
 package com.movte.slate.domain.movie.domain;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,9 +36,12 @@ public class Movie {
 
     private String audienceCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "director_id")
     private Director director;
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    private List<MovieActor> movieActors = new ArrayList<>();
 
     @Builder
     public Movie(String title, String company, String plot,

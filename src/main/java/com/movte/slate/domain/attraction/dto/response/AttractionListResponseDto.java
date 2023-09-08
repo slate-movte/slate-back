@@ -39,17 +39,19 @@ public class AttractionListResponseDto {
 
     public static AttractionListResponseDto from(Attraction attraction) {
         List<String> menuList = new ArrayList<>();
+        List<String> images = new ArrayList<>();
+        images.add(attraction.getFirstImage());
+        images.add(attraction.getSecondImage());
         String treatMenu = attraction.getTreatMenu();
 
         if (treatMenu != null) {
             menuList.addAll(Arrays.stream(treatMenu.split(",")).toList());
         }
-
         return AttractionListResponseDto.builder()
             .id(attraction.getId())
             .title(attraction.getTitle())
             .tel(attraction.getTel())
-            .images(List.of(attraction.getFirstImage(), attraction.getSecondImage()))
+            .images(images)
             .type(attraction.getType())
             .location(LocationResponseDto.from(attraction.getAddress()))
             .menus(menuList)

@@ -4,6 +4,11 @@ spring:
   config:
     import:
       - optional:.env.properties
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100 # batch size 최적화 추후 예정
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -44,10 +49,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
-        format_sql: false
+        format_sql: true
 
 
   sql:
