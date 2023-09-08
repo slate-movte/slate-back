@@ -1,7 +1,7 @@
 package com.movte.slate.domain.snapshot.repository;
 
 
-import com.movte.slate.domain.movie.domain.Scene;
+import com.movte.slate.domain.snapshot.domain.Scene;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

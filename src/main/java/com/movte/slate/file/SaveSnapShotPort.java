@@ -1,6 +1,5 @@
 package com.movte.slate.file;
 
-import com.movte.slate.domain.snapshot.domain.StillCut;
 import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
