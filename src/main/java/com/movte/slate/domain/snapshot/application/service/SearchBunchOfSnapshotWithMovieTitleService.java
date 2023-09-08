@@ -29,7 +29,7 @@ public class SearchBunchOfSnapshotWithMovieTitleService {
             List<SnapShotResponseDto> snapShotResponseDtos = new ArrayList<>();
             for(Scene scene : scenes){
                 SnapShotResponseDto snapShotResponseDto = SnapShotResponseDto.builder()
-                        .scenId(scene.getSceneId())
+                        .sceneId(scene.getSceneId())
                         .imageUrl(scene.getImageUrl())
                         .build();
                 snapShotResponseDtos.add(snapShotResponseDto);

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SnapShotResponseDto {
 
-    private long scenId;
+    private long sceneId;
     private String imageUrl;
 }
