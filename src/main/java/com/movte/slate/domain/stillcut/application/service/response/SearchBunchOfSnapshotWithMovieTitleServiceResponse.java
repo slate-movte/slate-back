@@ -9,6 +9,6 @@ import lombok.*;
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-public class SearchMovieTitleServiceResponse {
+public class SearchBunchOfSnapshotWithMovieTitleServiceResponse {
     private List<MovieResponseDto> movies;
 }

@@ -5,7 +5,7 @@ import com.movte.slate.domain.movie.domain.Movie;
 import com.movte.slate.domain.snapshot.application.service.dto.SnapShotResponseDto;
 import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.snapshot.repository.FindSceneByMoviePort;
-import com.movte.slate.domain.stillcut.application.service.response.SearchMovieTitleServiceResponse;
+import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
 import com.movte.slate.domain.movie.repository.FindMovieByTitlePort;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class SearchBunchOfSnapshotWithMovieTitleService {
     private final FindMovieByTitlePort findMovieByTitlePort;
     private final FindSceneByMoviePort findSceneByMoviePort;
 
-    public SearchMovieTitleServiceResponse searchBunchOfSnapshotWithMovieTitle(String title) {
+    public SearchBunchOfSnapshotWithMovieTitleServiceResponse searchBunchOfSnapshotWithMovieTitle(String title) {
         List<Movie> movies = findMovieByTitlePort.findByTitle(title);
         // 영화 데이터 한 개씩 뽑아서 response에 넣기
         List<MovieResponseDto> movieResponseDtos = new ArrayList<>();
@@ -41,6 +41,6 @@ public class SearchBunchOfSnapshotWithMovieTitleService {
                     .build();
             movieResponseDtos.add(movieResponseDto);
         }
-        return SearchMovieTitleServiceResponse.builder().movies(movieResponseDtos).build();
+        return SearchBunchOfSnapshotWithMovieTitleServiceResponse.builder().movies(movieResponseDtos).build();
     }
 }

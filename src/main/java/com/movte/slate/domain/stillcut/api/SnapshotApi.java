@@ -2,7 +2,7 @@ package com.movte.slate.domain.stillcut.api;
 
 import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotWithMovieTitleService;
 import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotOfOwnerService;
-import com.movte.slate.domain.stillcut.application.service.response.SearchMovieTitleServiceResponse;
+import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
 import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
@@ -22,13 +22,13 @@ public class SnapshotApi {
     private final SearchBunchOfSnapshotOfOwnerService searchBunchOfSnapshotOfOwnerService;
 
     @GetMapping(value = "/snapshot", params="title")
-    public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>>
+    public ResponseEntity<SuccessResponse<SearchBunchOfSnapshotWithMovieTitleServiceResponse>>
             searchBunchOfSnapshotWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
-        SearchMovieTitleServiceResponse searchMovieTitleServiceResponse =
+        SearchBunchOfSnapshotWithMovieTitleServiceResponse searchBunchOfSnapshotWithMovieTitleServiceResponse =
                 searchBunchOfSnapshotWithMovieTitleService.searchBunchOfSnapshotWithMovieTitle(title);
-        return ResponseFactory.success(searchMovieTitleServiceResponse);
+        return ResponseFactory.success(searchBunchOfSnapshotWithMovieTitleServiceResponse);
     }
 
     @GetMapping(value = "/snapshot", params="id")
