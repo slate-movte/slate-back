@@ -12,10 +12,47 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secretKey: ${JWT_SECRETKEY}
+  accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
+  refreshTokenValidTimeInDayUnit: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT}
+  refreshTokenValidTimeInDayUnitInRedis: ${JWT_REFRESH_TOKEN_VALID_TIME_IN_DAY_UNIT_IN_REDIS}
+  tokenRedirectUrl: ${JWT_TOKEN_REDIRECT_URL}
+
+kakao:
+  iss: ${KAKAO_ISS}
+  restApiKey: ${KAKAO_REST_API_KEY}
+  redirectUrl: ${KAKAO_REDIRECT_URL}
+  tokenUrl: ${KAKAO_TOKEN_URL}
+  openKeyMyselfUrl: ${KAKAO_OPENKEY_MYSELF_URL}
+  openKeyKakaoUrl: ${KAKAO_OPENKEY_KAKAO_URL}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    region:
+      static:
+        ${S3_REGION}
+    s3:
+      bucket:
+        ${S3_BUCKET}
+    stack:
+      auto: false
 ---
 spring:
   config:
@@ -63,15 +100,6 @@ spring:
   config:
     activate:
       on-profile: dev
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DEV_MYSQL_HOST}:${DEV_MYSQL_PORT}/${DEV_MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: ${DEV_MYSQL_ROOT_PASSWORD}
-  redis:
-    host: ${DEV_REDIS_HOST}
-    port: ${DEV_REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: update

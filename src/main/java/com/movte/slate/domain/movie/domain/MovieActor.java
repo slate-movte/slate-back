@@ -24,6 +24,7 @@ public class MovieActor {
     @JoinColumn(name = "actor_id")
     private Actor actor;
 
+    @Column(name = "`cast`")
     private String cast;
 
     @Builder
