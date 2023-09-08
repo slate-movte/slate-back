@@ -2,7 +2,7 @@ package com.movte.slate.domain.stillcut.application.service;
 
 import com.movte.slate.domain.stillcut.application.service.dto.StillCutResponseDto;
 import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
-import com.movte.slate.domain.stillcut.domain.StillCut;
+import com.movte.slate.domain.stillcut.domain.Snapshot;
 import com.movte.slate.domain.stillcut.repository.FindStillCutByUserPort;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.FindUserByIdPort;
@@ -31,11 +31,11 @@ public class SearchBunchOfSnapshotOfOwnerService {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
         }
         User findUser = idUserOpt.get();
-        List<StillCut> userStillCuts = findStillCutByUserPort.findByUser(findUser);
+        List<Snapshot> userSnapshots = findStillCutByUserPort.findByUser(findUser);
         List<StillCutResponseDto> stillCutResponseDtos = new ArrayList<>();
-        for(StillCut stillCut : userStillCuts){
-            stillCutResponseDtos.add(new StillCutResponseDto(stillCut.getStillCutId(),
-                    stillCut.getImageUrl()));
+        for(Snapshot snapshot : userSnapshots){
+            stillCutResponseDtos.add(new StillCutResponseDto(snapshot.getSnapshotId(),
+                    snapshot.getImageUrl()));
         }
         return SearchBunchOfSnapshotOfOwnerServiceResponse.builder().scenes(stillCutResponseDtos).build();
     }

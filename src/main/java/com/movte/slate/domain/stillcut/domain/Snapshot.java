@@ -16,11 +16,11 @@ import javax.persistence.*;
 @Table
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StillCut {
+public class Snapshot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stillCutId;
+    private Long snapshotId;
 
     private String imageUrl;
 
