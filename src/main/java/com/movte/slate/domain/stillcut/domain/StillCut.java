@@ -1,6 +1,6 @@
-package com.movte.slate.domain.snapshot.domain;
+package com.movte.slate.domain.stillcut.domain;
 
-import com.movte.slate.domain.movie.domain.Scene;
+import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

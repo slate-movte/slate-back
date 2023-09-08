@@ -2,10 +2,10 @@ package com.movte.slate.domain.snapshot.application.service;
 
 import static java.util.Objects.requireNonNull;
 
-import com.movte.slate.domain.movie.domain.Scene;
+import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.snapshot.application.service.request.InsertSnapShotServiceRequest;
 import com.movte.slate.domain.snapshot.application.service.response.InsertSnapShotServiceResponse;
-import com.movte.slate.domain.snapshot.domain.StillCut;
+import com.movte.slate.domain.stillcut.domain.StillCut;
 import com.movte.slate.domain.snapshot.repository.FindSceneByIdPort;
 import com.movte.slate.file.SaveSnapShotPort;
 import com.movte.slate.domain.snapshot.repository.SnapShotRepository;
