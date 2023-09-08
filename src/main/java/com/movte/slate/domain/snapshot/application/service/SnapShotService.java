@@ -19,8 +19,10 @@ import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class SnapShotService {
@@ -37,6 +39,7 @@ public class SnapShotService {
         User user = userOpt.get();
         requireNonNull(request.getFile());
         Optional<String> urlOpt = saveSnapShotPort.saveSnapShot(request.getFile(), userId);
+        log.info(request.getSceneId());
         if(urlOpt.isEmpty()){
             throw new ServerErrorException(ServerErrorExceptionCode.NETWORK_ERROR);
         }

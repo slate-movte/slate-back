@@ -21,7 +21,7 @@ public class SnapshotApi {
     private final SearchMovieTitleService searchMovieTitleService;
     private final SearchUserIdService searchUserIdService;
 
-    @GetMapping(value = "/snapshot")
+    @GetMapping(value = "/snapshot", params="title")
     public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>>
             searchBunchOfSnapshotWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
@@ -31,7 +31,7 @@ public class SnapshotApi {
         return ResponseFactory.success(searchMovieTitleServiceResponse);
     }
 
-    @GetMapping(value = "/snapshot")
+    @GetMapping(value = "/snapshot", params="id")
     public ResponseEntity<SuccessResponse<SearchBunchOfSnapshotOfOwnerServiceResponse>>
             searchBunchOfSnapshotOfOwner(@RequestParam("id") long ownerIdOfSnapshot, HttpServletRequest request) {
         //특정 유저의 snapshot을 찾는 것
