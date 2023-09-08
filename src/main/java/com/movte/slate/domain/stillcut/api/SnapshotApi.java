@@ -27,7 +27,7 @@ public class SnapshotApi {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
         SearchMovieTitleServiceResponse searchMovieTitleServiceResponse =
-                searchMovieTitleService.searchMovieTitle(title);
+                searchMovieTitleService.searchBunchOfSnapshotWithMovieTitle(title);
         return ResponseFactory.success(searchMovieTitleServiceResponse);
     }
 
@@ -38,7 +38,7 @@ public class SnapshotApi {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
         SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwnerServiceResponse =
-                searchUserIdService.searchUserId(userId, ownerIdOfSnapshot);
+                searchUserIdService.searchBunchOfSnapshotOfOwner(userId, ownerIdOfSnapshot);
         return ResponseFactory.success(searchBunchOfSnapshotOfOwnerServiceResponse);
     }
 

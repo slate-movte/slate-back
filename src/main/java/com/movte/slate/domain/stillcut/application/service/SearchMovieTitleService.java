@@ -19,7 +19,7 @@ public class SearchMovieTitleService {
     private final FindMovieByTitlePort findMovieByTitlePort;
     private final FindSceneByMoviePort findSceneByMoviePort;
 
-    public SearchMovieTitleServiceResponse searchMovieTitle(String title) {
+    public SearchMovieTitleServiceResponse searchBunchOfSnapshotWithMovieTitle(String title) {
         List<Movie> movies = findMovieByTitlePort.findByTitle(title);
         // 영화 데이터 한 개씩 뽑아서 response에 넣기
         List<MovieResponseDto> movieResponseDtos = new ArrayList<>();

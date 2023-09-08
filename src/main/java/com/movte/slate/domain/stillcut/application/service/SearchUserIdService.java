@@ -20,7 +20,7 @@ public class SearchUserIdService {
     private final FindUserByIdPort findUserByIdPort;
     private final FindStillCutByUserPort findStillCutByUserPort;
 
-    public SearchBunchOfSnapshotOfOwnerServiceResponse searchUserId(long userId, long findUserId) {
+    public SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwner(long userId, long findUserId) {
         Optional<User> userOpt = findUserByIdPort.findById(userId);
         if (userOpt.isEmpty()) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
