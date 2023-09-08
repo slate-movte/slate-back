@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SnapShotResponseDto {
+public class SceneResponseDto {
 
     private long sceneId;
     private String imageUrl;

@@ -1,6 +1,6 @@
 package com.movte.slate.domain.snapshot.application.service;
 
-import com.movte.slate.domain.snapshot.application.service.dto.StillCutResponseDto;
+import com.movte.slate.domain.snapshot.application.service.dto.SnapshotResponseDto;
 import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.snapshot.repository.FindStillCutByUserPort;
@@ -32,11 +32,11 @@ public class SearchBunchOfSnapshotOfOwnerService {
         }
         User findUser = idUserOpt.get();
         List<Snapshot> userSnapshots = findStillCutByUserPort.findByUser(findUser);
-        List<StillCutResponseDto> stillCutResponseDtos = new ArrayList<>();
+        List<SnapshotResponseDto> snapshotResponseDtos = new ArrayList<>();
         for(Snapshot snapshot : userSnapshots){
-            stillCutResponseDtos.add(new StillCutResponseDto(snapshot.getSnapshotId(),
+            snapshotResponseDtos.add(new SnapshotResponseDto(snapshot.getSnapshotId(),
                     snapshot.getImageUrl()));
         }
-        return SearchBunchOfSnapshotOfOwnerServiceResponse.builder().scenes(stillCutResponseDtos).build();
+        return SearchBunchOfSnapshotOfOwnerServiceResponse.builder().scenes(snapshotResponseDtos).build();
     }
 }

@@ -1,6 +1,6 @@
 package com.movte.slate.domain.snapshot.application.service.response;
 
-import com.movte.slate.domain.snapshot.application.service.dto.StillCutResponseDto;
+import com.movte.slate.domain.snapshot.application.service.dto.SnapshotResponseDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @AllArgsConstructor
 public class SearchBunchOfSnapshotOfOwnerServiceResponse {
-    List<StillCutResponseDto> scenes;
+    List<SnapshotResponseDto> scenes;
 
 }

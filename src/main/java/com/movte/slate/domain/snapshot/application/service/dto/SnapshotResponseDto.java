@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class StillCutResponseDto {
+public class SnapshotResponseDto {
     private final long id;
     private final String imageUrl;
 }

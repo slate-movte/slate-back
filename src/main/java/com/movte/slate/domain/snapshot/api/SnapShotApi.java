@@ -1,12 +1,12 @@
 package com.movte.slate.domain.snapshot.api;
 
 import com.movte.slate.domain.snapshot.application.service.SearchBunchOfSnapshotOfOwnerService;
-import com.movte.slate.domain.snapshot.application.service.SearchBunchOfSnapshotWithMovieTitleService;
+import com.movte.slate.domain.snapshot.application.service.SearchBunchOfSceneWithMovieTitleService;
 import com.movte.slate.domain.snapshot.application.service.SnapShotService;
 import com.movte.slate.domain.snapshot.application.service.request.InsertSnapShotServiceRequest;
 import com.movte.slate.domain.snapshot.application.service.response.InsertSnapShotServiceResponse;
 import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
-import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSceneWithMovieTitleServiceResponse;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
 import com.movte.slate.jwt.domain.JwtToken;
@@ -28,7 +28,7 @@ import java.util.List;
 public class SnapShotApi {
 
     private final SnapShotService snapShotService;
-    private final SearchBunchOfSnapshotWithMovieTitleService searchBunchOfSnapshotWithMovieTitleService;
+    private final SearchBunchOfSceneWithMovieTitleService searchBunchOfSceneWithMovieTitleService;
     private final SearchBunchOfSnapshotOfOwnerService searchBunchOfSnapshotOfOwnerService;
 
     @PostMapping(value = "/snapshot")
@@ -41,13 +41,13 @@ public class SnapShotApi {
     }
 
     @GetMapping(value = "/snapshot", params="title")
-    public ResponseEntity<SuccessResponse<SearchBunchOfSnapshotWithMovieTitleServiceResponse>>
+    public ResponseEntity<SuccessResponse<SearchBunchOfSceneWithMovieTitleServiceResponse>>
     searchBunchOfSnapshotWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
-        SearchBunchOfSnapshotWithMovieTitleServiceResponse searchBunchOfSnapshotWithMovieTitleServiceResponse =
-                searchBunchOfSnapshotWithMovieTitleService.searchBunchOfSnapshotWithMovieTitle(title);
-        return ResponseFactory.success(searchBunchOfSnapshotWithMovieTitleServiceResponse);
+        SearchBunchOfSceneWithMovieTitleServiceResponse searchBunchOfSceneWithMovieTitleServiceResponse =
+                searchBunchOfSceneWithMovieTitleService.searchBunchOfSceneWithMovieTitle(title);
+        return ResponseFactory.success(searchBunchOfSceneWithMovieTitleServiceResponse);
     }
 
     @GetMapping(value = "/snapshot", params="id")
