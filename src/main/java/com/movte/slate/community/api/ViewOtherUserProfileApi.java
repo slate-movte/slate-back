@@ -1,6 +1,6 @@
 package com.movte.slate.community.api;
 
-import com.movte.slate.community.application.response.ViewotherUserProfileServiceResponse;
+import com.movte.slate.community.application.response.ViewOtherUserProfileServiceResponse;
 import com.movte.slate.community.application.usecase.ViewOtherUserProfileUseCase;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 public class ViewOtherUserProfileApi {
-    private final JwtTokenFactory jwtTokenFactory;
     private final ViewOtherUserProfileUseCase viewOtherUserProfileUseCase;
+    private final JwtTokenFactory jwtTokenFactory;
 
     @GetMapping("/user/{other_user_id}/profile")
-    public ResponseEntity<SuccessResponse<ViewotherUserProfileServiceResponse>> viewOtherUserProfile(@PathVariable("other_user_id") long otherUserId) {
-        ViewotherUserProfileServiceResponse response = viewOtherUserProfileUseCase.viewOtherUserProfile(otherUserId);
+    public ResponseEntity<SuccessResponse<ViewOtherUserProfileServiceResponse>> viewOtherUserProfile(@PathVariable("other_user_id") long otherUserId, HttpServletRequest servletRequest) {
+        Long userId = jwtTokenFactory.create(servletRequest.getHeader("accessToken")).getUserId();
+        ViewOtherUserProfileServiceResponse response = viewOtherUserProfileUseCase.viewOtherUserProfile(userId, otherUserId);
         return ResponseFactory.success(response);
     }
+
 
 }

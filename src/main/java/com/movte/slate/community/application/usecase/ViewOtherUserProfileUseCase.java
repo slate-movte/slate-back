@@ -1,7 +1,8 @@
 package com.movte.slate.community.application.usecase;
 
-import com.movte.slate.community.application.response.ViewotherUserProfileServiceResponse;
+import com.movte.slate.community.application.response.ViewOtherUserProfileServiceResponse;
 
 public interface ViewOtherUserProfileUseCase {
-    ViewotherUserProfileServiceResponse viewOtherUserProfile(long otherUserId);
+
+    ViewOtherUserProfileServiceResponse viewOtherUserProfile(long userId, long otherUserId);
 }

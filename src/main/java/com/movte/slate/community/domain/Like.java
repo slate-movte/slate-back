@@ -2,10 +2,15 @@ package com.movte.slate.community.domain;
 
 import com.movte.slate.domain.common.BaseTimeEntity;
 import com.movte.slate.domain.user.domain.User;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "likes")
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +21,6 @@ public class Like extends BaseTimeEntity {
 
     @ManyToOne
     private Feed feed;
+
+
 }

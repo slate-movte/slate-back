@@ -1,14 +1,17 @@
 package com.movte.slate.domain.user.domain;
 
 
+import com.movte.slate.community.domain.Follow;
 import com.movte.slate.domain.common.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Table(
@@ -38,6 +41,12 @@ public class User extends BaseTimeEntity {
     @Builder.Default
     @Enumerated(value = EnumType.STRING)
     private UserState userState = UserState.APPROVED;
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followList;
+
+    @OneToMany(mappedBy = "followee")
+    private List<Follow> followedList;
+
 
     public boolean isPending() {
         return UserState.PENDING.equals(userState);

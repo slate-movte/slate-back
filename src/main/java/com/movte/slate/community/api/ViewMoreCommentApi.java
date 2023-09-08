@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequiredArgsConstructor
 public class ViewMoreCommentApi {
@@ -20,9 +18,8 @@ public class ViewMoreCommentApi {
     private final ViewMoreCommentUseCase viewMoreCommentUseCase;
 
     @GetMapping("/feed/{comments_feed_id}/comments")
-    public ResponseEntity<SuccessResponse<ViewMoreCommentServiceResponse>> getMoreComments(@PathVariable("comments_feed_id") long commentsFeedId, HttpServletRequest servletRequest) {
-        long userId = jwtTokenFactory.create(servletRequest.getHeader("accessToken")).getUserId();
-        ViewMoreCommentServiceResponse response = viewMoreCommentUseCase.viewMoreComments(userId, commentsFeedId);
+    public ResponseEntity<SuccessResponse<ViewMoreCommentServiceResponse>> getMoreComments(@PathVariable("comments_feed_id") long commentsFeedId) {
+        ViewMoreCommentServiceResponse response = viewMoreCommentUseCase.viewMoreComments(commentsFeedId);
         return ResponseFactory.success(response);
     }
 }
