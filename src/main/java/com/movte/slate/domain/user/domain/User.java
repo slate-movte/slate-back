@@ -1,10 +1,10 @@
 package com.movte.slate.domain.user.domain;
 
 
+import com.movte.slate.domain.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
                 )
         }
 )
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,10 +35,6 @@ public class User {
 
     @Column(length = 512)
     private String profileImageUrl;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
     @Builder.Default
     @Enumerated(value = EnumType.STRING)
     private UserState userState = UserState.APPROVED;
