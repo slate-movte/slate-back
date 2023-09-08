@@ -1,11 +1,11 @@
-package com.movte.slate.domain.stillcut.application.service;
+package com.movte.slate.domain.snapshot.application.service;
 
 import com.movte.slate.domain.movie.application.service.dto.MovieResponseDto;
 import com.movte.slate.domain.movie.domain.Movie;
 import com.movte.slate.domain.snapshot.application.service.dto.SnapShotResponseDto;
 import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.snapshot.repository.FindSceneByMoviePort;
-import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
 import com.movte.slate.domain.movie.repository.FindMovieByTitlePort;
 
 import java.util.ArrayList;

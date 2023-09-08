@@ -1,6 +1,6 @@
-package com.movte.slate.domain.stillcut.application.service.response;
+package com.movte.slate.domain.snapshot.application.service.response;
 
-import com.movte.slate.domain.stillcut.application.service.dto.StillCutResponseDto;
+import com.movte.slate.domain.snapshot.application.service.dto.StillCutResponseDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

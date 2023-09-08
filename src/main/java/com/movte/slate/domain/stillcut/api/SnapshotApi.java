@@ -1,9 +1,9 @@
 package com.movte.slate.domain.stillcut.api;
 
-import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotWithMovieTitleService;
-import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotOfOwnerService;
-import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
-import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
+import com.movte.slate.domain.snapshot.application.service.SearchBunchOfSnapshotWithMovieTitleService;
+import com.movte.slate.domain.snapshot.application.service.SearchBunchOfSnapshotOfOwnerService;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotWithMovieTitleServiceResponse;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
 import com.movte.slate.jwt.domain.JwtToken;

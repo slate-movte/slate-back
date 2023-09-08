@@ -1,9 +1,9 @@
-package com.movte.slate.domain.stillcut.application.service;
+package com.movte.slate.domain.snapshot.application.service;
 
-import com.movte.slate.domain.stillcut.application.service.dto.StillCutResponseDto;
-import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
-import com.movte.slate.domain.stillcut.domain.Snapshot;
-import com.movte.slate.domain.stillcut.repository.FindStillCutByUserPort;
+import com.movte.slate.domain.snapshot.application.service.dto.StillCutResponseDto;
+import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
+import com.movte.slate.domain.snapshot.repository.FindStillCutByUserPort;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.FindUserByIdPort;
 import com.movte.slate.global.exception.UnauthorizedException;

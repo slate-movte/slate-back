@@ -1,6 +1,6 @@
-package com.movte.slate.domain.stillcut.repository;
+package com.movte.slate.domain.snapshot.repository;
 
-import com.movte.slate.domain.stillcut.domain.Snapshot;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

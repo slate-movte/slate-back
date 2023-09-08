@@ -1,4 +1,4 @@
-package com.movte.slate.domain.stillcut.application.service.dto;
+package com.movte.slate.domain.snapshot.application.service.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

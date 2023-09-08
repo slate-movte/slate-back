@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.snapshot.application.service.request.InsertSnapShotServiceRequest;
 import com.movte.slate.domain.snapshot.application.service.response.InsertSnapShotServiceResponse;
-import com.movte.slate.domain.stillcut.domain.Snapshot;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.snapshot.repository.FindSceneByIdPort;
 import com.movte.slate.file.SaveSnapShotPort;
 import com.movte.slate.domain.snapshot.repository.SnapShotRepository;
