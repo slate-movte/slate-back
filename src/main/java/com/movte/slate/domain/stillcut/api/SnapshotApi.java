@@ -1,7 +1,7 @@
 package com.movte.slate.domain.stillcut.api;
 
-import com.movte.slate.domain.stillcut.application.service.SearchMovieTitleService;
-import com.movte.slate.domain.stillcut.application.service.SearchUserIdService;
+import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotWithMovieTitleService;
+import com.movte.slate.domain.stillcut.application.service.SearchBunchOfSnapshotOfOwnerService;
 import com.movte.slate.domain.stillcut.application.service.response.SearchMovieTitleServiceResponse;
 import com.movte.slate.domain.stillcut.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.global.response.ResponseFactory;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SnapshotApi {
 
-    private final SearchMovieTitleService searchMovieTitleService;
-    private final SearchUserIdService searchUserIdService;
+    private final SearchBunchOfSnapshotWithMovieTitleService searchBunchOfSnapshotWithMovieTitleService;
+    private final SearchBunchOfSnapshotOfOwnerService searchBunchOfSnapshotOfOwnerService;
 
     @GetMapping(value = "/snapshot", params="title")
     public ResponseEntity<SuccessResponse<SearchMovieTitleServiceResponse>>
@@ -27,7 +27,7 @@ public class SnapshotApi {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
         SearchMovieTitleServiceResponse searchMovieTitleServiceResponse =
-                searchMovieTitleService.searchBunchOfSnapshotWithMovieTitle(title);
+                searchBunchOfSnapshotWithMovieTitleService.searchBunchOfSnapshotWithMovieTitle(title);
         return ResponseFactory.success(searchMovieTitleServiceResponse);
     }
 
@@ -38,7 +38,7 @@ public class SnapshotApi {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
         Long userId = accessToken.getUserId();
         SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwnerServiceResponse =
-                searchUserIdService.searchBunchOfSnapshotOfOwner(userId, ownerIdOfSnapshot);
+                searchBunchOfSnapshotOfOwnerService.searchBunchOfSnapshotOfOwner(userId, ownerIdOfSnapshot);
         return ResponseFactory.success(searchBunchOfSnapshotOfOwnerServiceResponse);
     }
 

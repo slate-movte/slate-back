@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SearchUserIdService {
+public class SearchBunchOfSnapshotOfOwnerService {
     private final FindUserByIdPort findUserByIdPort;
     private final FindStillCutByUserPort findStillCutByUserPort;
 
