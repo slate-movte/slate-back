@@ -1,18 +1,12 @@
 package com.movte.slate.domain.attraction.domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -64,8 +58,8 @@ public class Attraction {
 
     @Builder
     public Attraction(String title, Integer contentTypeId, Long contentId, String firstImage,
-        String secondImage, String tel, String homepage, String overview, Address address,
-        AttractionType type, String treatMenu, String openTime, String restDate) {
+                      String secondImage, String tel, String homepage, String overview, Address address,
+                      AttractionType type, String treatMenu, String openTime, String restDate) {
         this.title = title;
         this.contentTypeId = contentTypeId;
         this.contentId = contentId;
