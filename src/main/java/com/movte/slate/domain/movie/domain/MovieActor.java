@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name="movie_actor")
+@Table(name = "movie_actor")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MovieActor {
     @Id

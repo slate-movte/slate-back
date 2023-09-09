@@ -15,11 +15,6 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
 
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-
 jwt:
   secretKey: ${JWT_SECRETKEY}
   accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
@@ -61,12 +56,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+    defer-datasource-initialization: true
   datasource:
     url: jdbc:h2:mem:~/testdb;NON_KEYWORDS=USER
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
+
+
 
   sql:
     init:
