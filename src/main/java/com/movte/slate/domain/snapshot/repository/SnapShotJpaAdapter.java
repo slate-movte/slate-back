@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class StillCutJpaAdapter implements FindStillCutByUserPort {
-    private final StillCutRespository stillCutRespository;
+public class SnapShotJpaAdapter implements FindSnapShotByUserPort {
+    private final SnapShotRepository snapShotRepository;
 
     @Override
     public List<Snapshot> findByUser(User findUser) {
-        return stillCutRespository.findByUser(findUser);
+        return snapShotRepository.findByUser(findUser);
     }
 }

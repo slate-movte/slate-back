@@ -22,7 +22,6 @@ public class SceneApi {
     public ResponseEntity<SuccessResponse<SearchBunchOfSceneWithMovieTitleServiceResponse>>
     searchBunchOfSceneWithMovieTitle(@RequestParam("title") String title, HttpServletRequest request) {
         JwtToken accessToken = (JwtToken) request.getAttribute("accessToken");
-        Long userId = accessToken.getUserId(); //todo : 왜 이거 있는지 물어봐야 함.
         SearchBunchOfSceneWithMovieTitleServiceResponse searchBunchOfSceneWithMovieTitleServiceResponse =
                 searchBunchOfSceneWithMovieTitleService.searchBunchOfSceneWithMovieTitle(title);
         return ResponseFactory.success(searchBunchOfSceneWithMovieTitleServiceResponse);
