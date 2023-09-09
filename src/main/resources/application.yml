@@ -4,10 +4,6 @@ spring:
   config:
     import:
       - optional:.env.properties
-  jpa:
-    properties:
-      hibernate:
-        default_batch_fetch_size: 100 # batch size 최적화 추후 예정
 
 
   datasource:
@@ -24,6 +20,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 100 #배치 최적화 추후 예정
 
 jwt:
   secretKey: ${JWT_SECRETKEY}

@@ -5,5 +5,7 @@ import java.util.List;
 
 public interface MovieQueryRepository {
 
-    List<Movie> selectListMovieAndActorByKeywordAndLastId(String keyword, Long lastId);
+    List<Movie> selectListMovieWithActorByKeywordAndLastId(String keyword, Long lastId);
+
+    Movie selectMovieWithActorAndScene(Long movieId);
 }

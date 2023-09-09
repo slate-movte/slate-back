@@ -4,6 +4,7 @@ package com.movte.slate.domain.movie.repository;
 import static com.movte.slate.domain.movie.domain.QActor.actor;
 import static com.movte.slate.domain.movie.domain.QMovie.movie;
 import static com.movte.slate.domain.movie.domain.QMovieActor.movieActor;
+import static com.movte.slate.domain.snapshot.domain.QScene.scene;
 
 import com.movte.slate.domain.movie.domain.Movie;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,7 +21,7 @@ public class MovieQueryRepositoryImpl implements MovieQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Movie> selectListMovieAndActorByKeywordAndLastId(String keyword, Long lastId) {
+    public List<Movie> selectListMovieWithActorByKeywordAndLastId(String keyword, Long lastId) {
         return queryFactory.select(movie)
             .from(movie)
             .leftJoin(movie.movieActors, movieActor)
@@ -30,6 +31,17 @@ public class MovieQueryRepositoryImpl implements MovieQueryRepository {
             .orderBy(movie.movieId.asc())
             .limit(10)
             .fetch();
+    }
+
+    @Override
+    public Movie selectMovieWithActorAndScene(Long movieId) {
+        return queryFactory.select(movie)
+            .from(movie)
+            .leftJoin(movie.movieActors, movieActor)
+            .leftJoin(movieActor.actor, actor)
+            .leftJoin(movie.scenes, scene)
+            .where(movie.movieId.eq(movieId))
+            .fetchOne();
     }
 
     private BooleanExpression isSearchKeyword(String keyword) {

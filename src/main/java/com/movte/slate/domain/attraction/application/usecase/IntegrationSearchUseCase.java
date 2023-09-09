@@ -41,7 +41,7 @@ public class IntegrationSearchUseCase {
         }
 
         if (isContinueSearchMovie(lastMovieId)) {
-            List<Movie> queryResult = movieRepository.selectListMovieAndActorByKeywordAndLastId(
+            List<Movie> queryResult = movieRepository.selectListMovieWithActorByKeywordAndLastId(
                 keyword, lastMovieId);
             movieList.addAll(queryResult);
         }
