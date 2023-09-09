@@ -3,7 +3,7 @@ package com.movte.slate.domain.snapshot.application.service;
 import com.movte.slate.domain.snapshot.application.service.dto.SnapshotResponseDto;
 import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSnapshotOfOwnerServiceResponse;
 import com.movte.slate.domain.snapshot.domain.Snapshot;
-import com.movte.slate.domain.snapshot.repository.FindStillCutByUserPort;
+import com.movte.slate.domain.snapshot.repository.FindSnapShotByUserPort;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.FindUserByIdPort;
 import com.movte.slate.global.exception.UnauthorizedException;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SearchBunchOfSnapshotOfOwnerService {
     private final FindUserByIdPort findUserByIdPort;
-    private final FindStillCutByUserPort findStillCutByUserPort;
+    private final FindSnapShotByUserPort findSnapShotByUserPort;
 
     public SearchBunchOfSnapshotOfOwnerServiceResponse searchBunchOfSnapshotOfOwner(long userId, long findUserId) {
         Optional<User> userOpt = findUserByIdPort.findById(userId);
@@ -31,7 +31,7 @@ public class SearchBunchOfSnapshotOfOwnerService {
             throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_USER);
         }
         User findUser = idUserOpt.get();
-        List<Snapshot> userSnapshots = findStillCutByUserPort.findByUser(findUser);
+        List<Snapshot> userSnapshots = findSnapShotByUserPort.findByUser(findUser);
         List<SnapshotResponseDto> snapshotResponseDtos = new ArrayList<>();
         for(Snapshot snapshot : userSnapshots){
             snapshotResponseDtos.add(new SnapshotResponseDto(snapshot.getSnapshotId(),
