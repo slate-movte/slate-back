@@ -24,6 +24,7 @@ public class IntegrationSearchUseCase {
 
     private final AttractionRepository attractionRepository;
     private final MovieRepository movieRepository;
+    private final Long LAST_ID = -1L;
 
     @Transactional(readOnly = true)
     public IntegrationSearchResponseDto search(IntegrationSearchRequestDto requestDto) {
@@ -52,10 +53,10 @@ public class IntegrationSearchUseCase {
     }
 
     private boolean isContinueSearchAttraction(Long lastAttractionId) {
-        return !lastAttractionId.equals(-1L);
+        return !lastAttractionId.equals(LAST_ID);
     }
 
     private boolean isContinueSearchMovie(Long lastMovieId) {
-        return !lastMovieId.equals(-1L);
+        return !lastMovieId.equals(LAST_ID);
     }
 }
