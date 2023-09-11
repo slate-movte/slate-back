@@ -1,5 +1,6 @@
 package com.movte.slate.community.repository;
 
+import com.movte.slate.community.application.port.SaveCommentPort;
 import com.movte.slate.community.application.port.ViewCommentPort;
 import com.movte.slate.community.domain.Comment;
 import com.movte.slate.community.domain.Feed;
@@ -10,12 +11,17 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CommentJpaAdapter implements ViewCommentPort {
+public class CommentJpaAdapter implements ViewCommentPort, SaveCommentPort {
     private final CommentJpaRepository commentJpaRepository;
 
     @Override
     public List<Comment> view(long feedId) {
         Feed feed = Feed.builder().id(feedId).build();
         return commentJpaRepository.findCommentByFeed(feed);
+    }
+
+    @Override
+    public Comment save(Comment comment) {
+        return commentJpaRepository.save(comment);
     }
 }
