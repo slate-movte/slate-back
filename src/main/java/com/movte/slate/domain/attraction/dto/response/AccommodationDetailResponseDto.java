@@ -4,6 +4,7 @@ import com.movte.slate.domain.attraction.domain.Attraction;
 import com.movte.slate.domain.attraction.domain.AttractionType;
 import com.movte.slate.global.exception.BadRequestException;
 import com.movte.slate.global.exception.BadRequestExceptionCode;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,12 +43,15 @@ public class AccommodationDetailResponseDto {
         if (!attraction.getType().equals(AttractionType.ACCOMMODATION)) {
             throw new BadRequestException(BadRequestExceptionCode.NOT_MATCH_ATTRACTION);
         }
+        List<String> images = new ArrayList<>();
+        images.add(attraction.getFirstImage());
+        images.add(attraction.getSecondImage());
 
         return AccommodationDetailResponseDto.builder()
             .id(attraction.getId())
             .title(attraction.getTitle())
             .tel(attraction.getTel())
-            .images(List.of(attraction.getFirstImage(), attraction.getSecondImage()))
+            .images(images)
             .homepage(attraction.getHomepage())
             .overview(attraction.getOverview())
             .type(attraction.getType())

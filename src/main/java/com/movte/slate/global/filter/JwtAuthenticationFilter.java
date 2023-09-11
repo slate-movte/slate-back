@@ -10,10 +10,14 @@ import com.movte.slate.domain.user.domain.UserState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -37,11 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestUriValue = request.getServletPath(); // 프로젝트 아래 경로만 가져옴
-        RequestUri requestUri = new RequestUri(requestUriValue);
-        if (requestUri.canAccessWithoutAccessToken()) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        RequestUri requestUri = new RequestUri(requestUriValue); // 필요없으니 주석함 제거 바람.
+//        if (requestUri.canAccessWithoutAccessToken()) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         String tokenString = extractTokenStringUseCase.extractTokenString(authorizationHeader);
         JwtToken accessToken = createJwtTokenUseCase.create(tokenString);
@@ -106,5 +110,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String isTokenInRedis(String tokenString) {
         return redisTemplate.opsForValue().get(tokenString);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        List<RequestMatcher> permitList = List.of(
+            new AntPathRequestMatcher("/user/login", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/user/tokens", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
+            new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/helper/login*", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/search/**", HttpMethod.GET.name())
+        );
+        OrRequestMatcher skipList = new OrRequestMatcher(permitList);
+        return skipList.matches(request);
     }
 }
