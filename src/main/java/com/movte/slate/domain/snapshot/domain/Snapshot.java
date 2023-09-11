@@ -1,6 +1,5 @@
 package com.movte.slate.domain.snapshot.domain;
 
-import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.user.domain.User;
 import lombok.*;
 

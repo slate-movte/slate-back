@@ -1,6 +1,7 @@
 package com.movte.slate.domain.snapshot.repository;
 
-import com.movte.slate.community.application.port.FindSnapshotByIdPort;
+import com.movte.slate.domain.community.application.port.FindSnapshotByIdPort;
+import com.movte.slate.domain.snapshot.application.port.FindSnapShotByUserPort;
 import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;

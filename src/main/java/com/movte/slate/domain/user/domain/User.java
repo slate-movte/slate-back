@@ -1,8 +1,8 @@
 package com.movte.slate.domain.user.domain;
 
 
-import com.movte.slate.community.domain.Follow;
 import com.movte.slate.domain.common.BaseTimeEntity;
+import com.movte.slate.domain.community.domain.Follow;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -46,11 +46,7 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "followee")
     private List<Follow> followedList;
-
-
-    public boolean isPending() {
-        return UserState.PENDING.equals(userState);
-    }
+    private boolean isDeleted;
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
@@ -58,5 +54,9 @@ public class User extends BaseTimeEntity {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void withdrawal() {
+        this.isDeleted = true;
     }
 }

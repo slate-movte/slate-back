@@ -2,6 +2,8 @@ package com.movte.slate.domain.snapshot.repository;
 
 
 import com.movte.slate.domain.movie.domain.Movie;
+import com.movte.slate.domain.snapshot.application.port.FindSceneByIdPort;
+import com.movte.slate.domain.snapshot.application.port.FindSceneByMoviePort;
 import com.movte.slate.domain.snapshot.domain.Scene;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SceneJpaAdapter implements FindSceneByIdPort, FindSceneByMoviePort{
+public class SceneJpaAdapter implements FindSceneByIdPort, FindSceneByMoviePort {
     private final SceneRepository sceneRepository;
 
     @Override

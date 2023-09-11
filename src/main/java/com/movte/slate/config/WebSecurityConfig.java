@@ -1,7 +1,7 @@
 package com.movte.slate.config;
 
-import com.movte.slate.jwt.JwtAuthenticationFilter;
-import com.movte.slate.jwt.JwtExceptionHandlerFilter;
+import com.movte.slate.global.filter.JwtAuthenticationFilter;
+import com.movte.slate.global.filter.JwtExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;

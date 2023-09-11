@@ -4,7 +4,7 @@ import com.movte.slate.domain.movie.application.service.dto.MovieResponseDto;
 import com.movte.slate.domain.movie.domain.Movie;
 import com.movte.slate.domain.snapshot.application.service.dto.SceneResponseDto;
 import com.movte.slate.domain.snapshot.domain.Scene;
-import com.movte.slate.domain.snapshot.repository.FindSceneByMoviePort;
+import com.movte.slate.domain.snapshot.application.port.FindSceneByMoviePort;
 import com.movte.slate.domain.snapshot.application.service.response.SearchBunchOfSceneWithMovieTitleServiceResponse;
 import com.movte.slate.domain.movie.repository.FindMovieByTitlePort;
 
