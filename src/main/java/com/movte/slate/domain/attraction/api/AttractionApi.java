@@ -1,7 +1,10 @@
 package com.movte.slate.domain.attraction.api;
 
+import com.movte.slate.domain.attraction.application.usecase.IntegrationSearchUseCase;
+import com.movte.slate.domain.attraction.dto.request.IntegrationSearchRequestDto;
 import com.movte.slate.domain.attraction.dto.request.MapSearchDetailRequestDto;
 import com.movte.slate.domain.attraction.dto.request.MapSearchRequestDto;
+import com.movte.slate.domain.attraction.dto.response.IntegrationSearchResponseDto;
 import com.movte.slate.domain.attraction.dto.response.MapSearchResponseDto;
 import com.movte.slate.domain.attraction.application.usecase.AttractionSearchUseCase;
 import com.movte.slate.global.response.ResponseFactory;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AttractionApi {
 
     private final AttractionSearchUseCase attractionSearchUseCase;
+    private final IntegrationSearchUseCase integrationSearchUseCase;
 
     @GetMapping("/map/search")
     public ResponseEntity<?> mapSearch(@Validated MapSearchRequestDto requestDto) {
@@ -30,6 +34,13 @@ public class AttractionApi {
     public ResponseEntity<?> mapSearchDetails(@Validated MapSearchDetailRequestDto requestDto) {
         return ResponseFactory.success(attractionSearchUseCase.searchMapAttractionList(requestDto));
     }
+
+    @GetMapping("/search")
+    private ResponseEntity<?> searchAttractionAndMovie(@Validated IntegrationSearchRequestDto dto) {
+        IntegrationSearchResponseDto result = integrationSearchUseCase.search(dto);
+        return ResponseFactory.success(result);
+    }
+
 
     @GetMapping("/search/restaurant/{id}")
     public ResponseEntity<?> searchRestaurant(@PathVariable("id") Long id) {

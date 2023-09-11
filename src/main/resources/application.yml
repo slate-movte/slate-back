@@ -5,6 +5,7 @@ spring:
     import:
       - optional:.env.properties
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=UTC&characterEncoding=UTF-8
@@ -19,6 +20,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 100 #배치 최적화 추후 예정
 
 jwt:
   secretKey: ${JWT_SECRETKEY}

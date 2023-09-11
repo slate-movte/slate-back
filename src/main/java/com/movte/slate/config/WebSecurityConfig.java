@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,8 +38,10 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(requests -> {
-                    requests.requestMatchers(new AntPathRequestMatcher("/")).authenticated(); // 그 외에는 인증된 사용자만 허락
-                    requests.requestMatchers(new AntPathRequestMatcher("/oidc/kakao")).permitAll(); // 로그인 경로는 모든 사용자에게 허락
+                    requests.antMatchers(HttpMethod.GET, "/user/info").authenticated();
+                    requests.antMatchers(HttpMethod.PATCH, "/user/info").authenticated();
+                    requests.antMatchers("/snapshot*").authenticated();
+                    requests.requestMatchers(new AntPathRequestMatcher("/*")).permitAll(); // 로그인 경로는 모든 사용자에게 허락
                 })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 쓸 때 사용

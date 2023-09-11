@@ -54,6 +54,9 @@ public class RestaurantDetailResponseDto {
         if (!attraction.getType().equals(AttractionType.RESTAURANT)) {
             throw new BadRequestException(BadRequestExceptionCode.NOT_MATCH_ATTRACTION);
         }
+        List<String> images = new ArrayList<>();
+        images.add(attraction.getFirstImage());
+        images.add(attraction.getSecondImage());
         List<String> menuList = new ArrayList<>();
         String treatMenu = attraction.getTreatMenu();
 
@@ -65,7 +68,7 @@ public class RestaurantDetailResponseDto {
             .id(attraction.getId())
             .title(attraction.getTitle())
             .tel(attraction.getTel())
-            .images(List.of(attraction.getFirstImage(), attraction.getSecondImage()))
+            .images(images)
             .homepage(attraction.getHomepage())
             .overview(attraction.getOverview())
             .type(attraction.getType())
