@@ -1,4 +1,4 @@
-package com.movte.slate.domain.stillcut.domain;
+package com.movte.slate.domain.snapshot.domain;
 
 import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.user.domain.User;
@@ -12,11 +12,11 @@ import javax.persistence.*;
 @Table
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StillCut {
+public class Snapshot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stillCutId;
+    private Long snapshotId;
 
     private String imageUrl;
 

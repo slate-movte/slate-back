@@ -1,6 +1,6 @@
 package com.movte.slate.domain.movie.application.service.dto;
 
-import com.movte.slate.domain.snapshot.application.service.dto.SnapShotResponseDto;
+import com.movte.slate.domain.snapshot.application.service.dto.SceneResponseDto;
 import lombok.*;
 
 import java.util.List;
@@ -12,5 +12,5 @@ import java.util.List;
 public class MovieResponseDto {
     private Long id;
     private String title;
-    private List<SnapShotResponseDto> scenes;
+    private List<SceneResponseDto> scenes;
 }
