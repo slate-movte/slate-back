@@ -8,7 +8,6 @@ import com.movte.slate.global.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewOtherUserFeedsApi {
     private final ViewOtherUserFeedsUseCase viewOtherUserFeedsUseCase;
 
-    @GetMapping("/user/{other_user_id}/feeds")
-    public ResponseEntity<SuccessResponse<ViewOtherUserFeedsServiceResponse>> viewOtherUserFeeds(@PathVariable("other_user_id") long otherUserId, ViewOtherUserFeedsApiRequest request) {
+    @GetMapping("/user/feeds")
+    public ResponseEntity<SuccessResponse<ViewOtherUserFeedsServiceResponse>> viewOtherUserFeeds(ViewOtherUserFeedsApiRequest request) {
         ViewOtherUserFeedsServiceResponse response = viewOtherUserFeedsUseCase.view(request.toServiceRequest());
         return ResponseFactory.success(response);
     }

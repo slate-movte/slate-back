@@ -45,6 +45,6 @@ public class FeedJpaAdapter implements FindFeedByIdPort,
 
     @Override
     public Feed save(Feed feed) {
-        return null;
+        return feedJpaRepository.save(feed);
     }
 }

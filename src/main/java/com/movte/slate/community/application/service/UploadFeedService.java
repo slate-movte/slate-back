@@ -6,7 +6,7 @@ import com.movte.slate.community.application.request.UploadFeedServiceRequest;
 import com.movte.slate.community.application.response.UploadFeedServiceResponse;
 import com.movte.slate.community.application.usecase.UploadFeedUseCase;
 import com.movte.slate.community.domain.Feed;
-import com.movte.slate.domain.stillcut.domain.StillCut;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.global.exception.BadRequestException;
 import com.movte.slate.global.exception.BadRequestExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class UploadFeedService implements UploadFeedUseCase {
         Feed feed = serviceRequest.toFeed();
         feed = saveFeedPort.save(feed);
         long snapshotId = serviceRequest.getSnapshotId();
-        StillCut snapshot = findSnapshotByIdPort.find(snapshotId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
+        Snapshot snapshot = findSnapshotByIdPort.find(snapshotId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
         feed.setSnapshot(snapshot);
         return new UploadFeedServiceResponse(feed.getId());
     }

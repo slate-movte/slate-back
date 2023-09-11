@@ -1,7 +1,7 @@
 package com.movte.slate.community.domain;
 
 import com.movte.slate.domain.common.BaseTimeEntity;
-import com.movte.slate.domain.stillcut.domain.StillCut;
+import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.user.domain.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,13 +22,13 @@ public class Feed extends BaseTimeEntity {
     @ManyToOne
     private User writer;
     @OneToOne
-    private StillCut stillCut;
+    private Snapshot snapshot;
 
     public Long getId() {
         return id;
     }
 
-    public void setSnapshot(StillCut stillCut) {
-        this.stillCut = stillCut;
+    public void setSnapshot(Snapshot snapshot) {
+        this.snapshot = snapshot;
     }
 }

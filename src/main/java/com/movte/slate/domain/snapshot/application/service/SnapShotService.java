@@ -5,7 +5,7 @@ import com.movte.slate.domain.snapshot.application.service.response.InsertSnapSh
 import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.snapshot.domain.Snapshot;
 import com.movte.slate.domain.snapshot.repository.FindSceneByIdPort;
-import com.movte.slate.domain.snapshot.repository.SnapShotRepository;
+import com.movte.slate.domain.snapshot.repository.SnapShotJpaRepository;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.FindUserByIdPort;
 import com.movte.slate.file.SaveSnapShotFilePort;
@@ -23,7 +23,7 @@ public class SnapShotService {
     private final FindUserByIdPort findUserByIdPort;
     private final SaveSnapShotFilePort saveSnapShotFilePort;
     private final FindSceneByIdPort findSceneByIdPort;
-    private final SnapShotRepository snapShotRepository;
+    private final SnapShotJpaRepository snapShotJpaRepository;
 
     public InsertSnapShotServiceResponse insertSnapshot(long userId, InsertSnapShotServiceRequest request) {
         Optional<User> userOpt = findUserByIdPort.findById(userId);
@@ -46,7 +46,7 @@ public class SnapShotService {
                 .imageUrl(url)
                 .scene(scene.get())
                 .build();
-        snapShotRepository.save(snapshot);
+        snapShotJpaRepository.save(snapshot);
         return new InsertSnapShotServiceResponse(url);
     }
 }
