@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetKakaoPublicKeyFromKakaoService implements GetKakaoPublicKeyFromKakaoUseCase {
     private final GetDataFromInternetUseCase getDataFromInternetUseCase;
-    @Value("${kakao.publickeyurl}")
+    @Value("${kakao.openKeyKakaoUrl}")
     private String KAKAO_URL;
 
     @Override

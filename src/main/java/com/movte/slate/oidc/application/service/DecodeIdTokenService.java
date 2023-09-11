@@ -34,7 +34,7 @@ public class DecodeIdTokenService implements DecodeIdTokenUseCase {
     private final GetKakaoPublicKeyFromMyselfUseCase getKakaoPublicKeyFromMyselfUseCase;
     @Value("${kakao.iss}")
     private String iss;
-    @Value("${kakao.restapikey}")
+    @Value("${kakao.restApiKey}")
     private String restApiKey;
 
     @Override

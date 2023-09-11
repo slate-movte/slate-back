@@ -1,4 +1,4 @@
-package com.movte.slate.domain.snapshot.application.service.dto;
+package com.movte.slate.domain.snapshot.application.service.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

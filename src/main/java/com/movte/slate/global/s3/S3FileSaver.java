@@ -15,9 +15,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class S3FileSaver {
     private final AmazonS3Client amazonS3Client;
-    @Value("${s3.bucket}")
+    @Value("${cloud.aws.region.static}")
     private String bucket;
-    @Value("${s3.region}")
+    @Value("${cloud.aws.s3.bucket}")
     private String region;
 
     public String save(MultipartFile file, String path, String fileName, String fileType) {
