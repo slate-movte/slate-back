@@ -1,16 +1,22 @@
 package com.movte.slate.community.application.response;
 
-import com.movte.slate.community.domain.Feed;
-import com.movte.slate.domain.user.domain.User;
+import com.movte.slate.community.domain.Comment;
+import lombok.Getter;
 
-import javax.persistence.Lob;
+import java.time.LocalDateTime;
 
+@Getter
 public class AddCommentServiceResponse {
 
-    private Long id;
-    private User writerId;
-    private Feed feed;
+    private final long commentId;
+    private final LocalDateTime createdAt;
+    private final long feedId;
+    private final String commentContent;
 
-    @Lob
-    private String content;
+    public AddCommentServiceResponse(Comment comment) {
+        this.commentId = comment.getId();
+        this.createdAt = comment.getCreated_at();
+        this.feedId = comment.getFeed().getId();
+        this.commentContent = comment.getContent();
+    }
 }

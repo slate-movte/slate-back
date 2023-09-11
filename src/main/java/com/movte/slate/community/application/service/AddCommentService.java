@@ -33,7 +33,6 @@ public class AddCommentService implements AddCommentUseCase {
                 .feed(feed)
                 .content(content).build();
         comment = saveCommentPort.save(comment);
-        AddCommentServiceResponse
-        return null;
+        return new AddCommentServiceResponse(comment);
     }
 }
