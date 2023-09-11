@@ -5,7 +5,6 @@ import com.movte.slate.domain.user.application.service.dto.response.LoginRespons
 import com.movte.slate.domain.user.domain.OauthProvider;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.domain.user.repository.UserRepository;
-import com.movte.slate.global.exception.NotFoundException;
 import com.movte.slate.jwt.JwtTokenIssuer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class DevelopLoginHelper {
+public class LoginForDevelopUseCase {
 
     private final UserRepository userRepository;
     private final JwtTokenIssuer jwtTokenIssuer;
