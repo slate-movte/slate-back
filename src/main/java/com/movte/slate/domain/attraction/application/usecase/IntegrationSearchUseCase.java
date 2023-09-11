@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class IntegrationSearchUseCase {
 
     private final AttractionRepository attractionRepository;
     private final MovieRepository movieRepository;
     private final Long LAST_ID = -1L;
 
-    @Transactional(readOnly = true)
     public IntegrationSearchResponseDto search(IntegrationSearchRequestDto requestDto) {
         List<Attraction> attractionList = new ArrayList<>();
         List<Movie> movieList = new ArrayList<>();
