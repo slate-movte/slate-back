@@ -31,6 +31,11 @@ public class JwtToken {
         return body.getExpiration().before(now);
     }
 
+    public Date getExpiredAt() {
+        Claims body = claimsJws.getBody();
+        return body.getExpiration();
+    }
+
     public boolean isAccessToken() {
         String type = claimsJws.getHeader().get("type").toString();
         return ACCESS.equals(type);

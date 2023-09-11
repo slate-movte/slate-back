@@ -1,8 +1,8 @@
 package com.movte.slate.domain.user.api;
 
 
-import com.movte.slate.domain.user.application.service.LoginForDevelopUseCase;
-import com.movte.slate.domain.user.application.service.dto.response.LoginResponse;
+import com.movte.slate.domain.user.application.service.response.LoginServiceResponse;
+import com.movte.slate.domain.user.application.usecase.LoginForDevelopUseCase;
 import com.movte.slate.global.response.ResponseFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -24,10 +24,9 @@ public class DevelopLoginApi {
         if (!isLocalProfiles(environment.getActiveProfiles())) {
             return ResponseFactory.fail(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
-        LoginResponse result = loginForDevelopUseCase.login(oauthId);
-        return ResponseFactory.success(result);
+        LoginServiceResponse response = loginForDevelopUseCase.login(oauthId);
+        return ResponseFactory.success(response);
     }
-
 
     private boolean isLocalProfiles(String[] profiles) {
         for (String profile : profiles) {
@@ -37,6 +36,4 @@ public class DevelopLoginApi {
         }
         return true;
     }
-
-
 }

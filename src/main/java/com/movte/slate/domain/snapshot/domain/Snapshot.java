@@ -1,12 +1,7 @@
 package com.movte.slate.domain.snapshot.domain;
 
-import com.movte.slate.domain.snapshot.domain.Scene;
 import com.movte.slate.domain.user.domain.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -31,4 +26,6 @@ public class Snapshot {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+
 }
