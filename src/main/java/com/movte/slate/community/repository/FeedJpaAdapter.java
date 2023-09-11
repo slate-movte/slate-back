@@ -1,9 +1,15 @@
 package com.movte.slate.community.repository;
 
-import com.movte.slate.community.application.port.*;
+import com.movte.slate.community.application.port.FindFeedByIdPort;
+import com.movte.slate.community.application.port.FindFeedPageByUserInRangePort;
+import com.movte.slate.community.application.port.FindFirstFeedPageByUserPort;
+import com.movte.slate.community.application.port.SaveFeedPort;
 import com.movte.slate.community.domain.Feed;
 import com.movte.slate.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,31 +19,28 @@ import java.util.Optional;
 @Component
 public class FeedJpaAdapter implements FindFeedByIdPort,
         FindFirstFeedPageByUserPort,
-        CheckThatOtherUserIsFollowedByUserPort,
         FindFeedPageByUserInRangePort,
         SaveFeedPort {
     private final FeedJpaRepository feedJpaRepository;
 
 
     @Override
-    public Optional<Feed> find(long feedId) {
+    public Optional<Feed> findById(long feedId) {
         return feedJpaRepository.findById(feedId);
     }
 
     @Override
-    public List<Feed> find(User otherUser, int pageSize) {
-        return null;
+    public Page<Feed> findFirstFeedPageByUserPort(User otherUser, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest = PageRequest.of(0, pageSize, sort);
+        return feedJpaRepository.findAll(pageRequest);
     }
 
     @Override
-    public boolean check(User user, User otherUser) {
-        return false;
-    }
-
-    @Override
-    public List<Feed> find(User user, long lastFeedId, long pageSize) {
-        // lastFeedId 부터 pageSize까지의 데이터를 가져온다.
-        return null;
+    public List<Feed> findFeedPageByUserInRange(User writer, long lastFeedId, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(0, pageSize);
+        Page<Feed> feeds = feedJpaRepository.findByWriterAndIdLessThan(writer, lastFeedId, pageRequest);
+        return feeds.stream().toList();
     }
 
     @Override

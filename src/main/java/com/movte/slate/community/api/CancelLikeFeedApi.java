@@ -25,5 +25,4 @@ public class CancelLikeFeedApi {
         cancelLikeUseCase.cancel(userId, likedFeedId);
         return ResponseFactory.successWithoutData("게시글을 Like하는데 성공했습니다.");
     }
-
 }

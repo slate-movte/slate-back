@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface FindFeedByIdPort {
 
-    Optional<Feed> find(long likedFeedId);
+    Optional<Feed> findById(long feedId);
 }

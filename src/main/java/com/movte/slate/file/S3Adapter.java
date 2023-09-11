@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 @RequiredArgsConstructor
-public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort {
+public class S3Adapter implements SaveProfileImagePort, SaveSnapShotFilePort {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")

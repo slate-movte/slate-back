@@ -10,9 +10,8 @@ import com.movte.slate.domain.user.repository.FindUserByIdPort;
 import com.movte.slate.global.exception.BadRequestException;
 import com.movte.slate.global.exception.BadRequestExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +21,11 @@ public class ViewOtherUserProfileService implements ViewOtherUserProfileUseCase 
     private final CheckThatOtherUserIsFollowedByUserPort checkThatOtherUserIsFollowedByUserPort;
 
     @Override
-    public ViewOtherUserProfileServiceResponse viewOtherUserProfile(long userId, long otherUserId) {
+    public ViewOtherUserProfileServiceResponse viewOtherUserProfile(long userId, long otherUserId, int feedCount) {
         User user = findUserByIdPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         User otherUser = findUserByIdPort.findById(otherUserId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
-        int pageSize = 30;
-        List<Feed> feeds = findFirstFeedPageByUserPort.find(otherUser, pageSize);
-        boolean isFollowed = checkThatOtherUserIsFollowedByUserPort.check(user, otherUser);
+        Page<Feed> feeds = findFirstFeedPageByUserPort.findFirstFeedPageByUserPort(otherUser, feedCount);
+        boolean isFollowed = checkThatOtherUserIsFollowedByUserPort.checkThatOtherUserIsFollowedByUser(user, otherUser);
         return new ViewOtherUserProfileServiceResponse(otherUser, feeds, isFollowed);
     }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 public class ViewOtherUserFeedsApiRequest {
     private long otherUserId;
     private long lastFeedId;
-    private long pageSize;
+    private int pageSize;
 
     public ViewOtherUserFeedsServiceRequest toServiceRequest() {
         return new ViewOtherUserFeedsServiceRequest(otherUserId, lastFeedId, pageSize);

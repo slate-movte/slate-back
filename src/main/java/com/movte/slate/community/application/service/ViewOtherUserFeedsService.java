@@ -25,8 +25,8 @@ public class ViewOtherUserFeedsService implements ViewOtherUserFeedsUseCase {
         long userId = serviceRequest.getUserId();
         User user = findUserByIdPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         long lastFeedId = serviceRequest.getLastFeedId();
-        long pageSize = serviceRequest.getPageSize();
-        List<Feed> feeds = findFeedPageByUserInRangePort.find(user, lastFeedId, pageSize);
+        int pageSize = serviceRequest.getPageSize();
+        List<Feed> feeds = findFeedPageByUserInRangePort.findFeedPageByUserInRange(user, lastFeedId, pageSize);
         return new ViewOtherUserFeedsServiceResponse(feeds);
     }
 }

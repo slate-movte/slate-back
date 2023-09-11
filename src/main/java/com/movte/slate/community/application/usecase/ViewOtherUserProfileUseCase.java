@@ -4,5 +4,5 @@ import com.movte.slate.community.application.response.ViewOtherUserProfileServic
 
 public interface ViewOtherUserProfileUseCase {
 
-    ViewOtherUserProfileServiceResponse viewOtherUserProfile(long userId, long otherUserId);
+    ViewOtherUserProfileServiceResponse viewOtherUserProfile(long userId, long otherUserId, int feedCount);
 }

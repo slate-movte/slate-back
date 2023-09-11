@@ -6,5 +6,5 @@ import com.movte.slate.domain.user.domain.User;
 import java.util.List;
 
 public interface FindFeedPageByUserInRangePort {
-    List<Feed> find(User user, long lastFeedId, long pageSize);
+    List<Feed> findFeedPageByUserInRange(User user, long lastFeedId, int pageSize);
 }

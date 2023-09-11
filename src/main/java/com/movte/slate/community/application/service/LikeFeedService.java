@@ -24,7 +24,7 @@ public class LikeFeedService implements LikeFeedUseCase {
     @Override
     @Transactional
     public void recordLike(long userId, long likedFeedId) {
-        Feed feed = findFeedByIdPort.find(likedFeedId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
+        Feed feed = findFeedByIdPort.findById(likedFeedId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NO_RESOURCE));
         User user = findUserByIdPort.findById(userId).orElseThrow(() -> new BadRequestException(BadRequestExceptionCode.NOT_USER));
         Like like = Like.builder().feed(feed).user(user).build();
         saveLikePort.save(like);

@@ -3,6 +3,7 @@ package com.movte.slate.community.application.response;
 import com.movte.slate.community.domain.Feed;
 import com.movte.slate.domain.user.domain.User;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ViewOtherUserProfileServiceResponse {
     private final boolean isFollowed;
     private final List<FeedServiceResponse> feeds;
 
-    public ViewOtherUserProfileServiceResponse(User otherUser, List<Feed> feeds, boolean isFollowed) {
+    public ViewOtherUserProfileServiceResponse(User otherUser, Page<Feed> feeds, boolean isFollowed) {
         this.userId = otherUser.getId();
         this.nickname = otherUser.getNickname();
         this.countOfFollowed = otherUser.getFollowedList().size();

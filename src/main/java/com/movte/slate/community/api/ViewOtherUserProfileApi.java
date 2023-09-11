@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +21,9 @@ public class ViewOtherUserProfileApi {
     private final JwtTokenFactory jwtTokenFactory;
 
     @GetMapping("/user/{other_user_id}/profile")
-    public ResponseEntity<SuccessResponse<ViewOtherUserProfileServiceResponse>> viewOtherUserProfile(@PathVariable("other_user_id") long otherUserId, HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<ViewOtherUserProfileServiceResponse>> viewOtherUserProfile(@PathVariable("other_user_id") long otherUserId, HttpServletRequest servletRequest, @RequestParam("feed-count") int feedCount) {
         Long userId = jwtTokenFactory.create(servletRequest.getHeader("accessToken")).getUserId();
-        ViewOtherUserProfileServiceResponse response = viewOtherUserProfileUseCase.viewOtherUserProfile(userId, otherUserId);
+        ViewOtherUserProfileServiceResponse response = viewOtherUserProfileUseCase.viewOtherUserProfile(userId, otherUserId, feedCount);
         return ResponseFactory.success(response);
     }
 
