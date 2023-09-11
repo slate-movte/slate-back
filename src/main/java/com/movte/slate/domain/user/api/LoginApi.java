@@ -1,10 +1,10 @@
 package com.movte.slate.domain.user.api;
 
+import com.movte.slate.domain.user.api.request.LoginApiRequest;
+import com.movte.slate.domain.user.application.service.response.LoginServiceResponse;
 import com.movte.slate.domain.user.application.usecase.LoginUseCase;
 import com.movte.slate.global.response.ResponseFactory;
 import com.movte.slate.global.response.SuccessResponse;
-import com.movte.slate.domain.user.api.request.LoginApiRequest;
-import com.movte.slate.domain.user.application.service.response.LoginServiceResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

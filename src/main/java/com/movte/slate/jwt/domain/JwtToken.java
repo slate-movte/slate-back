@@ -1,8 +1,8 @@
 package com.movte.slate.jwt.domain;
 
+import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
-import com.movte.slate.domain.user.domain.UserState;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -29,6 +29,11 @@ public class JwtToken {
     public boolean isExpired(Date now) {
         Claims body = claimsJws.getBody();
         return body.getExpiration().before(now);
+    }
+
+    public Date getExpiredAt() {
+        Claims body = claimsJws.getBody();
+        return body.getExpiration();
     }
 
     public boolean isAccessToken() {

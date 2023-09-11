@@ -1,12 +1,11 @@
 package com.movte.slate.global.filter;
 
+import com.movte.slate.domain.user.application.port.FindBlackListPort;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import com.movte.slate.jwt.application.usecase.CreateJwtTokenUseCase;
 import com.movte.slate.jwt.application.usecase.ExtractTokenStringUseCase;
 import com.movte.slate.jwt.domain.JwtToken;
-import com.movte.slate.jwt.domain.RequestUri;
-import com.movte.slate.domain.user.domain.UserState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RedisTemplate<String, String> redisTemplate;
     private final ExtractTokenStringUseCase extractTokenStringUseCase;
     private final CreateJwtTokenUseCase createJwtTokenUseCase;
+    private final FindBlackListPort findBlackListPort;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -49,25 +49,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         String tokenString = extractTokenStringUseCase.extractTokenString(authorizationHeader);
         JwtToken accessToken = createJwtTokenUseCase.create(tokenString);
+
         request.setAttribute("accessToken", accessToken);
         if (accessToken.isExpired(new Date())) {
             throw new UnauthorizedException(UnauthorizedExceptionCode.TOKEN_EXPIRED);
         }
 
         // redis에 access token이 있다는 것은 유효기간은 남았지만 로그아웃된 토큰이라는 것
-        if (accessToken.isAccessToken() && isTokenInRedis(tokenString) != null) {
+        if (accessToken.isAccessToken() && findBlackListPort.find(tokenString)) {
             log.info("로그아웃된 토큰입니다.");
             throw new UnauthorizedException(UnauthorizedExceptionCode.LOGOUT_TOKEN);
         }
 
         // Token에서 UserId 꺼내기
         Long userId = accessToken.getUserId();
-        UserState userState = accessToken.getUserState();
-
-        // 아직 회원 추가 정보가 입력되지 않은 경우,
-        if (UserState.PENDING.equals(userState) && !"/user/pending".equals(requestUriValue)) {
-            throw new UnauthorizedException(UnauthorizedExceptionCode.NOT_ENOUGH_INFO);
-        }
 
         mustNotReceiveAccessTokenWhenPathIsAccessTokenReissurancePath(requestUriValue, accessToken);
         mustNotReceiveRefreshTokenWhenPathIsNotAccessTokenReissurancePath(requestUriValue, accessToken);
@@ -108,20 +103,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return path.startsWith("/token");
     }
 
-    private String isTokenInRedis(String tokenString) {
-        return redisTemplate.opsForValue().get(tokenString);
-    }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         List<RequestMatcher> permitList = List.of(
-            new AntPathRequestMatcher("/user/login", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/tokens", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/helper/login*", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/search/**", HttpMethod.GET.name())
+                new AntPathRequestMatcher("/user/login", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/tokens", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/helper/login*", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/search/**", HttpMethod.GET.name())
         );
         OrRequestMatcher skipList = new OrRequestMatcher(permitList);
         return skipList.matches(request);

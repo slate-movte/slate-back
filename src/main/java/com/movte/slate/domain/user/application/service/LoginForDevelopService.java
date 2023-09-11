@@ -1,8 +1,9 @@
-package com.movte.slate.domain.user.application.usecase;
+package com.movte.slate.domain.user.application.service;
 
 
 import com.movte.slate.domain.user.application.port.FindUserByOauthIdAndOauthProviderPort;
 import com.movte.slate.domain.user.application.service.response.LoginServiceResponse;
+import com.movte.slate.domain.user.application.usecase.LoginForDevelopUseCase;
 import com.movte.slate.domain.user.domain.OauthProvider;
 import com.movte.slate.domain.user.domain.User;
 import com.movte.slate.global.exception.BadRequestException;
@@ -14,11 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LoginForDevelopService {
+public class LoginForDevelopService implements LoginForDevelopUseCase {
 
     private final FindUserByOauthIdAndOauthProviderPort findUserByOauthIdAndOauthProviderPort;
     private final IssueTokenUseCase issueTokenUseCase;
 
+    @Override
     @Transactional(readOnly = true)
     public LoginServiceResponse login(String oauthId) {
         User user = findUserByOauthIdAndOauthProviderPort.findByOauthIdAndOauthProvider(oauthId, OauthProvider.KAKAO)

@@ -16,9 +16,9 @@ import java.io.IOException;
 public class S3FileSaver {
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.region.static}")
-    private String bucket;
-    @Value("${cloud.aws.s3.bucket}")
     private String region;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     public String save(MultipartFile file, String path, String fileName, String fileType) {
         try {
