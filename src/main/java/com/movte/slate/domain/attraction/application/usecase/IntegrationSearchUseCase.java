@@ -34,14 +34,14 @@ public class IntegrationSearchUseCase {
         Long lastAttractionId = requestDto.getAttractionLastId();
         Long lastMovieId = requestDto.getMovieLastId();
 
-        if (isContinueSearchAttraction(lastAttractionId)) {
+        if (isContinuableSearchAttraction(lastAttractionId)) {
             List<Attraction> queryResult =
                 attractionRepository.findTop10ByTitleContainsAndIdAfterOrderByIdAsc(keyword,
                     lastAttractionId);
             attractionList.addAll(queryResult);
         }
 
-        if (isContinueSearchMovie(lastMovieId)) {
+        if (isContinuableSearchMovie(lastMovieId)) {
             List<Movie> queryResult = movieRepository.selectListMovieWithActorByKeywordAndLastId(
                 keyword, lastMovieId);
             movieList.addAll(queryResult);
@@ -52,11 +52,11 @@ public class IntegrationSearchUseCase {
             .build();
     }
 
-    private boolean isContinueSearchAttraction(Long lastAttractionId) {
+    private boolean isContinuableSearchAttraction(Long lastAttractionId) {
         return !lastAttractionId.equals(LAST_ID);
     }
 
-    private boolean isContinueSearchMovie(Long lastMovieId) {
+    private boolean isContinuableSearchMovie(Long lastMovieId) {
         return !lastMovieId.equals(LAST_ID);
     }
 }
