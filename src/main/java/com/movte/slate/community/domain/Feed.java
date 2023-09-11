@@ -28,6 +28,26 @@ public class Feed extends BaseTimeEntity {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Snapshot getSnapshot() {
+        return snapshot;
+    }
+
     public void setSnapshot(Snapshot snapshot) {
         this.snapshot = snapshot;
     }

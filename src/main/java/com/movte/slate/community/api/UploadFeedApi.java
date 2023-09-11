@@ -22,8 +22,7 @@ public class UploadFeedApi {
     private final UploadFeedUseCase uploadFeedUseCase;
 
     @PostMapping("/feed/new")
-    public ResponseEntity<SuccessResponse<UploadFeedServiceResponse>> upload(@RequestBody @Valid UploadFeedApiRequest uploadFeedApiRequest,
-                                                                             HttpServletRequest servletRequest) {
+    public ResponseEntity<SuccessResponse<UploadFeedServiceResponse>> upload(@RequestBody @Valid UploadFeedApiRequest uploadFeedApiRequest, HttpServletRequest servletRequest) {
         long userId = jwtTokenFactory.create(servletRequest.getHeader("accessToken")).getUserId();
         UploadFeedServiceResponse response = uploadFeedUseCase.upload(userId, uploadFeedApiRequest.toServiceRequest());
         return ResponseFactory.success(response);
