@@ -18,9 +18,9 @@ public class InternetDataLoader {
         conn = (HttpURLConnection) urlObj.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content_Type", "application/x-ww-form-urlencoded;charset=utf-8");
-        if (conn.getResponseCode() != 200) {
-            throw new IOException();
-        }
+//        if (conn.getResponseCode() != 200) {
+//            throw new IOException();
+//        }
         return getBody(conn);
     }
 

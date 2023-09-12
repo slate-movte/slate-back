@@ -4,7 +4,7 @@ import com.movte.slate.domain.user.domain.User;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "likes")
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
