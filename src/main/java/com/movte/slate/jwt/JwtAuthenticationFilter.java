@@ -30,7 +30,7 @@ import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
-@Component
+//@Component // 에러 터져서 그냥 빈 등록 안함
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
     private final RedisTemplate<String, String> redisTemplate;

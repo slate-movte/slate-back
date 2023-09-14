@@ -11,6 +11,7 @@ import com.movte.slate.domain.attraction.dto.response.AttractionListResponseDto;
 import com.movte.slate.domain.attraction.dto.response.MapSearchResponseDto;
 import com.movte.slate.domain.attraction.dto.response.RestaurantDetailResponseDto;
 import com.movte.slate.domain.attraction.repository.AttractionRepository;
+import com.movte.slate.domain.snapshot.repository.SceneRepository;
 import com.movte.slate.global.exception.NotFoundException;
 import com.movte.slate.global.exception.NotFoundExceptionCode;
 import java.math.BigDecimal;
@@ -26,27 +27,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class AttractionSearchUseCase {
 
     private final AttractionRepository attractionRepository;
-
+    private final SceneRepository sceneRepository;
 
     public List<MapSearchResponseDto> searchMap(MapSearchRequestDto requestDto) {
         List<MapSearchResponseDto> result = new ArrayList<>();
 
+        BigDecimal requestLongitude = new BigDecimal(requestDto.getLongitude());
+        BigDecimal requestLatitude = new BigDecimal(requestDto.getLatitude());
+        double range = Double.parseDouble(requestDto.getRange().toString());
         if (searchTargetIsAttraction(requestDto.getLocationType())) {
             AttractionType attractionType = requestDto.getLocationType().toAttractionType();
-            BigDecimal longitude = new BigDecimal(requestDto.getLongitude());
-            BigDecimal latitude = new BigDecimal(requestDto.getLatitude());
             List<MapSearchResponseDto> queryResult = attractionRepository.selectAttractionByTypeAndGps(
-                    attractionType, latitude, longitude,
-                    Double.parseDouble(requestDto.getRange().toString()))
+                    attractionType, requestLatitude, requestLongitude, range)
                 .stream().map(MapSearchResponseDto::from)
                 .toList();
             result.addAll(queryResult);
         }
-
-        /*
-         *  TODO : 영화 촬영지 기준으로 쿼리 짜야 함.
-         */
-
+        List<MapSearchResponseDto> queryResult = sceneRepository.selectSceneByGps(
+                requestLatitude,
+                requestLongitude, range)
+            .stream().map(MapSearchResponseDto::from)
+            .toList();
+        result.addAll(queryResult);
         return result;
     }
 
