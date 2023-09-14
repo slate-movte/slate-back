@@ -50,6 +50,13 @@ public class MovieDetailResponseDto {
         List<String> movieCast = movie.getMovieActors().stream()
             .map((movieActor -> movieActor.getActor().getName()))
             .toList();
+        String posterUrl = null;
+        String posterOriginUrl = movie.getPosterUrl();
+        if (posterOriginUrl != null) {
+            if (posterOriginUrl.split("\\|").length > 0) {
+                posterUrl = posterOriginUrl.split("\\|")[0];
+            }
+        }
 
         return MovieDetailResponseDto.builder()
             .id(movie.getMovieId())
@@ -59,7 +66,7 @@ public class MovieDetailResponseDto {
             .openYear(movie.getOpenYear())
             .openDate(movie.getOpenDate())
             .rating(movie.getRating())
-            .posterUrl(movie.getPosterUrl())
+            .posterUrl(posterUrl)
             .audienceCount(movie.getAudienceCount())
             .plot(movie.getPlot())
             .movieCastList(movieCast)
