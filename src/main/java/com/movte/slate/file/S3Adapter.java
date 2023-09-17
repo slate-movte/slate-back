@@ -2,6 +2,7 @@ package com.movte.slate.file;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.movte.slate.domain.snapshot.repository.SaveImagePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 @RequiredArgsConstructor
-public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort {
+public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort, SaveImagePort {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -50,6 +51,26 @@ public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort {
             String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
             String fileType = strings[strings.length - 1];
             fileName = "images/snapshot/" + fileName + "." + fileType;
+            String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
+            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), objectMetadata);
+            return Optional.of(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<String> saveScene(MultipartFile file, long movieId) {
+        try {
+            String fileName = String.valueOf(movieId);
+
+            String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
+            String fileType = strings[strings.length - 1];
+            fileName = "images/scene/" + fileName + "." + fileType;
             String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
