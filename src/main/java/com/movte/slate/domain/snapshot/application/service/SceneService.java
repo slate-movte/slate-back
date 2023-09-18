@@ -50,7 +50,8 @@ public class SceneService {
                 .imageUrl(url)
                 .movie(movie.get(0))
                 .sceneDescription(request.getSceneDescription())
-                .build()); // TODO sceneLocation 추가 필요
+                .sceneLocation(request.getSceneLocation())
+                .build());
         return new InsertSceneServiceResponse("씬 추가 완료");
     }
 }
