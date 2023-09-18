@@ -26,6 +26,8 @@ public class Scene {
 
     private String sceneDescription;
 
+    private String sceneLocation;
+
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
