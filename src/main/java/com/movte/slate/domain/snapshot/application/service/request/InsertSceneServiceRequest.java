@@ -16,4 +16,5 @@ public class InsertSceneServiceRequest {
     private final String movieTitle;
     private final MultipartFile image;
     private final String sceneDescription;
+    private final String sceneLocation;
 }

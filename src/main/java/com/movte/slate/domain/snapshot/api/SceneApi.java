@@ -40,9 +40,10 @@ public class SceneApi {
             @RequestParam("longitude") BigDecimal longitude,
             @RequestParam("movieTitle") String movieTitle,
             @RequestParam("image") List<MultipartFile> images,
-            @RequestParam("sceneDescription") String sceneDescription
+            @RequestParam("sceneDescription") String sceneDescription,
+            @RequestParam("sceneLocation") String sceneLocation
             ){
-        InsertSceneServiceResponse insertSceneServiceResponse = sceneService.insertScene(new InsertSceneServiceRequest(address, sidoCode, gugunCode, latitude, longitude, movieTitle, images.get(0), sceneDescription));
+        InsertSceneServiceResponse insertSceneServiceResponse = sceneService.insertScene(new InsertSceneServiceRequest(address, sidoCode, gugunCode, latitude, longitude, movieTitle, images.get(0), sceneDescription,sceneLocation));
         return ResponseFactory.success(insertSceneServiceResponse);
     }
 
