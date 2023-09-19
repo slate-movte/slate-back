@@ -26,7 +26,9 @@ public class Scene {
 
     private String sceneDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private String sceneLocation;
+
+    @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
