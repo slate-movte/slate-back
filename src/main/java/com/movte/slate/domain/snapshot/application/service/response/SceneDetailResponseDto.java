@@ -16,17 +16,22 @@ public class SceneDetailResponseDto {
 
     private Long sceneId;
     private String imageUrl;
+
+    private String sceneLocation;
     private LocationResponseDto location;
     private SceneDetailMovieTitleResponse movie;
 
     @Builder
-    public SceneDetailResponseDto(Long sceneId, String imageUrl, LocationResponseDto location,
-        SceneDetailMovieTitleResponse movie) {
+    public SceneDetailResponseDto(Long sceneId, String imageUrl, String sceneLocation,
+        LocationResponseDto location, SceneDetailMovieTitleResponse movie) {
         this.sceneId = sceneId;
         this.imageUrl = imageUrl;
+        this.sceneLocation = sceneLocation;
         this.location = location;
         this.movie = movie;
     }
+
+
 
 
     public static SceneDetailResponseDto from(Scene scene) {
@@ -34,6 +39,7 @@ public class SceneDetailResponseDto {
             .sceneId(scene.getSceneId())
             .imageUrl(scene.getImageUrl())
             .location(LocationResponseDto.from(scene.getFilmLocation().getAddress()))
+            .sceneLocation(scene.getSceneLocation())
             .movie(SceneDetailMovieTitleResponse.from(scene.getMovie()))
             .build();
     }

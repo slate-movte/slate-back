@@ -54,7 +54,8 @@ public class MapSearchResponseDto {
         public CommonInfo(Scene scene) {
             this.id = scene.getSceneId();
             this.type = LocationTypeDto.MOVIE_LOCATION.name();
-            this.title = "데이터 없음";
+            // scene 에서는 씬 location 정보를 줄게여
+            this.title = scene.getSceneLocation();
         }
     }
 }

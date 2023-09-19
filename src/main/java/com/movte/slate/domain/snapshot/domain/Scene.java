@@ -24,8 +24,6 @@ public class Scene {
 
     private String imageUrl;
 
-    private String sceneDescription;
-
     private String sceneLocation;
 
     @ManyToOne
