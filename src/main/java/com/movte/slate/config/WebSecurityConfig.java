@@ -27,8 +27,6 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // 인가가 필요한 리소스 설정
     @Bean
@@ -37,17 +35,17 @@ public class WebSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeRequests(requests -> {
-                    requests.antMatchers(HttpMethod.GET, "/user/info").authenticated();
-                    requests.antMatchers(HttpMethod.PATCH, "/user/info").authenticated();
-                    requests.antMatchers("/snapshot*").authenticated();
-                    requests.requestMatchers(new AntPathRequestMatcher("/*")).permitAll(); // 로그인 경로는 모든 사용자에게 허락
-                })
+//                .authorizeRequests(requests -> {
+//                    requests.antMatchers(HttpMethod.GET, "/user/info").authenticated();
+//                    requests.antMatchers(HttpMethod.PATCH, "/user/info").authenticated();
+//                    requests.antMatchers("/snapshot*").authenticated();
+//                    requests.requestMatchers(new AntPathRequestMatcher("/*")).permitAll(); // 로그인 경로는 모든 사용자에게 허락
+//                })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 쓸 때 사용
                 )
-                .addFilterBefore(jwtExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class) // ExceptionHandler 필터가 앞에 와야 함!
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // UsernamePasswordAuthenticationFilter 앞에 JwtFilter 추가
+//                .addFilterBefore(jwtExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class) // ExceptionHandler 필터가 앞에 와야 함!
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // UsernamePasswordAuthenticationFilter 앞에 JwtFilter 추가
         ;
         return http.build();
     }

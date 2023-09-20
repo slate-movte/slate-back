@@ -24,7 +24,7 @@ public class Scene {
 
     private String imageUrl;
 
-    private String sceneDescription;
+    private String sceneLocation;
 
     private String sceneLocation;
 
@@ -32,7 +32,7 @@ public class Scene {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_location_id")
     private FilmLocation filmLocation;
 }
