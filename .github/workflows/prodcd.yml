@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["develop"]
+    branches: ["main"]
 
   workflow_dispatch:
 
@@ -21,17 +21,17 @@ jobs:
           distribution: "zulu"
       - name: save into .env.properties
         env:
-          DEV_VARIABLES: ${{ toJson(secrets) }}
+          PROD_VARIABLES: ${{ toJson(secrets) }}
         run : |
-          echo "$DEV_VARIABLES" | jq -r 'to_entries | 
-          map(select(.key | startswith("DEV_")))[] | "\(.key | sub("^DEV_"; ""))=\(.value)"' > ./config/.env.properties
+          echo "$PROD_VARIABLES" | jq -r 'to_entries | 
+          map(select(.key | startswith("PROD_")))[] | "\(.key | sub("^PROD_"; ""))=\(.value)"' > ./config/.env.properties
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Project testing
         run: |
           cat ./config/.env.properties
-          SPRING_PROFILES_ACTIVE=dev \
+          SPRING_PROFILES_ACTIVE=prod \
           ./gradlew clean build -i
       - name: Set Up Docker Buildx
         id: buildx
@@ -74,7 +74,7 @@ jobs:
         id: execute
         run: |
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}} && docker rmi ${{env.DOCKER_IMAGE}}:latest
-            docker run -d -p 8080:8080 -e PROFILE=dev --name ${{env.NAME}} --network back-dev ${{env.DOCKER_IMAGE}}:latest
+            docker run -d -p 8080:8080 -e PROFILE=prod --name ${{env.NAME}} --network back-prod ${{env.DOCKER_IMAGE}}:latest
       - name: send result when success
         if: ${{success() && steps.execute.conclusion=='success'}}
         uses: ./.github/actions/discord_action
