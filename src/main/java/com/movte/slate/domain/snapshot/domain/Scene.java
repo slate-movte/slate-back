@@ -26,8 +26,6 @@ public class Scene {
 
     private String sceneLocation;
 
-    private String sceneLocation;
-
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
@@ -35,4 +33,5 @@ public class Scene {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_location_id")
     private FilmLocation filmLocation;
+
 }
