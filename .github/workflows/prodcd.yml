@@ -60,7 +60,7 @@ jobs:
   deploy:
     needs: build-push
     name: Deploy
-    runs-on: [self-hosted, slate-back-deploy]
+    runs-on: [self-hosted, production]
     steps:
       - name: checkout
         uses: actions/checkout@v3
