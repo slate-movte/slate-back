@@ -48,6 +48,7 @@ public class MovieDetailResponseDto {
 
     public static MovieDetailResponseDto from(Movie movie) {
         List<String> movieCast = movie.getMovieActors().stream()
+            .filter((mv) -> mv.getRoleOrder() == 1) // 주연인 배우 중
             .map((movieActor -> movieActor.getActor().getName()))
             .toList();
         String posterUrl = null;
