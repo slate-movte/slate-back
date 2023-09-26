@@ -36,7 +36,7 @@ public class IntegrationSearchUseCase {
 
         if (isContinuableSearchAttraction(lastAttractionId)) {
             List<Attraction> queryResult =
-                attractionRepository.findTop10ByTitleContainsAndIdAfterOrderByIdAsc(keyword,
+                attractionRepository.findTop5ByTitleContainsAndIdAfterOrderByIdAsc(keyword,
                     lastAttractionId);
             attractionList.addAll(queryResult);
         }

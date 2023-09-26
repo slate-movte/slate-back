@@ -27,10 +27,14 @@ public class MovieActor {
     @Column(name = "`cast`")
     private String cast;
 
+    @Column(name = "role_order")
+    private int roleOrder;
+
     @Builder
-    public MovieActor(Movie movie, Actor actor, String cast) {
+    public MovieActor(Movie movie, Actor actor, String cast, int roleOrder) {
         this.movie = movie;
         this.actor = actor;
         this.cast = cast;
+        this.roleOrder = roleOrder;
     }
 }
