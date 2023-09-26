@@ -29,7 +29,7 @@ public class MovieQueryRepositoryImpl implements MovieQueryRepository {
             .where(lastIdAfter(lastId), isSearchKeyword(keyword))
             .groupBy(movie.movieId)
             .orderBy(movie.movieId.asc())
-            .limit(10)
+            .limit(5)
             .fetch();
     }
 
