@@ -66,10 +66,10 @@ public class S3Adapter implements SaveProfileImagePort, SaveSnapShotPort, SaveIm
     @Override
     public Optional<String> saveScene(MultipartFile file, long movieId) {
         try {
-            String fileName = String.valueOf(movieId);
-
             String[] strings = requireNonNull(file.getOriginalFilename()).split("\\.");
             String fileType = strings[strings.length - 1];
+            String fileName = strings[strings.length - 2];
+            System.out.println(fileName);
             fileName = "images/scene/" + fileName + "." + fileType;
             String fileUrl = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
             ObjectMetadata objectMetadata = new ObjectMetadata();
