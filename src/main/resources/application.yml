@@ -25,11 +25,6 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         default_batch_fetch_size: 100 #배치 최적화 추후 예정
 
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
 jwt:
   secretKey: ${JWT_SECRETKEY}
   accessTokenValidTimeInMinuteUnit: ${JWT_ACCESS_TOKEN_VALID_TIME_IN_MINUTE_UNIT}
