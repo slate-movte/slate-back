@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SceneJpaAdapter implements FindSceneByIdPort, FindSceneByMoviePort{
+public class SceneJpaAdapter implements FindSceneByIdPort, FindSceneByMoviePort, SaveScenePort{
     private final SceneRepository sceneRepository;
 
     @Override
@@ -22,5 +22,10 @@ public class SceneJpaAdapter implements FindSceneByIdPort, FindSceneByMoviePort{
     @Override
     public List<Scene> findByMovie(Movie movie) {
         return sceneRepository.findByMovie(movie);
+    }
+
+    @Override
+    public Scene save(Scene scene) {
+        return sceneRepository.save(scene);
     }
 }

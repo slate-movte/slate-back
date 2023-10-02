@@ -33,4 +33,5 @@ public class Scene {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_location_id")
     private FilmLocation filmLocation;
+
 }
