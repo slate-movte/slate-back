@@ -58,6 +58,10 @@ public class MovieDetailResponseDto {
                 posterUrl = posterOriginUrl.split("\\|")[0];
             }
         }
+        List<SceneImageResponseDto> scenes = null;
+        if (movie.getScenes().size() > 0) {
+            scenes = movie.getScenes().stream().map(SceneImageResponseDto::from).toList();
+        }
 
         return MovieDetailResponseDto.builder()
             .id(movie.getMovieId())
@@ -71,7 +75,7 @@ public class MovieDetailResponseDto {
             .audienceCount(movie.getAudienceCount())
             .plot(movie.getPlot())
             .movieCastList(movieCast)
-            .sceneImages(movie.getScenes().stream().map(SceneImageResponseDto::from).toList())
+            .sceneImages(scenes)
             .build();
     }
 }

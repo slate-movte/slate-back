@@ -30,26 +30,24 @@ public class AttractionSearchUseCase {
     private final SceneRepository sceneRepository;
 
     public List<MapSearchResponseDto> searchMap(MapSearchRequestDto requestDto) {
-        List<MapSearchResponseDto> result = new ArrayList<>();
 
         BigDecimal requestLongitude = new BigDecimal(requestDto.getLongitude());
         BigDecimal requestLatitude = new BigDecimal(requestDto.getLatitude());
         double range = Double.parseDouble(requestDto.getRange().toString());
         if (searchTargetIsAttraction(requestDto.getLocationType())) {
             AttractionType attractionType = requestDto.getLocationType().toAttractionType();
-            List<MapSearchResponseDto> queryResult = attractionRepository.selectAttractionByTypeAndGps(
+
+            return attractionRepository.selectAttractionByTypeAndGps(
                     attractionType, requestLatitude, requestLongitude, range)
                 .stream().map(MapSearchResponseDto::from)
                 .toList();
-            result.addAll(queryResult);
         }
-        List<MapSearchResponseDto> queryResult = sceneRepository.selectSceneByGps(
+
+        return sceneRepository.selectSceneByGps(
                 requestLatitude,
                 requestLongitude, range)
             .stream().map(MapSearchResponseDto::from)
             .toList();
-        result.addAll(queryResult);
-        return result;
     }
 
     private boolean searchTargetIsAttraction(LocationTypeDto type) {
