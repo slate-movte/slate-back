@@ -42,13 +42,14 @@ public class AttractionSearchUseCase {
                 .stream().map(MapSearchResponseDto::from)
                 .toList();
             result.addAll(queryResult);
+        } else {
+            List<MapSearchResponseDto> queryResult = sceneRepository.selectSceneByGps(
+                    requestLatitude,
+                    requestLongitude, range)
+                .stream().map(MapSearchResponseDto::from)
+                .toList();
+            result.addAll(queryResult);
         }
-        List<MapSearchResponseDto> queryResult = sceneRepository.selectSceneByGps(
-                requestLatitude,
-                requestLongitude, range)
-            .stream().map(MapSearchResponseDto::from)
-            .toList();
-        result.addAll(queryResult);
         return result;
     }
 
