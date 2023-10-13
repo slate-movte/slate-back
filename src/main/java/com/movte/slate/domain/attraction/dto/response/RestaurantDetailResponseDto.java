@@ -55,8 +55,12 @@ public class RestaurantDetailResponseDto {
             throw new BadRequestException(BadRequestExceptionCode.NOT_MATCH_ATTRACTION);
         }
         List<String> images = new ArrayList<>();
-        images.add(attraction.getFirstImage());
-        images.add(attraction.getSecondImage());
+        if (attraction.getFirstImage().length() > 1) {
+            images.add(attraction.getFirstImage());
+        }
+        if (attraction.getSecondImage().length() > 1) {
+            images.add(attraction.getSecondImage());
+        }
         List<String> menuList = new ArrayList<>();
         String treatMenu = attraction.getTreatMenu();
 
