@@ -4,7 +4,6 @@ import com.movte.slate.domain.user.domain.UserState;
 import com.movte.slate.global.exception.UnauthorizedException;
 import com.movte.slate.global.exception.UnauthorizedExceptionCode;
 import com.movte.slate.jwt.domain.JwtToken;
-import com.movte.slate.jwt.domain.RequestUri;
 import com.movte.slate.util.TokenStringExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -114,13 +113,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         List<RequestMatcher> permitList = List.of(
-            new AntPathRequestMatcher("/user/login", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/tokens", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/helper/login*", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/search/**", HttpMethod.GET.name())
+                new AntPathRequestMatcher("/user/login", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/reissue", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/tokens", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/oidc/kakao/openkeys", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/user/signup", HttpMethod.POST.name()),
+                new AntPathRequestMatcher("/user/nickname/duplicate", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/helper/login*", HttpMethod.GET.name()),
+                new AntPathRequestMatcher("/search/**", HttpMethod.GET.name())
         );
         OrRequestMatcher skipList = new OrRequestMatcher(permitList);
         return skipList.matches(request);
